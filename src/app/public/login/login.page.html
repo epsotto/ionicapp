@@ -1,0 +1,42 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div class="ion-padding">
+    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+      <ion-grid class="loginFormContainer">
+        <ion-row>
+          <ion-col class="companyLogoContainer">
+              <img [src]="imgsrc" class="companyLogo"/>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <ion-item>
+                  <ion-label position="fixed">Username<span style="color:red;">*</span></ion-label>
+                  <ion-input required ngModel name="username"></ion-input>
+              </ion-item>
+              <ion-item>
+                  <ion-label position="fixed">Password<span style="color:red;">*</span></ion-label>
+                  <ion-input type="password" required ngModel name="password"></ion-input>
+              </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button color="primary" expand="full" type="submit">Login</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="forgotPassword">
+            <a href="#">Forgot password?</a>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+</ion-content>
+
