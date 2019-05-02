@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Overdue Activities</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="logout()">
+            <ion-icon slot="icon-only" name="log-out"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-item *ngFor="let item of followupList" (click)="contactSelected($event,item.OppId)">
+      <ion-label>
+        <ion-text text-wrap>
+          <h2>{{item.OppName}}</h2>
+          <p>{{item.Client}}</p>
+          <p>{{item.ContactNumber}}</p>
+          <p>{{item.EventAction}}</p>
+        </ion-text>
+      </ion-label>
+      <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactNumber)">
+        <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
