@@ -1,0 +1,11 @@
+.tabButtons {
+    text-align: center;
+}
+
+.tabButtons :hover {
+    cursor: pointer;
+}
+
+.active {
+    border-top: 2px solid #3880ff;
+}

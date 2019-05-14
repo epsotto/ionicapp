@@ -3,6 +3,7 @@ import { ToastController, MenuController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NgForm } from '@angular/forms';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +18,15 @@ export class LoginPage implements OnInit {
               private menuController: MenuController) { }
 
   imgsrc:any = "/assets/fresco-logo-original---115x75.png";
-  username:string="";
-  password:string="";
   errorMsg:string="";
+
+  successUserName:boolean = false;
+  userNameDisplay:string = "";
+  authModel = {
+    username: "",
+    accessKey: "",
+    token: ""
+  }
 
   ngOnInit() {
     this.statusBar.overlaysWebView(false);
@@ -32,22 +39,49 @@ export class LoginPage implements OnInit {
 
   onSubmit(myForm: NgForm) {
     if(myForm.valid){
-      if(myForm.valid){
-        this.username = myForm.value.username;
-        this.password = myForm.value.password;
-
-        if(this.username !== "test" && this.password !== "test"){
-          this.errorMsg = "Invalid Username or Password.";
-          this.presentToast();
-        } else {
-          this.authService.login();
-          this.username = "";
-          this.password = "";
-        }
-      } else {
-          this.errorMsg = "Please fill out your credentials.";
-          this.presentToast();
+      this.authModel.username = myForm.value.username;
+      this.authModel.accessKey = myForm.value.password;
+      
+      if(!this.successUserName){
+        this.userNameDisplay = myForm.value.username;
+        this.authService.getChallengeToken(this.authModel.username).subscribe(res => {
+          if(res.status == 200) {
+            this.authModel.token = res.data.token;
+            this.successUserName = res.status == 200 ? true : false;
+          } 
+          else if(res.success) {
+            this.authModel.token = res.result.token;
+            this.successUserName = true;
+          }
+        });
       }
+      else {
+        this.authModel.username = this.userNameDisplay;
+        // this.authService.userLogin(this.authModel).subscribe(res => {
+        //   this.errorMsg = "success";
+        //   this.presentToast();
+        //   console.log(res);
+        // });
+
+        this.authService.login();
+        this.authModel = {
+            username: "",
+            accessKey: "",
+            token: ""
+          }
+      }
+
+      // if(this.authModel.username !== "test" && this.authModel.accessKey !== "test"){
+      //   this.errorMsg = "Invalid Username or Password.";
+      //   this.presentToast();
+      // } else {
+      
+
+        // this.authService.login();
+      // }
+    } else {
+        this.errorMsg = "Please fill out your credentials.";
+        this.presentToast();
     }
   }
 

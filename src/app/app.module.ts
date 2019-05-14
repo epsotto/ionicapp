@@ -10,16 +10,29 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from "@ionic/storage";
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallCommentsPageModule } from './employee/call-comments/call-comments.module';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP } from "@ionic-native/http/ngx";
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot()],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    IonicStorageModule.forRoot(), 
+    CallCommentsPageModule, 
+    HttpModule,
+    HttpClientModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    CallNumber
+    CallNumber,
+    HTTP
   ],
   bootstrap: [AppComponent]
 })

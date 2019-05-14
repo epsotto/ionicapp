@@ -1,34 +1,47 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>view-contact-detail</ion-title>
+    <ion-buttons slot="start">
+        <ion-back-button icon="arrow-back" defaultHref="/employee/followup"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Opportunity {{oppId.OppId}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  {{data.OppId}}
+  <ion-grid *ngIf="activeTab === 'firstTab'">
+    <ion-row>
+      <ion-col>
+          {{oppId.OppId}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="activeTab !== 'firstTab'">
+    <ion-row>
+      <ion-col>
+          {{oppId.OppId}} contacts
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
-<!-- <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="schedule">
-        <ion-icon name="calendar"></ion-icon>
-        <ion-label>Schedule</ion-label>
-        <ion-badge>6</ion-badge>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="speakers">
-        <ion-icon name="contacts"></ion-icon>
-        <ion-label>Speakers</ion-label>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="map">
-        <ion-icon name="map"></ion-icon>
-        <ion-label>Map</ion-label>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="about">
-        <ion-icon name="information-circle"></ion-icon>
-        <ion-label>About</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs> -->
+<ion-footer transparent no-border>
+  <ion-toolbar transparent no-border>
+    <ion-grid>
+      <ion-row>
+        <ion-col align-self-center [ngClass]="{'active': activeTab == 'firstTab'}">
+          <ion-button expand="full" fill="clear" (click)="changeTabs('firstTab')">
+            <ion-icon slot="icon-only" name="document"></ion-icon>
+            <ion-label>Opportunity</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col align-self-center [ngClass]="{'active': activeTab == 'secondTab'}">
+          <ion-button expand="full" fill="clear" (click)="changeTabs('secondTab')">
+            <ion-icon slot="icon-only" name="contacts"></ion-icon>
+            <ion-label>Contact Details</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

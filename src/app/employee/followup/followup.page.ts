@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ToastController, NavController } from '@ionic/angular';
+import { MenuController, ToastController, NavController, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
+import { CallCommentsPage } from '../call-comments/call-comments.page';
 
 @Component({
   selector: 'app-followup',
@@ -13,6 +14,7 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 export class FollowupPage implements OnInit {
   private followupList = [];
   private msg: string = "";
+  private selectedOppId:string = "";
 
   constructor(private menuController: MenuController,
               private authService: AuthenticationService,
@@ -20,7 +22,8 @@ export class FollowupPage implements OnInit {
               private toastController: ToastController,
               private statusBar: StatusBar,
               private nav: NavController,
-              private dataStorage: DataStorageService) { }
+              private dataStorage: DataStorageService,
+              private modalController: ModalController) { }
 
   ngOnInit() {
     this.menuController.enable(true);
@@ -104,10 +107,21 @@ export class FollowupPage implements OnInit {
     .then(res => {
       this.msg = "Called " + clientNumber;
       this.presentToast();
+      this.presentModal();
     }).catch(err => {
       this.msg = "Error in dialer " + err;
       this.presentToast();
     });
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CallCommentsPage,
+      componentProps: {
+        "oppId": this.selectedOppId,
+      }
+    });
+    modal.present();
   }
 
   async presentToast(){
@@ -125,6 +139,11 @@ export class FollowupPage implements OnInit {
     event.preventDefault();
     this.dataStorage.setData("OppId", OppId);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
+  }
+
+  markDone(oppId){
+    this.selectedOppId = oppId;
+    this.presentModal();
   }
 
   doRefresh(event) {

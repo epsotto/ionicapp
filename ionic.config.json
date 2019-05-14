@@ -3,5 +3,10 @@
   "integrations": {
     "cordova": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "proxies": [{
+    "path": "/webservice.php",
+    "proxyUrl": "http://crm.frescoshades.co.nz/webservice.php"
+  }],
+  "proxy": "http://crm.frescoshades.co.nz/webservice.php"
 }

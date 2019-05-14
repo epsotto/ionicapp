@@ -12,16 +12,6 @@ const routes: Routes = [
     },
     loadChildren: "./view-activity-detail/view-activity-detail.module#ViewActivityDetailPageModule" },
   { path: "activities", loadChildren: "./activities/activities.module#ActivitiesPageModule" },
-  { path: "view-opportunity/:OppId",
-    resolve: {
-      special: DataResolverService
-    },
-    loadChildren: "./view-opportunity/view-opportunity.module#ViewOpportunityPageModule" },
-  { path: "view-contact-detail/:OppId", 
-    resolve: {
-      special: DataResolverService
-    },
-    loadChildren: "./view-contact-detail/view-contact-detail.module#ViewContactDetailPageModule" },
 ];
 
 @NgModule({

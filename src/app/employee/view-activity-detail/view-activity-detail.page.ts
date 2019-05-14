@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ViewActivityDetailPage implements OnInit {
   oppId:any;
+  activeTab:string = "firstTab";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -18,5 +19,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.oppId = this.route.snapshot.params; //Only needed the params. Data passing is returning undefined.
   }
 
-
+  changeTabs(tab){
+    this.activeTab = tab;
+  }
 }
