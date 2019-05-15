@@ -75,7 +75,7 @@ export class AppComponent {
   }
 
   backButtonEvent() {
-    this.platform.backButton.subscribe(async () => {
+    this.platform.backButton.subscribeWithPriority(0, async () => {
       // close action sheet
       try {
           const element = await this.actionSheetController.getTop();
