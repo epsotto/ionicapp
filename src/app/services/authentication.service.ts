@@ -4,7 +4,7 @@ import { Storage } from "@ionic/storage";
 import { Platform } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Md5 } from 'ts-md5'
-// import { HTTP } from "@ionic-native/http/ngx";
+import { HTTP } from "@ionic-native/http/ngx";
 
 const TOKEN_KEY = 'auth-token';
 const httpOptions = {
@@ -24,7 +24,8 @@ export class AuthenticationService {
   authenticationState = new BehaviorSubject(false);
   serviceUrl:string = "http://crm.frescoshades.co.nz/webservice.php";
 
-  constructor(private storage: Storage, private plt: Platform, private http: HttpClient) { //HTTP){
+  constructor(private storage: Storage, private plt: Platform, 
+      private http: HttpClient, private HttpNative : HTTP) { 
     this.plt.ready().then(() => {
       this.checkToken();
     })
@@ -44,26 +45,26 @@ export class AuthenticationService {
     });
   }
 
-  getChallengeToken(username:string):Observable<any>{//:Observable<any>
+  getChallengeToken(username:string){//:Observable<any>
     const serveUrl = this.serviceUrl + "?operation=getchallenge&username=" + username;
-    return this.http.get(serveUrl); //, {}, {}
+    // return this.http.get(serveUrl); //, {}, {}
+    return this.HttpNative.get(serveUrl, {}, {});
   }
 
-  // userLogin(auth:any):Observable<any>{
-  //   debugger;
-  //   const serveUrl = this.serviceUrl;
-  //   var md5 = new Md5();
-  //   let accessKey = md5.appendStr(auth.token).appendStr(auth.accessKey).end();
-  //   let second = Md5.hashStr(auth.token + auth.key);
+  userLogin(auth:any){
+    const serveUrl = this.serviceUrl;
+    var md5 = new Md5();
+    let accessKey = md5.appendStr(auth.token).appendStr(auth.accessKey).end();
+    let second = Md5.hashStr(auth.token + auth.key);
 
-  //   const query = {
-  //     operation: "login",
-  //     username: auth.username,
-  //     accessKey: accessKey
-  //   };
+    const query = {
+      operation: "login",
+      username: auth.username,
+      accessKey: accessKey
+    };
 
-  //   return this.http.post<any>(serveUrl, query, httpOptions);
-  // }
+    return this.HttpNative.post(serveUrl, query, httpOptions);
+  }
 
   logout() {
     return this.storage.remove(TOKEN_KEY).then(() => {

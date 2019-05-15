@@ -44,21 +44,23 @@ export class LoginPage implements OnInit {
       
       if(!this.successUserName){
         this.userNameDisplay = myForm.value.username;
-        this.authService.getChallengeToken(this.authModel.username).subscribe(res => {
+        this.authService.getChallengeToken(this.authModel.username).then(res => {
+          this.errorMsg = res.status.toString();
+          this.presentToast();
           if(res.status == 200) {
             this.authModel.token = res.data.token;
             this.successUserName = res.status == 200 ? true : false;
           } 
-          else if(res.success) {
-            this.authModel.token = res.result.token;
-            this.successUserName = true;
-          }
+          // else if(res.success) {
+          //   this.authModel.token = res.result.token;
+          //   this.successUserName = true;
+          // }
         });
       }
       else {
         this.authModel.username = this.userNameDisplay;
-        // this.authService.userLogin(this.authModel).subscribe(res => {
-        //   this.errorMsg = "success";
+        // this.authService.userLogin(this.authModel).then(res => {
+        //   this.errorMsg = res.data.sessionId + " : " + res.data.userId;
         //   this.presentToast();
         //   console.log(res);
         // });

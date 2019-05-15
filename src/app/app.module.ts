@@ -14,6 +14,7 @@ import { CallCommentsPageModule } from './employee/call-comments/call-comments.m
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from "@ionic-native/http/ngx";
+import { CallLog } from "@ionic-native/call-log/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +33,8 @@ import { HTTP } from "@ionic-native/http/ngx";
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CallNumber,
-    HTTP
+    HTTP,
+    CallLog
   ],
   bootstrap: [AppComponent]
 })
