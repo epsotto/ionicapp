@@ -23,7 +23,10 @@
     "@ionic-native/call-log": "^5.5.1",
     "@ionic-native/call-number": "^5.5.1",
     "@ionic-native/core": "^5.0.0",
+    "@ionic-native/diagnostic": "^5.5.1",
+    "@ionic-native/geolocation": "^5.5.1",
     "@ionic-native/http": "^5.5.1",
+    "@ionic-native/native-geocoder": "^5.5.1",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.1.0",
@@ -34,6 +37,9 @@
     "cordova-plugin-advanced-http": "2.0.9",
     "cordova-plugin-calllog": "1.3.2",
     "cordova-plugin-file": "6.0.1",
+    "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-nativegeocoder": "3.2.2",
+    "cordova.plugins.diagnostic": "4.0.12",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
     "ts-md5": "^1.2.4",
@@ -87,7 +93,12 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-advanced-http": {},
-      "cordova-plugin-calllog": {}
+      "cordova-plugin-calllog": {},
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-nativegeocoder": {},
+      "cordova.plugins.diagnostic": {
+        "ANDROID_SUPPORT_VERSION": "28.+"
+      }
     },
     "platforms": [
       "android"

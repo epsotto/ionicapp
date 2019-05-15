@@ -15,6 +15,9 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from "@ionic-native/http/ngx";
 import { CallLog } from "@ionic-native/call-log/ngx";
+import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { NativeGeocoder } from "@ionic-native/native-geocoder/ngx";
+import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +37,10 @@ import { CallLog } from "@ionic-native/call-log/ngx";
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CallNumber,
     HTTP,
-    CallLog
+    CallLog,
+    Geolocation,
+    NativeGeocoder,
+    Diagnostic,
   ],
   bootstrap: [AppComponent]
 })

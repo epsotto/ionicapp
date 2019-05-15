@@ -23,22 +23,27 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="GetLocation()"><ion-icon name="pin"></ion-icon></ion-fab-button>
+  </ion-fab>
+
+  {{location}}
 </ion-content>
 
 <ion-footer transparent no-border>
   <ion-toolbar transparent no-border>
     <ion-grid>
       <ion-row>
-        <ion-col align-self-center [ngClass]="{'active': activeTab == 'firstTab'}">
-          <ion-button expand="full" fill="clear" (click)="changeTabs('firstTab')">
+        <ion-col class="button-container" size="6" align-self-center [ngClass]="{'active': activeTab == 'firstTab'}">
+          <ion-button class="align-button-center" fill="clear" (click)="changeTabs('firstTab')">
             <ion-icon slot="icon-only" name="document"></ion-icon>
             <ion-label>Opportunity</ion-label>
           </ion-button>
         </ion-col>
-        <ion-col align-self-center [ngClass]="{'active': activeTab == 'secondTab'}">
-          <ion-button expand="full" fill="clear" (click)="changeTabs('secondTab')">
+        <ion-col class="button-container" size="6" align-self-center [ngClass]="{'active': activeTab == 'secondTab'}">
+          <ion-button class="align-button-center" fill="clear" (click)="changeTabs('secondTab')">
             <ion-icon slot="icon-only" name="contacts"></ion-icon>
-            <ion-label>Contact Details</ion-label>
+            <ion-label>Client Details</ion-label>
           </ion-button>
         </ion-col>
       </ion-row>

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, MenuController } from '@ionic/angular';
+import { ToastController, MenuController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NgForm } from '@angular/forms';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,8 @@ export class LoginPage implements OnInit {
   constructor(private toastController: ToastController,
               private authService: AuthenticationService,
               private statusBar: StatusBar,
-              private menuController: MenuController) { }
+              private menuController: MenuController,
+              private alert: AlertController) { }
 
   imgsrc:any = "/assets/fresco-logo-original---115x75.png";
   errorMsg:string="";
@@ -96,5 +96,16 @@ export class LoginPage implements OnInit {
     });
 
     toast.present();
+  }
+
+  async presentAlert(subHeader, msg) {
+    const alert = await this.alert.create({
+      header: 'Alert',
+      subHeader: subHeader,
+      message: msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
