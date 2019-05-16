@@ -12,6 +12,7 @@ const routes: Routes = [
     },
     loadChildren: "./view-activity-detail/view-activity-detail.module#ViewActivityDetailPageModule" },
   { path: "activities", loadChildren: "./activities/activities.module#ActivitiesPageModule" },
+  { path: 'multiple-numbers', loadChildren: './multiple-numbers/multiple-numbers.module#MultipleNumbersPageModule' },
 ];
 
 @NgModule({

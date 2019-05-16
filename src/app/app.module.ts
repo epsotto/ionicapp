@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from "@ionic/storage";
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CallCommentsPageModule } from './employee/call-comments/call-comments.module';
+import { MultipleNumbersPageModule } from "./employee/multiple-numbers/multiple-numbers.module";
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from "@ionic-native/http/ngx";
@@ -27,7 +28,8 @@ import { Diagnostic } from "@ionic-native/diagnostic/ngx";
     IonicModule.forRoot(), 
     AppRoutingModule, 
     IonicStorageModule.forRoot(), 
-    CallCommentsPageModule, 
+    CallCommentsPageModule,
+    MultipleNumbersPageModule,
     HttpModule,
     HttpClientModule
   ],

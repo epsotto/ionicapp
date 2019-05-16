@@ -5,6 +5,7 @@ import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
+import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
 
 @Component({
   selector: 'app-followup',
@@ -33,63 +34,56 @@ export class FollowupPage implements OnInit {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855","+64272208855","+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855","+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855","+64272208855","+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
     ];
@@ -100,18 +94,20 @@ export class FollowupPage implements OnInit {
   }
 
   DialNumber(clientNumber){
-    this.msg = clientNumber;
-    this.presentToast();
-
-    this.callNumber.callNumber(clientNumber, true)
-    .then(res => {
-      this.msg = "Called " + clientNumber;
-      this.presentToast();
-      this.presentModal();
-    }).catch(err => {
-      this.msg = "Error in dialer " + err;
-      this.presentToast();
-    });
+    if(clientNumber.length > 1) {
+      this.presentMultipleNumbersModal(clientNumber);
+    }
+    else {
+      this.callNumber.callNumber(clientNumber[0], true)
+        .then(res => {
+          this.msg = "Called " + clientNumber[0];
+          this.presentToast();
+          this.presentModal();
+        }).catch(err => {
+          this.msg = "Error in dialer " + err;
+          this.presentToast();
+        });
+    }
   }
 
   async presentModal() {
@@ -121,6 +117,31 @@ export class FollowupPage implements OnInit {
         "oppId": this.selectedOppId,
       }
     });
+    modal.present();
+  }
+
+  async presentMultipleNumbersModal(contactNumbers){
+    const modal = await this.modalController.create({
+      component: MultipleNumbersPage,
+      componentProps: {
+        "contactNumbers": contactNumbers
+      }
+    });
+
+    modal.onDidDismiss().then(res => {
+      if(res.data != "" && typeof(res.data) !== "undefined"){
+        this.callNumber.callNumber(res.data, true)
+        .then(res => {
+          this.msg = "Called " + res.data;
+          this.presentToast();
+          this.presentModal();
+        }).catch(err => {
+          this.msg = "Error in dialer " + err;
+          this.presentToast();
+        });
+      }
+    });
+
     modal.present();
   }
 
@@ -152,21 +173,21 @@ export class FollowupPage implements OnInit {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       },
       {
         OppId: "4192",
         OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
         Client: "John Doe",
-        ContactNumber: "+64272208855",
+        ContactNumber: ["+64272208855"],
         EventAction: "Call: Quote Follow Up"
       }];
       event.target.complete();

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Call which number?</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">CLOSE</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item class="contacts-list" *ngFor="let contact of contactNumbers" (click)="selectContactNumber(contact)" text-center>
+      <ion-label>{{contact}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

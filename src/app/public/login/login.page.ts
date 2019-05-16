@@ -45,8 +45,6 @@ export class LoginPage implements OnInit {
       if(!this.successUserName){
         this.userNameDisplay = myForm.value.username;
         this.authService.getChallengeToken(this.authModel.username).then(res => {
-          this.errorMsg = res.status.toString();
-          this.presentToast();
           if(res.status == 200) {
             this.authModel.token = res.data.token;
             this.successUserName = res.status == 200 ? true : false;

@@ -32,7 +32,7 @@
           <ion-text text-wrap>
             <h2>{{item.OppName}}</h2>
             <p>{{item.Client}}</p>
-            <p>{{item.ContactNumber}}</p>
+            <p *ngFor="let contactNumber of item.ContactNumber">{{contactNumber}}</p>
             <p>{{item.EventAction}}</p>
           </ion-text>
         </ion-label>
