@@ -11,6 +11,7 @@ export class CallCommentsPage implements OnInit {
 
   @Input() oppId:string;
   msg:string;
+  phoneNumbers:string[];
 
   constructor(private navParams: NavParams, private modalController: ModalController,
               private callLog: CallLog, private toastController : ToastController) { }
@@ -22,7 +23,7 @@ export class CallCommentsPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  SubmitComment() {
+  submitComment() {
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
@@ -30,13 +31,21 @@ export class CallCommentsPage implements OnInit {
     });
     
     var date = new Date();
-    var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    var pastThreeDays = new Date(date.getFullYear(), date.getMonth(), date.getDate()-3).getTime();
     let filters:CallLogObject[] = [{"name": "type",
               "value": "2",
-              "operator": "=="}];
+              "operator": "=="},
+            {
+              "name": "date",
+              "value": pastThreeDays.toString(),
+              "operator": ">="
+            }];
     this.callLog.getCallLog(filters).then(data => {
+      for(var i; i < data.length; i++){
+        this.msg = JSON.stringify(data[i]);
+        this.phoneNumbers = this.phoneNumbers.concat(data[i].number);
+      }
       this.msg = JSON.stringify(data);
-      this.presentToast();
     });
   }
 

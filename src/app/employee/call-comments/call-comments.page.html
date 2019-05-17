@@ -1,19 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>call-comments</ion-title>
+    <ion-title>Comments and Reminders</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">CLOSE</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  Modal for {{oppId}}
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Enter comments for {{oppId}}</ion-label>
 
-  <p>Output for call logs:</p>
+      <ion-textarea></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="full" type="button" fill="solid" color="primary" (click)="submitComment()">SUBMIT</ion-button>
+
+  {{phoneNumbers}}
   {{msg}}
-
-  <ion-buttons>
-    <ion-button expand="block" color="primary" fill="solid" (click)="SubmitComment()">SUBMIT</ion-button>
-  </ion-buttons>
 </ion-content>

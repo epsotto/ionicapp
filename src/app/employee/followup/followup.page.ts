@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuController, ToastController, NavController, ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
+import { MenuController, ToastController, NavController, ModalController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
+import { RouterOutlet, Router } from '@angular/router';
 
 @Component({
   selector: 'app-followup',
@@ -17,6 +18,10 @@ export class FollowupPage implements OnInit {
   private msg: string = "";
   private selectedOppId:string = "";
 
+  @ViewChild(IonRouterOutlet) routerOutlets : QueryList<IonRouterOutlet>;
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
+
   constructor(private menuController: MenuController,
               private authService: AuthenticationService,
               private callNumber: CallNumber,
@@ -24,7 +29,11 @@ export class FollowupPage implements OnInit {
               private statusBar: StatusBar,
               private nav: NavController,
               private dataStorage: DataStorageService,
-              private modalController: ModalController) { }
+              private modalController: ModalController,
+              private platform: Platform,
+              private router: Router) { 
+                this.backButtonEvent();
+              }
 
   ngOnInit() {
     this.menuController.enable(true);
@@ -192,5 +201,28 @@ export class FollowupPage implements OnInit {
       }];
       event.target.complete();
     }, 2000);
+  }
+
+  backButtonEvent(){
+    this.platform.backButton.subscribeWithPriority(0, async () => {
+      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        this.msg = "back button pressed.";
+        this.presentToast();
+        if (outlet && outlet.canGoBack()) {
+            outlet.pop();
+
+        } else if (this.router.url === '/home') {
+          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+              // this.platform.exitApp(); // Exit from app
+              navigator['app'].exitApp(); // work in ionic 4
+
+          } else {
+            this.msg = "Press back again to exit App.";
+            this.presentToast();
+            this.lastTimeBackPress = new Date().getTime();
+          }
+        }
+      });
+    });
   }
 }
