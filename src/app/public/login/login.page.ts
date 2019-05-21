@@ -44,16 +44,17 @@ export class LoginPage implements OnInit {
       
       if(!this.successUserName){
         this.userNameDisplay = myForm.value.username;
-        this.authService.getChallengeToken(this.authModel.username).then(res => {
-          if(res.status == 200) {
-            this.authModel.token = res.data.token;
-            this.successUserName = res.status == 200 ? true : false;
-          } 
-          // else if(res.success) {
-          //   this.authModel.token = res.result.token;
-          //   this.successUserName = true;
-          // }
-        });
+        this.successUserName = true;
+        // this.authService.getChallengeToken(this.authModel.username).then(res => {
+        //   if(res.status == 200) {
+        //     this.authModel.token = res.data.token;
+        //     this.successUserName = res.status == 200 ? true : false;
+        //   } 
+        //   // else if(res.success) {
+        //   //   this.authModel.token = res.result.token;
+        //   //   this.successUserName = true;
+        //   // }
+        // });
       }
       else {
         this.authModel.username = this.userNameDisplay;
@@ -63,12 +64,14 @@ export class LoginPage implements OnInit {
         //   console.log(res);
         // });
 
-        this.authService.login();
-        this.authModel = {
+        this.authService.login().then(() => {
+          this.authModel = {
             username: "",
             accessKey: "",
             token: ""
           }
+          this.successUserName = false;
+        });
       }
 
       // if(this.authModel.username !== "test" && this.authModel.accessKey !== "test"){
@@ -83,6 +86,11 @@ export class LoginPage implements OnInit {
         this.errorMsg = "Please fill out your credentials.";
         this.presentToast();
     }
+  }
+
+  resetUserName(){
+    this.authModel.username = "";
+    this.successUserName = false;
   }
 
   async presentToast(){

@@ -14,7 +14,7 @@ export class AppComponent {
   public appPages = [
     {
       title: "Home",
-      url: "/employee/dashboard",
+      url: "/employee/followup",
       icon: "home",
     },
     {
@@ -23,8 +23,8 @@ export class AppComponent {
       icon: "list",
     },
     {
-      title: "My Follow-ups",
-      url: "/employee/followup",
+      title: "Other",
+      url: "/employee/dashboard",
       icon: "today",
     }
   ];
@@ -59,7 +59,7 @@ export class AppComponent {
 
     this.authService.authenticationState.subscribe(state => {
       if(state){
-        this.router.navigate(["employee", "dashboard"]);
+        this.router.navigate(["employee", "followup"]);
       } else {
         this.router.navigate(["login"]);
       }

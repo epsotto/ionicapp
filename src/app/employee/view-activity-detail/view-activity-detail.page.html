@@ -95,10 +95,11 @@
     </ion-row>
   </ion-grid>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="GetLocation()"><ion-icon name="pin"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="pin"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="checkOutFromSite()" *ngIf="checkIn.location!=''" color="success"><ion-icon name="pin"></ion-icon></ion-fab-button>
   </ion-fab>
 
-  {{location}}
+  {{checkIn.location}}
 </ion-content>
 
 <ion-footer transparent no-border>

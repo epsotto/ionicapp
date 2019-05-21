@@ -1,9 +1,12 @@
-.forgotPassword {
+.login-options {
     text-align: center;
+    font-size: 14px;
+    color: var(--ion-color-primary, #3880ff);
+    line-height: 2em;
 }
 
-.forgotPassword a {
-    font-size: 14px;  
+.login-options span:hover {
+    cursor: pointer;
 }
 
 .companyLogoContainer {

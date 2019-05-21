@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Before you leave</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">CLOSE</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Enter comments for {{oppId}}</ion-label>
+    
+          <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="full" type="button" fill="solid" color="primary" (click)="submitComment()">SUBMIT</ion-button>
+</ion-content>

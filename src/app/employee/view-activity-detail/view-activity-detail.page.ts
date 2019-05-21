@@ -3,8 +3,9 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
+import { CheckoutPage } from '../checkout/checkout.page';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -14,8 +15,15 @@ import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 export class ViewActivityDetailPage implements OnInit {
   oppId:any;
   activeTab:string = "firstTab";
-  location:string;
+  checkIn:any = {
+    location: "",
+    time: "",
+  }
   msg:string;
+  checkOut:any = {
+    location: "",
+    time: "",
+  }
 
   geoEncoderOptions: NativeGeocoderOptions = {
     useLocale: true,
@@ -29,7 +37,8 @@ export class ViewActivityDetailPage implements OnInit {
               private geoCoder: NativeGeocoder,
               private toast: ToastController,
               private diagnostic: Diagnostic,
-              private alert: AlertController){}
+              private alert: AlertController,
+              private modal: ModalController){}
   
   ngOnInit(){
     this.oppId = this.route.snapshot.params; //Only needed the params. Data passing is returning undefined.
@@ -39,7 +48,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.activeTab = tab;
   }
 
-  GetLocation(){
+  getLocation(){
     this.diagnostic.isLocationEnabled().then(res => {
       if(res){
         this.geo.getCurrentPosition().then(res => {
@@ -49,7 +58,10 @@ export class ViewActivityDetailPage implements OnInit {
           
           this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
             .then((res: NativeGeocoderResult[]) => {
-              this.location = this.generateAddress(res[0]);
+              this.checkIn = {
+                location: this.generateAddress(res[0]),
+                time: new Date().getTime()
+              }
             });
         });
       }
@@ -57,7 +69,33 @@ export class ViewActivityDetailPage implements OnInit {
         this.presentAlert("Location", "Please turn on Location on your device.");
       }
     });
-    
+    // this.checkIn.location = "here";
+  }
+
+  checkOutFromSite(){
+    this.diagnostic.isLocationEnabled().then(res => {
+      if(res){
+        this.geo.getCurrentPosition().then(res => {
+          let longtitude, latitude;
+          longtitude = res.coords.longitude;
+          latitude = res.coords.latitude;
+          
+          this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
+            .then((res: NativeGeocoderResult[]) => {
+              this.checkOut ={
+                location: this.generateAddress(res[0]),
+                time: new Date().getTime()
+              };
+              this.presentCheckoutModal();
+            });
+        });
+      }
+      else {
+        this.presentAlert("Location", "Please turn on Location on your device.");
+      }
+    });
+
+    // this.presentCheckoutModal();
   }
 
   generateAddress(addressObj){
@@ -94,5 +132,26 @@ export class ViewActivityDetailPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentCheckoutModal(){
+    const modal = await this.modal.create({
+      component: CheckoutPage,
+      componentProps: {
+        "oppId": this.oppId.OppId
+      }
+    });
+
+    modal.onDidDismiss().then(res => {
+      if(res.data != "" && typeof(res.data) !== 'undefined'){
+        this.checkIn = {
+          location: "",
+          time: "",
+        }
+        this.presentAlert("Checked Out", "You have checked out from the client site.");
+      }
+    });
+
+    modal.present();
   }
 }

@@ -34,9 +34,14 @@
             <ion-button color="primary" expand="full" type="submit" *ngIf="successUserName">Login</ion-button>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col class="forgotPassword">
-            <a href="#">Forgot password?</a>
+        <ion-row class="login-options">
+            <ion-col>
+              <span (click)="resetUserName()">Not you?</span>
+            </ion-col>
+          </ion-row>
+        <ion-row class="login-options">
+          <ion-col>
+            <span>Forgot password?</span>
           </ion-col>
         </ion-row>
       </ion-grid>
