@@ -27,7 +27,8 @@
       <ion-item-options side="end">
         <ion-item-option (click)="markDone(item.OppId)">DONE</ion-item-option>
       </ion-item-options>
-      <ion-item>
+      <ion-item button>
+        <ion-ripple-effect></ion-ripple-effect>
         <ion-label (click)="contactSelected($event,item.OppId)">
           <ion-text text-wrap>
             <h2>{{item.OppName}}</h2>
