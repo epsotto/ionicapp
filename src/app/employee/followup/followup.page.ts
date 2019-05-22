@@ -126,6 +126,10 @@ export class FollowupPage implements OnInit {
         "oppId": this.selectedOppId,
       }
     });
+
+    modal.onDidDismiss().then(res => {
+      console.log(res);
+    });
     modal.present();
   }
 

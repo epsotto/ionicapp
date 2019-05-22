@@ -12,7 +12,7 @@
     <ion-item>
       <ion-label position="stacked">Enter comments for {{oppId}}</ion-label>
 
-      <ion-textarea></ion-textarea>
+      <ion-textarea [(ngModel)]="comment" rows="3"></ion-textarea>
     </ion-item>
   </ion-list>
   <ion-button expand="full" type="button" fill="solid" color="primary" (click)="submitComment()">SUBMIT</ion-button>

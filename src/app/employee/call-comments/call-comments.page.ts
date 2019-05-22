@@ -12,6 +12,7 @@ export class CallCommentsPage implements OnInit {
   @Input() oppId:string;
   msg:string;
   phoneNumbers:string[];
+  comment:string="";
 
   constructor(private navParams: NavParams, private modalController: ModalController,
               private callLog: CallLog, private toastController : ToastController) { }
@@ -27,25 +28,26 @@ export class CallCommentsPage implements OnInit {
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
+      } else {
+        var date = new Date();
+        var pastThreeDays = new Date(date.getFullYear(), date.getMonth(), date.getDate()-3).getTime();
+        let filters:CallLogObject[] = [{"name": "type",
+                  "value": "2",
+                  "operator": "=="},
+                {
+                  "name": "date",
+                  "value": pastThreeDays.toString(),
+                  "operator": ">="
+                }];
+        this.callLog.getCallLog(filters).then(data => {
+          for(var i; i < data.length; i++){
+            this.msg = JSON.stringify(data[i]);
+            this.phoneNumbers = this.phoneNumbers.concat(data[i].number);
+          }
+          this.msg = JSON.stringify(data);
+          this.modalController.dismiss(this.comment);
+        });
       }
-    });
-    
-    var date = new Date();
-    var pastThreeDays = new Date(date.getFullYear(), date.getMonth(), date.getDate()-3).getTime();
-    let filters:CallLogObject[] = [{"name": "type",
-              "value": "2",
-              "operator": "=="},
-            {
-              "name": "date",
-              "value": pastThreeDays.toString(),
-              "operator": ">="
-            }];
-    this.callLog.getCallLog(filters).then(data => {
-      for(var i; i < data.length; i++){
-        this.msg = JSON.stringify(data[i]);
-        this.phoneNumbers = this.phoneNumbers.concat(data[i].number);
-      }
-      this.msg = JSON.stringify(data);
     });
   }
 

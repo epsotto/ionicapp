@@ -19,6 +19,8 @@ export class LoginPage implements OnInit {
 
   imgsrc:any = "/assets/fresco-logo-original---115x75.png";
   errorMsg:string="";
+  passwordVisible:boolean = false;
+  passwordTextType:string="password";
 
   successUserName:boolean = false;
   userNameDisplay:string = "";
@@ -113,5 +115,10 @@ export class LoginPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  toggleShowPassowrd(){
+    this.passwordVisible = !this.passwordVisible;
+    this.passwordTextType = this.passwordVisible ? "text" : "password";
   }
 }

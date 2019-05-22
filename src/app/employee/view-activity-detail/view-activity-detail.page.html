@@ -8,92 +8,117 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="activeTab === 'firstTab'">
-    <ion-row>
-      <ion-col size="4">
-          Opportunity Name:
-      </ion-col>
-      <ion-col size="8">Doe | Canopy & Curtains | 49 CBD, Auckland</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Contact Name:
-      </ion-col>
-      <ion-col size="8">John Doe</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Job Inludes:
-      </ion-col>
-      <ion-col size="8">Canopy, Curtains</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Description:
-      </ion-col>
-      <ion-col size="8">Quote for Canopy & Curtains
-        New deck area being built - looking for options to cover garden area
-        Approx 4.5m x 6.5m area
-        Phone contact any time - Mon, Thurs or Friday after 3pm for site visit preferred.</ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-list *ngIf="activeTab === 'firstTab'">
+    <ion-item>
+      <ion-label text-wrap>
+        <ion-text color="primary">
+          Opportunity Name
+        </ion-text>
+          <p class="formValue">Doe | Canopy & Curtains | 49 CBD, Auckland</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Contact Name
+        </ion-text>
+        <p class="formValue">John Doe</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Job Inludes
+        </ion-text>
+        <p class="formValue">Canopy, Curtains</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label text-wrap>
+        <ion-text color="primary">
+          Description
+        </ion-text>
+        <p class="formValue">New deck area being built - looking for options to cover garden area Approx 4.5m x 6.5m area Phone contact any time - Mon, Thurs or Friday after 3pm for site visit preferred.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-  <ion-grid *ngIf="activeTab !== 'firstTab'">
-    <ion-row>
-      <ion-col size="4">
-          Contact Name:
-      </ion-col>
-      <ion-col size="8">John Doe</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Address:
-      </ion-col>
-      <ion-col size="8">49 CBD, Auckland</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Mobile Phone:
-      </ion-col>
-      <ion-col size="8">0212124422</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Home Phone:
-      </ion-col>
-      <ion-col size="8">021231231</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Office Phone:
-      </ion-col>
-      <ion-col size="8">023213213</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Other Phone:
-      </ion-col>
-      <ion-col size="8"></ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Primary Email:
-      </ion-col>
-      <ion-col size="8">john.doe@gmail.com</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Secondary Email:
-      </ion-col>
-      <ion-col size="8">john.doe@gmail.com</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-          Do Not Call:
-      </ion-col>
-      <ion-col size="8">No</ion-col>
-    </ion-row>
-  </ion-grid>
+
+  <ion-list *ngIf="activeTab !== 'firstTab'">
+    <ion-item>
+      <ion-label text-wrap>
+        <ion-text color="primary">
+          Contact Name
+        </ion-text>
+          <p class="formValue">John Doe</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Address
+        </ion-text>
+        <p class="formValue">49 CBD, Auckland</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Mobile Phone
+        </ion-text>
+        <p class="formValue">0212124422</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Home Phone
+        </ion-text>
+        <p class="formValue">021231231</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Office Phone
+        </ion-text>
+        <p class="formValue">023213213</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Other
+        </ion-text>
+        <p class="formValue"></p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Primary Email
+        </ion-text>
+        <p class="formValue">john.doe@gmail.com</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Secondary Email
+        </ion-text>
+        <p class="formValue">john.doe@gmail.com</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-text color="primary">
+          Do not call
+        </ion-text>
+        <p class="formValue">No</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="pin"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="checkOutFromSite()" *ngIf="checkIn.location!=''" color="success"><ion-icon name="pin"></ion-icon></ion-fab-button>

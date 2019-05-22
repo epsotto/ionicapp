@@ -24,7 +24,9 @@
               </ion-item>
               <ion-item *ngIf="successUserName">
                   <ion-label position="fixed">Password<span style="color:red;">*</span></ion-label>
-                  <ion-input type="password" required ngModel name="password"></ion-input>
+                  <ion-input [type]="passwordTextType" required ngModel name="password"></ion-input>
+                  <ion-icon slot="end" name="eye-off" *ngIf="!passwordVisible" (click)="toggleShowPassowrd()"></ion-icon>
+                  <ion-icon slot="end" name="eye" *ngIf="passwordVisible" (click)="toggleShowPassowrd()"></ion-icon>
               </ion-item>
           </ion-col>
         </ion-row>
@@ -34,7 +36,7 @@
             <ion-button color="primary" expand="full" type="submit" *ngIf="successUserName">Login</ion-button>
           </ion-col>
         </ion-row>
-        <ion-row class="login-options">
+        <ion-row class="login-options" *ngIf="successUserName">
             <ion-col>
               <span (click)="resetUserName()">Not you?</span>
             </ion-col>
