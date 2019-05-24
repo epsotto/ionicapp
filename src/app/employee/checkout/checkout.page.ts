@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout',
@@ -9,14 +10,22 @@ import { ModalController } from '@ionic/angular';
 export class CheckoutPage implements OnInit {
   @Input() oppId:string;
   comment:string="";
+  errorMessage:boolean=false;
 
   constructor(private modal: ModalController) { }
 
   ngOnInit() {
   }
 
-  submitComment(){
-    this.modal.dismiss(this.comment);
+  onSubmit(checkoutCommentsForm:NgForm){
+    if(checkoutCommentsForm.valid){
+      this.errorMessage = false;
+      this.modal.dismiss(this.comment);
+    } 
+    else {
+      this.errorMessage = true;
+    }
+    
   }
 
   dismissModal() {

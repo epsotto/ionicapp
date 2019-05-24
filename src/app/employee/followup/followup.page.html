@@ -24,11 +24,12 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let item of followupList">
-      <ion-item-options side="end">
+      <ion-item-options side="start">
         <ion-item-option (click)="markDone(item.OppId)">DONE</ion-item-option>
       </ion-item-options>
       <ion-item button>
         <ion-ripple-effect></ion-ripple-effect>
+        <ion-icon slot="start" name="menu" size="small"></ion-icon>
         <ion-label (click)="contactSelected($event,item.OppId)">
           <ion-text text-wrap>
             <h2>{{item.OppName}}</h2>

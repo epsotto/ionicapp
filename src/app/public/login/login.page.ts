@@ -39,13 +39,13 @@ export class LoginPage implements OnInit {
     this.menuController.enable(false);
   }
 
-  onSubmit(myForm: NgForm) {
-    if(myForm.valid){
-      this.authModel.username = myForm.value.username;
-      this.authModel.accessKey = myForm.value.password;
+  onSubmit(loginForm: NgForm) {
+    if(loginForm.valid){
+      this.authModel.username = loginForm.value.username;
+      this.authModel.accessKey = loginForm.value.password;
       
       if(!this.successUserName){
-        this.userNameDisplay = myForm.value.username;
+        this.userNameDisplay = loginForm.value.username;
         this.successUserName = true;
         // this.authService.getChallengeToken(this.authModel.username).then(res => {
         //   if(res.status == 200) {

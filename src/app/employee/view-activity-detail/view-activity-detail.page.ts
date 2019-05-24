@@ -55,7 +55,6 @@ export class ViewActivityDetailPage implements OnInit {
           let longtitude, latitude;
           longtitude = res.coords.longitude;
           latitude = res.coords.latitude;
-          
           this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
             .then((res: NativeGeocoderResult[]) => {
               this.checkIn = {
@@ -63,6 +62,9 @@ export class ViewActivityDetailPage implements OnInit {
                 time: new Date().getTime()
               }
             });
+        }).catch(err => {
+          this.msg = err;
+          this.presentToast();
         });
       }
       else {
@@ -82,6 +84,10 @@ export class ViewActivityDetailPage implements OnInit {
           
           this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
             .then((res: NativeGeocoderResult[]) => {
+              this.checkIn={
+                location: "",
+                time: "",
+              }
               this.checkOut ={
                 location: this.generateAddress(res[0]),
                 time: new Date().getTime()
