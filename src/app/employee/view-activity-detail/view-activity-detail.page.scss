@@ -18,7 +18,51 @@
     text-align: center;
 }
 
-p.formValue {
+.formValue {
     font-size: 20px;
     line-height: 1.2em;
+    color: var(--ion-color-step-600,#666);
 }
+
+.contactNumberContainer {
+    float: left;
+    margin-top: 10px;
+}
+
+.clientLocation {
+    color: #3880ff;
+    text-decoration: underline;
+}
+
+.clientLocation:hover {
+    cursor: pointer;
+    color: #70a5ff;
+}
+
+.fabItemListCustom {
+    font-size: 20px;
+}
+
+.callNumber {
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+ion-fab-button {
+    margin-left: 140px;
+    overflow: visible;
+    position: relative;
+  }
+
+  ion-fab-list {
+    ion-label {
+      position: relative;
+      top: 40px;
+      right: 25px;
+      color: white;
+      background-color: rgba(0,0,0,0.7);
+      line-height: 24px;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  }

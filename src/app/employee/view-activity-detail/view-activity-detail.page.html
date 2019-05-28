@@ -58,7 +58,7 @@
         <ion-text color="primary">
           Address
         </ion-text>
-        <p class="formValue">49 CBD, Auckland</p>
+        <div class="formValue clientLocation" (click)="openClientAddress()">{{clientAddress}}</div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -66,7 +66,10 @@
         <ion-text color="primary">
           Mobile Phone
         </ion-text>
-        <p class="formValue">0212124422</p>
+        <div class="formValue">
+          <div class="contactNumberContainer">{{this.mobilePhone}}</div>
+          <ion-button class="callNumber" (click)="callNumber(this.mobilePhone)" *ngIf="this.mobilePhone !== ''">CALL</ion-button>
+        </div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -74,7 +77,10 @@
         <ion-text color="primary">
           Home Phone
         </ion-text>
-        <p class="formValue">021231231</p>
+        <div class="formValue">
+          <div class="contactNumberContainer">{{this.homePhone}}</div>
+          <ion-button class="callNumber" (click)="callNumber(this.homePhone)" *ngIf="this.homePhone !== ''">CALL</ion-button>
+        </div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -82,7 +88,10 @@
         <ion-text color="primary">
           Office Phone
         </ion-text>
-        <p class="formValue">023213213</p>
+        <div class="formValue">
+          <div class="contactNumberContainer">{{this.officePhone}}</div>
+          <ion-button class="callNumber" (click)="callNumber(this.officePhone)" *ngIf="this.officePhone !== ''">CALL</ion-button>
+        </div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -90,7 +99,10 @@
         <ion-text color="primary">
           Other
         </ion-text>
-        <p class="formValue"></p>
+        <div class="formValue">
+          <div class="contactNumberContainer">{{this.otherNumber}}</div>
+          <ion-button class="callNumber" (click)="callNumber(this.otherNumber)" *ngIf="this.otherNumber !== ''">CALL</ion-button>
+        </div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -98,7 +110,7 @@
         <ion-text color="primary">
           Primary Email
         </ion-text>
-        <p class="formValue">john.doe@gmail.com</p>
+        <div class="formValue">john.doe@gmail.com</div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -106,7 +118,7 @@
         <ion-text color="primary">
           Secondary Email
         </ion-text>
-        <p class="formValue">john.doe@gmail.com</p>
+        <div class="formValue">john.doe@gmail.com</div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -114,14 +126,30 @@
         <ion-text color="primary">
           Do not call
         </ion-text>
-        <p class="formValue">No</p>
+        <div class="formValue">No</div>
       </ion-label>
     </ion-item>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="pin"></ion-icon></ion-fab-button>
-      <ion-fab-button (click)="checkOutFromSite()" *ngIf="checkIn.location!=''" color="success"><ion-icon name="pin"></ion-icon></ion-fab-button>
+      <!-- <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button> -->
+      <ion-fab-button><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button>
+      
+      <ion-fab-list side="top">
+        <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location === ''" color="light">
+          <ion-icon name="pin" class="fabItemListCustom"></ion-icon>
+        </ion-fab-button>
+        <ion-label *ngIf="checkIn.location === ''">Check-in</ion-label>
+        <ion-fab-button (click)="checkOutFromSite()" *ngIf="checkIn.location !== ''" color="success">
+          <ion-icon name="pin"></ion-icon>
+        </ion-fab-button> 
+        <ion-label *ngIf="checkIn.location !== ''">Check-out</ion-label>
+        <ion-fab-button (click)="callSupportNumber()" color="light">
+          <ion-icon name="call" class="fabItemListCustom"></ion-icon>
+        </ion-fab-button>
+        <ion-label>Call Support</ion-label>
+      </ion-fab-list>
+      <!-- -->
   </ion-fab>
   
 {{checkIn.location}}

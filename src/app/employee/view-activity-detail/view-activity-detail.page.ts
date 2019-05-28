@@ -3,9 +3,10 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController, ModalController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -15,6 +16,8 @@ import { CheckoutPage } from '../checkout/checkout.page';
 export class ViewActivityDetailPage implements OnInit {
   oppId:any;
   activeTab:string = "firstTab";
+  clientAddress:string = "Sky Tower, Victoria St W, Auckland, 1010";
+  clientLocation:string = "";
   checkIn:any = {
     location: "",
     time: "",
@@ -29,6 +32,11 @@ export class ViewActivityDetailPage implements OnInit {
     useLocale: true,
     maxResults: 5
   };
+  
+  mobilePhone:string = "0212124422";
+  homePhone:string = "021231231";
+  officePhone:string = "023213213";
+  otherNumber:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -38,7 +46,8 @@ export class ViewActivityDetailPage implements OnInit {
               private toast: ToastController,
               private diagnostic: Diagnostic,
               private alert: AlertController,
-              private modal: ModalController){}
+              private modal: ModalController,
+              private loadingController: LoadingController){}
   
   ngOnInit(){
     this.oppId = this.route.snapshot.params; //Only needed the params. Data passing is returning undefined.
@@ -46,6 +55,14 @@ export class ViewActivityDetailPage implements OnInit {
 
   changeTabs(tab){
     this.activeTab = tab;
+  }
+
+  openClientAddress(){
+    if(this.clientAddress != ""){
+      let label = encodeURI(this.clientAddress);
+          label = label.replace(",","%2C");
+          window.open("https://www.google.com/maps/search/?api=1&query="+ label);
+    }
   }
 
   getLocation(){
@@ -75,6 +92,7 @@ export class ViewActivityDetailPage implements OnInit {
   }
 
   checkOutFromSite(){
+    this.showLoader();
     this.diagnostic.isLocationEnabled().then(res => {
       if(res){
         this.geo.getCurrentPosition().then(res => {
@@ -84,6 +102,7 @@ export class ViewActivityDetailPage implements OnInit {
           
           this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
             .then((res: NativeGeocoderResult[]) => {
+              this.loadingController.dismiss();
               this.checkIn={
                 location: "",
                 time: "",
@@ -102,6 +121,20 @@ export class ViewActivityDetailPage implements OnInit {
     });
 
     // this.presentCheckoutModal();
+  }
+  
+  callSupportNumber(){
+    
+  }
+
+  callNumber(number){
+    console.log(number);
+  }
+
+  showLoader(){
+    const loader = this.loadingController.create({
+      message: "Loading..."
+    }).then(res => {res.present()});
   }
 
   generateAddress(addressObj){
@@ -154,7 +187,7 @@ export class ViewActivityDetailPage implements OnInit {
           location: "",
           time: "",
         }
-        this.presentAlert("Checked Out", "You have checked out from the client site.");
+        this.presentAlert("Checked Out", "You have checked out from the client site at "+ moment(new Date()).format("LLL") +".");
       }
     });
 

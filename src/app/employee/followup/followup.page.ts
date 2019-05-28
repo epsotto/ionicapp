@@ -14,7 +14,7 @@ import { RouterOutlet, Router } from '@angular/router';
   styleUrls: ['./followup.page.scss'],
 })
 export class FollowupPage implements OnInit {
-  private followupList = [];
+  public followupList = [];
   private msg: string = "";
   private selectedOppId:string = "";
 

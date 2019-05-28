@@ -8,15 +8,16 @@
 </ion-header>
 
 <ion-content padding>
-  <form #checkoutCommentsForm="ngForm" (ngSubmit)="onSubmit(checkoutCommentsForm)">
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Enter comments for {{oppId}}</ion-label>
-  
-        <ion-textarea ngModel name="comment" rows="4" required></ion-textarea>
-        <ion-text *ngIf="errorMessage" color="danger">Comment field is required.</ion-text>
-      </ion-item>
-    </ion-list>
-    <ion-button color="primary" expand="full" type="submit">SUBMIT</ion-button>
-  </form>
+  <ion-list>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="markDone" checked="false" slot="start" color="primary"></ion-checkbox>
+      <ion-label>Mark meeting as held?</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Enter comments for {{oppId}}</ion-label>
+
+      <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button color="primary" expand="full" type="button" (click)="onSubmit()">SUBMIT</ion-button>
 </ion-content>

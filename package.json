@@ -44,9 +44,11 @@
     "eslint": "^5.16.0",
     "ionic": "^4.12.0",
     "js-yaml": "^3.13.1",
+    "moment": "^2.24.0",
     "rxjs": "~6.5.1",
     "ts-md5": "^1.2.4",
     "tslib": "^1.9.0",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "5.0.4",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
