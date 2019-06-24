@@ -15,10 +15,11 @@ export class FollowupService {
 
   getFollowupList(userId:string ,sessionkey:string){
     const dateToday = moment().format("YYYY-MM-DD");
-    const query = "SELECT * FROM Events WHERE cf_985 LIKE '%Follow Up' AND eventstatus != 'Held' " + 
-    "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND assigned_user_id = '19x" + userId +"';";
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT * FROM Events WHERE eventstatus != 'Held' " + 
+    // "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' AND assigned_user_id = '19x" + userId +"';";
+    "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' LIMIT 20;"; //AND assigned_user_id = '19x" + userId +"' LIMIT 20;";
     const sessionName = sessionkey;
-    console.log("sessionName: " + sessionName);
 
     var queryParams = {
       "operation": "query",

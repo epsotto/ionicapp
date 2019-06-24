@@ -60,72 +60,13 @@ export class FollowupPage implements OnInit {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
     this.pullFollowupList();
-    // this.followupList = [
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855","+64272208855","+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855","+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855","+64272208855","+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    // ];
-    // this.isLoading = false;
   }
 
   pullFollowupList() {
+    this.isLoading = true;
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
         this.followup.getFollowupList(res.userId, res.sessionName).then((res) => {
-          console.log(res.data);
           let data = JSON.parse(res.data);
           if(!data.success){
             if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
@@ -138,16 +79,11 @@ export class FollowupPage implements OnInit {
             }
           } else {
             this.retry = 3;
-            console.log(data);
             
             for(var i = 0; i < data.result.length; i++){
               let singleRecord = {
                 OppId: data.result[i].id.substring(data.result[i].id.indexOf("x")+1, data.result[i].id.length),
-                OppName: data.result[i].subject,
-                Client: data.result[i].subject.indexOf("|") > -1 ? data.result[i].subject.substring(0, data.result[i].subject.indexOf("|")-1) : 
-                data.result[i].subject.substring(0, data.result[i].subject.indexOf(" -")),
-                ContactNumber: ["123456"],
-                EventAction: data.result[i].cf_985
+                OppName: data.result[i].subject
               }
     
               this.followupList = this.followupList.concat(singleRecord);
@@ -242,34 +178,14 @@ export class FollowupPage implements OnInit {
     this.presentModal();
   }
 
-  async doRefresh(event) {
-    // setTimeout(() => {
-    //   this.followupList = [{
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   },
-    //   {
-    //     OppId: "4192",
-    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-    //     Client: "John Doe",
-    //     ContactNumber: ["+64272208855"],
-    //     EventAction: "Call: Quote Follow Up"
-    //   }];
-    //   event.target.complete();
-    // }, 2000);
+  doRefresh(event) {
     this.followupList = [];
-    let triggerRefresh = await this.pullFollowupList();
+    this.pullFollowupList();
+    event.target.disabled = true;
     event.target.complete();
+    setTimeout(() => {
+      event.target.disabled = false;
+    }, 100);
   }
 
   // backButtonEvent(){

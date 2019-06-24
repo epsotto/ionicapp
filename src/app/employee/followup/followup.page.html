@@ -35,14 +35,11 @@
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon slot="start" name="menu" size="small"></ion-icon>
         <ion-label (click)="contactSelected($event,item.OppId)">
-          <ion-text text-wrap>
+          <ion-text text-wrap class="contentText">
             <h2>{{item.OppName}}</h2>
-            <p>{{item.Client}}</p>
-            <p *ngFor="let contactNumber of item.ContactNumber">{{contactNumber}}</p>
-            <p>{{item.EventAction}}</p>
           </ion-text>
         </ion-label>
-        <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactNumber)">
+        <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.OppId)">
           <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
         </ion-button>
       </ion-item>
