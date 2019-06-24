@@ -8,6 +8,24 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size=12>
+        <ion-buttons>
+          <ion-button class="locationButtons" (click)="getLocation()" fill="solid" [disabled]="checkIn.location !== ''" color="success">
+            <ion-icon name="pin" class="fabItemListCustom"></ion-icon>
+            <ion-label>Check-in</ion-label>
+          </ion-button>
+
+          <ion-button class="locationButtons" (click)="checkOutFromSite()" fill="solid" [disabled]="checkIn.location === ''" color="danger">
+            <ion-icon name="pin"></ion-icon>
+            <ion-label>Check-out</ion-label>
+          </ion-button> 
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-list *ngIf="activeTab === 'firstTab'">
     <ion-item>
       <ion-label text-wrap>
@@ -144,14 +162,6 @@
       <ion-fab-button><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button>
       
       <ion-fab-list side="top">
-        <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location === ''" color="light">
-          <ion-icon name="pin" class="fabItemListCustom"></ion-icon>
-        </ion-fab-button>
-        <ion-label *ngIf="checkIn.location === ''">Check-in</ion-label>
-        <ion-fab-button (click)="checkOutFromSite()" *ngIf="checkIn.location !== ''" color="success">
-          <ion-icon name="pin"></ion-icon>
-        </ion-fab-button> 
-        <ion-label *ngIf="checkIn.location !== ''">Check-out</ion-label>
         <ion-fab-button (click)="callSupportNumber()" color="light">
           <ion-icon name="call" class="fabItemListCustom"></ion-icon>
         </ion-fab-button>
