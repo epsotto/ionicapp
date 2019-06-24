@@ -17,10 +17,11 @@ export class LoginPage implements OnInit {
               private menuController: MenuController,
               private alert: AlertController) { }
 
-  imgsrc:any = "/assets/fresco-logo-original---115x75.png";
-  errorMsg:string="";
-  passwordVisible:boolean = false;
-  passwordTextType:string="password";
+  private imgsrc:any = "/assets/fresco-logo-original---115x75.png";
+  private errorMsg:string="";
+  private passwordVisible:boolean = false;
+  private passwordTextType:string="password";
+  private userAccess:string = "";
 
   successUserName:boolean = false;
   userNameDisplay:string = "";
@@ -47,43 +48,41 @@ export class LoginPage implements OnInit {
       if(!this.successUserName){
         this.userNameDisplay = loginForm.value.username;
         this.successUserName = true;
-        // this.authService.getChallengeToken(this.authModel.username).then(res => {
-        //   if(res.status == 200) {
-        //     this.authModel.token = res.data.token;
-        //     this.successUserName = res.status == 200 ? true : false;
-        //   } 
-        //   // else if(res.success) {
-        //   //   this.authModel.token = res.result.token;
-        //   //   this.successUserName = true;
-        //   // }
-        // });
+        this.authService.getChallengeToken(this.authModel.username).then(res => {
+          if(res.status) {
+            let data = JSON.parse(res.data);
+            this.authModel.token = data.result.token;
+            this.successUserName = res.status == 200 ? true : false;
+          } 
+        });
       }
       else {
         this.authModel.username = this.userNameDisplay;
-        // this.authService.userLogin(this.authModel).then(res => {
-        //   this.errorMsg = res.data.sessionId + " : " + res.data.userId;
-        //   this.presentToast();
-        //   console.log(res);
-        // });
-
-        this.authService.login().then(() => {
-          this.authModel = {
-            username: "",
-            accessKey: "",
-            token: ""
+        this.userAccess = this.authModel.accessKey;
+        this.authService.userLogin(this.authModel).then(res => {
+          let data = JSON.parse(res.data);
+          if(data.success){
+            console.log(res);
+            this.authService.loginSet(data.result.sessionName, data.result.userId, this.userAccess).then(() => {
+              this.authModel = {
+                    username: "",
+                    accessKey: "",
+                    token: ""
+                  }
+              this.successUserName = false;
+            });
           }
-          this.successUserName = false;
         });
+
+        // this.authService.loginSet("login","1","").then(() => {
+        //   this.authModel = {
+        //     username: "",
+        //     accessKey: "",
+        //     token: ""
+        //   }
+        //   this.successUserName = false;
+        // });
       }
-
-      // if(this.authModel.username !== "test" && this.authModel.accessKey !== "test"){
-      //   this.errorMsg = "Invalid Username or Password.";
-      //   this.presentToast();
-      // } else {
-      
-
-        // this.authService.login();
-      // }
     } else {
         this.errorMsg = "Please fill out your credentials.";
         this.presentToast();

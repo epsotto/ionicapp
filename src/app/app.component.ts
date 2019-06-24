@@ -122,6 +122,7 @@ export class AppComponent {
       }
 
       this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        debugger;
         if (outlet && outlet.canGoBack()) {
             outlet.pop();
 

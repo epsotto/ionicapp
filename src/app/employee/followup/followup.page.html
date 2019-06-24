@@ -22,7 +22,11 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div class="loaderContainer">
+    <ion-spinner color="dark" name="circles" *ngIf="isLoading"></ion-spinner>
+  </div>
+  
+  <ion-list *ngIf="!isLoading">
     <ion-item-sliding *ngFor="let item of followupList">
       <ion-item-options side="start">
         <ion-item-option (click)="markDone(item.OppId)">DONE</ion-item-option>

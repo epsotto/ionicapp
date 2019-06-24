@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController, ToastController, NavController, ModalController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CallNumber } from "@ionic-native/call-number/ngx";
@@ -7,6 +7,11 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
 import { RouterOutlet, Router } from '@angular/router';
+import { FollowupService } from 'src/app/services/followup.service';
+import { Storage } from '@ionic/storage'
+import { async } from 'q';
+
+const TOKEN_KEY = 'auth-token';
 
 @Component({
   selector: 'app-followup',
@@ -17,8 +22,10 @@ export class FollowupPage implements OnInit {
   public followupList = [];
   private msg: string = "";
   private selectedOppId:string = "";
+  private retry:number = 3;
+  isLoading:boolean = true;
 
-  @ViewChild(IonRouterOutlet) routerOutlets : QueryList<IonRouterOutlet>;
+  @ViewChild(IonRouterOutlet) routerOutlet : IonRouterOutlet;
   lastTimeBackPress = 0;
   timePeriodToExit = 2000;
 
@@ -31,71 +38,126 @@ export class FollowupPage implements OnInit {
               private dataStorage: DataStorageService,
               private modalController: ModalController,
               private platform: Platform,
-              private router: Router) { 
-                this.backButtonEvent();
+              private router: Router,
+              private followup: FollowupService,
+              private storage: Storage) { 
+                // this.backButtonEvent();
+                // this.platform.backButton.subscribeWithPriority(0, () => {
+                //   if (this.routerOutlet && this.routerOutlet.canGoBack()) {
+                //     this.routerOutlet.pop();
+                //   } else if (this.router.url === '/LoginPage') {
+                    
+              
+                //     // or if that doesn't work, try
+                //     navigator['app'].exitApp();
+                //   } else {
+                //     //this.generic.showAlert("Exit", "Do you want to exit the app?", this.onYesHandler, this.onNoHandler, "backPress");
+                //   }
+                // });
               }
 
   ngOnInit() {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
-    this.followupList = [
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855","+64272208855","+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855","+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855","+64272208855","+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-    ];
+    this.pullFollowupList();
+    // this.followupList = [
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855","+64272208855","+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855","+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855","+64272208855","+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    // ];
+    // this.isLoading = false;
+  }
+
+  pullFollowupList() {
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.followup.getFollowupList(res.userId, res.sessionName).then((res) => {
+          console.log(res.data);
+          let data = JSON.parse(res.data);
+          if(!data.success){
+            if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
+              this.pullFollowupList();
+            }
+            else if(this.retry == 0){
+              this.retry = 3;
+              this.msg = "Error fetching data. Please refresh page.";
+              this.presentToast();
+            }
+          } else {
+            this.retry = 3;
+            console.log(data);
+            
+            for(var i = 0; i < data.result.length; i++){
+              let singleRecord = {
+                OppId: data.result[i].id.substring(data.result[i].id.indexOf("x")+1, data.result[i].id.length),
+                OppName: data.result[i].subject,
+                Client: data.result[i].subject.indexOf("|") > -1 ? data.result[i].subject.substring(0, data.result[i].subject.indexOf("|")-1) : 
+                data.result[i].subject.substring(0, data.result[i].subject.indexOf(" -")),
+                ContactNumber: ["123456"],
+                EventAction: data.result[i].cf_985
+              }
+    
+              this.followupList = this.followupList.concat(singleRecord);
+            }
+          }
+
+          this.isLoading = false;
+        });
+      }
+    });
   }
 
   logout(){
@@ -180,53 +242,56 @@ export class FollowupPage implements OnInit {
     this.presentModal();
   }
 
-  doRefresh(event) {
-    setTimeout(() => {
-      this.followupList = [{
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      },
-      {
-        OppId: "4192",
-        OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
-        Client: "John Doe",
-        ContactNumber: ["+64272208855"],
-        EventAction: "Call: Quote Follow Up"
-      }];
-      event.target.complete();
-    }, 2000);
+  async doRefresh(event) {
+    // setTimeout(() => {
+    //   this.followupList = [{
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   },
+    //   {
+    //     OppId: "4192",
+    //     OppName: "John | Canopy | Flat 62, 26 James Street, Glenfield",
+    //     Client: "John Doe",
+    //     ContactNumber: ["+64272208855"],
+    //     EventAction: "Call: Quote Follow Up"
+    //   }];
+    //   event.target.complete();
+    // }, 2000);
+    this.followupList = [];
+    let triggerRefresh = await this.pullFollowupList();
+    event.target.complete();
   }
 
-  backButtonEvent(){
-    this.platform.backButton.subscribeWithPriority(0, async () => {
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        this.msg = "back button pressed.";
-        this.presentToast();
-        if (outlet && outlet.canGoBack()) {
-            outlet.pop();
+  // backButtonEvent(){
+  //   this.platform.backButton.subscribeWithPriority(0, async () => {
+  //     this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+  //       this.msg = "back button pressed.";
+  //       this.presentToast();
+  //       if (outlet && outlet.canGoBack()) {
+  //           outlet.pop();
 
-        } else if (this.router.url === '/home') {
-          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
-              // this.platform.exitApp(); // Exit from app
-              navigator['app'].exitApp(); // work in ionic 4
+  //       } else if (this.router.url === '/home') {
+  //         if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+  //             // this.platform.exitApp(); // Exit from app
+  //             navigator['app'].exitApp(); // work in ionic 4
 
-          } else {
-            this.msg = "Press back again to exit App.";
-            this.presentToast();
-            this.lastTimeBackPress = new Date().getTime();
-          }
-        }
-      });
-    });
-  }
+  //         } else {
+  //           this.msg = "Press back again to exit App.";
+  //           this.presentToast();
+  //           this.lastTimeBackPress = new Date().getTime();
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
 }
