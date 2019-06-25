@@ -34,7 +34,7 @@
       <ion-item button>
         <ion-ripple-effect></ion-ripple-effect>
         <ion-icon slot="start" name="menu" size="small"></ion-icon>
-        <ion-label (click)="contactSelected($event,item.OppId)">
+        <ion-label (click)="contactSelected($event,item.OppId, item.ContactId)">
           <ion-text text-wrap class="contentText">
             <h2>{{item.OppName}}</h2>
           </ion-text>

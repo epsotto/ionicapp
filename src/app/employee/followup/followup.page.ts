@@ -9,7 +9,6 @@ import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
 import { RouterOutlet, Router } from '@angular/router';
 import { FollowupService } from 'src/app/services/followup.service';
 import { Storage } from '@ionic/storage'
-import { async } from 'q';
 
 const TOKEN_KEY = 'auth-token';
 
@@ -39,7 +38,7 @@ export class FollowupPage implements OnInit {
               private modalController: ModalController,
               private platform: Platform,
               private router: Router,
-              private followup: FollowupService,
+              private followupService: FollowupService,
               private storage: Storage) { 
                 // this.backButtonEvent();
                 // this.platform.backButton.subscribeWithPriority(0, () => {
@@ -66,7 +65,7 @@ export class FollowupPage implements OnInit {
     this.isLoading = true;
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.followup.getFollowupList(res.userId, res.sessionName).then((res) => {
+        this.followupService.getFollowupList(res.userId, res.sessionName).then((res) => {
           let data = JSON.parse(res.data);
           if(!data.success){
             if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
@@ -82,7 +81,7 @@ export class FollowupPage implements OnInit {
             
             for(var i = 0; i < data.result.length; i++){
               let singleRecord = {
-                OppId: data.result[i].id.substring(data.result[i].id.indexOf("x")+1, data.result[i].id.length),
+                OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id
               }
@@ -91,7 +90,6 @@ export class FollowupPage implements OnInit {
             }
           }
 
-          console.log(data);
           this.isLoading = false;
         });
       }
@@ -102,11 +100,11 @@ export class FollowupPage implements OnInit {
     this.authService.logout();
   }
 
-  DialNumber(oppId){
-    if(oppId){
+  DialNumber(contactId:string){
+    if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
-          this.followup.getClientDetails(oppId, res.sessionName).then((res) => {
+          this.followupService.getClientDetails(contactId, res.sessionName).then((res) => {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
@@ -194,9 +192,13 @@ export class FollowupPage implements OnInit {
     toast.present();
   }
 
-  contactSelected(event, OppId){
+  contactSelected(event, OppId, ContactId){
     event.preventDefault();
-    this.dataStorage.setData("OppId", OppId);
+    const dataIds = {
+      OppId: OppId,
+      ContactId: ContactId
+    }
+    this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 

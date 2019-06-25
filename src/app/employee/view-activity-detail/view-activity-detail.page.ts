@@ -7,6 +7,7 @@ import { ToastController, AlertController, ModalController, LoadingController } 
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
 import * as moment from "moment";
+import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -14,10 +15,9 @@ import * as moment from "moment";
   styleUrls: ['./view-activity-detail.page.scss'],
 })
 export class ViewActivityDetailPage implements OnInit {
-  oppId:any;
+  oppId:string;
+  private dataIds:any;
   activeTab:string = "firstTab";
-  clientAddress:string = "Sky Tower, Victoria St W, Auckland, 1010";
-  clientLocation:string = "";
   checkIn:any = {
     location: "",
     time: "",
@@ -33,10 +33,22 @@ export class ViewActivityDetailPage implements OnInit {
     maxResults: 5
   };
   
-  mobilePhone:string = "0212124422";
-  homePhone:string = "021231231";
-  officePhone:string = "023213213";
+  contactName:string = "";
+  clientAddress:string = "";
+  mobilePhone:string = "";
+  homePhone:string = "";
+  officePhone:string = "";
   otherNumber:string = "";
+  primaryEmail:string = "";
+  secondaryEmail:string = "";
+  doNotCallFlag:string = "";
+
+  potentialNumber:string = "";
+  opportunityName:string = "";
+  oppDescription:string = "";
+  jobInclusion:string = "";
+  nextSteps:string = "";
+  driveFolder:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -47,10 +59,58 @@ export class ViewActivityDetailPage implements OnInit {
               private diagnostic: Diagnostic,
               private alert: AlertController,
               private modal: ModalController,
-              private loadingController: LoadingController){}
+              private loadingController: LoadingController,
+              private viewActivityDetailService: ViewActivityDetailService){}
   
   ngOnInit(){
-    this.oppId = this.route.snapshot.params; //Only needed the params. Data passing is returning undefined.
+    this.oppId = this.route.snapshot.params.OppId; //Only needed the params. Data passing is returning undefined.
+    this.dataIds = this.dataStorage.getData("dataIds");
+    this.getOpportunityDetails(this.oppId);
+    this.getClientDetails(this.dataIds.ContactId);
+  }
+
+  getOpportunityDetails(oppId:string){
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.viewActivityDetailService.getOppDetailData(res.sessionName, oppId).then((res) => {
+          const data = JSON.parse(res.data);
+          
+          if(data.success){
+            this.potentialNumber = data.result[0].potentail_no;
+            this.opportunityName = data.result[0].potentialname;
+            this.oppDescription = data.result[0].description;
+            this.jobInclusion = data.result[0].cf_800;
+            this.nextSteps = data.result[0].nextstep;
+            this.driveFolder = "https://drive.google.com/drive/folders/" + data.result[0].cf_751;
+          }
+        })
+      }
+    });
+  }
+
+  getClientDetails(contactId:string){
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.viewActivityDetailService.getClientDetailData(res.sessionName, contactId).then((res) => {
+          const data = JSON.parse(res.data);
+          if(data.success){
+            this.contactName = data.result[0].lastname + ", " + data.result[0].firstname;
+            this.clientAddress = data.result[0].mailingstreet  + ", " + 
+                                data.result[0].mailingcity + ", " + 
+                                data.result[0].mailingstate + ", " + 
+                                data.result[0].mailingcountry + ", " +
+                                data.result[0].mailingzip;
+            this.mobilePhone = data.result[0].mobile;
+            this.homePhone = data.result[0].homephone;
+            this.officePhone = data.result[0].phone;
+            this.otherNumber = data.result[0].otherphone;
+            this.primaryEmail = data.result[0].email;
+            this.secondaryEmail = data.result[0].secondaryemail;
+            this.doNotCallFlag = data.result[0].donotcall === "0" ? "No" : "Yes";
+          }
+        });
+      }
+    });
   }
 
   changeTabs(tab){
@@ -177,7 +237,7 @@ export class ViewActivityDetailPage implements OnInit {
     const modal = await this.modal.create({
       component: CheckoutPage,
       componentProps: {
-        "oppId": this.oppId.OppId
+        "oppId": this.oppId
       }
     });
 

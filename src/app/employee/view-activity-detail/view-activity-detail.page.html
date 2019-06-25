@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
         <ion-back-button icon="arrow-back" defaultHref="/employee/followup"></ion-back-button>
     </ion-buttons>
-    <ion-title>Opportunity {{oppId.OppId}}</ion-title>
+    <ion-title>Opportunity {{potentialNumber}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -32,7 +32,7 @@
         <ion-text color="primary">
           Opportunity Name
         </ion-text>
-          <p class="formValue">Doe | Canopy & Curtains | 49 CBD, Auckland</p>
+          <p class="formValue">{{opportunityName}}</p>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -40,31 +40,39 @@
         <ion-text color="primary">
           Contact Name
         </ion-text>
-        <p class="formValue">John Doe</p>
+        <p class="formValue">{{contactName}}</p>
       </ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>
-        <ion-text color="primary">
-          Job Inludes
-        </ion-text>
-        <p class="formValue">Canopy, Curtains</p>
-      </ion-label>
-    </ion-item>
+        <ion-label>
+          <ion-text color="primary">
+            Job Includes
+          </ion-text>
+          <p class="formValue">{{jobInclusion}}</p>
+        </ion-label>
+      </ion-item>
     <ion-item>
       <ion-label text-wrap>
         <ion-text color="primary">
           Description
         </ion-text>
-        <p class="formValue">New deck area being built - looking for options to cover garden area Approx 4.5m x 6.5m area Phone contact any time - Mon, Thurs or Friday after 3pm for site visit preferred.</p>
+        <p class="formValue">{{oppDescription}}</p>
       </ion-label>
     </ion-item>
+    <ion-item>
+        <ion-label>
+          <ion-text color="primary">
+            Next Steps
+          </ion-text>
+          <p class="formValue">{{nextSteps}}</p>
+        </ion-label>
+      </ion-item>
     <ion-item>
         <ion-label text-wrap>
           <ion-text color="primary">
             Team Drive folder directory
           </ion-text>
-          <p class="formValue"><a href="https://drive.google.com" target="_blank">drive.google.com</a></p>
+          <p class="formValue"><a href="{{driveFolder}}" target="_blank">{{driveFolder}}</a></p>
         </ion-label>
       </ion-item>
   </ion-list>
@@ -76,7 +84,7 @@
         <ion-text color="primary">
           Contact Name
         </ion-text>
-          <p class="formValue">John Doe</p>
+          <p class="formValue">{{contactName}}</p>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -136,7 +144,7 @@
         <ion-text color="primary">
           Primary Email
         </ion-text>
-        <div class="formValue">john.doe@gmail.com</div>
+        <div class="formValue">{{primaryEmail}}</div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -144,7 +152,7 @@
         <ion-text color="primary">
           Secondary Email
         </ion-text>
-        <div class="formValue">john.doe@gmail.com</div>
+        <div class="formValue">{{secondaryEmail}}</div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -152,7 +160,7 @@
         <ion-text color="primary">
           Do not call
         </ion-text>
-        <div class="formValue">No</div>
+        <div class="formValue">{{doNotCallFlag}}</div>
       </ion-label>
     </ion-item>
   </ion-list>
