@@ -83,13 +83,15 @@ export class FollowupPage implements OnInit {
             for(var i = 0; i < data.result.length; i++){
               let singleRecord = {
                 OppId: data.result[i].id.substring(data.result[i].id.indexOf("x")+1, data.result[i].id.length),
-                OppName: data.result[i].subject
+                OppName: data.result[i].subject,
+                ContactId: data.result[i].contact_id
               }
     
               this.followupList = this.followupList.concat(singleRecord);
             }
           }
 
+          console.log(data);
           this.isLoading = false;
         });
       }
@@ -100,20 +102,45 @@ export class FollowupPage implements OnInit {
     this.authService.logout();
   }
 
-  DialNumber(clientNumber){
-    if(clientNumber.length > 1) {
-      this.presentMultipleNumbersModal(clientNumber);
-    }
-    else {
-      this.callNumber.callNumber(clientNumber[0], true)
-        .then(res => {
-          this.msg = "Called " + clientNumber[0];
-          this.presentToast();
-          this.presentModal();
-        }).catch(err => {
-          this.msg = "Error in dialer " + err;
-          this.presentToast();
-        });
+  DialNumber(oppId){
+    if(oppId){
+      this.dataStorage.retrieveCachedData().then((res) => {
+        if(res != null){
+          this.followup.getClientDetails(oppId, res.sessionName).then((res) => {
+            let phone = [];
+            let data = JSON.parse(res.data);
+            if(data.success){
+              if(data.result[0].homephone !== "") {
+                phone = phone.concat(data.result[0].homephone);
+              }
+              if(data.result[0].mobile !== "") {
+                phone = phone.concat(data.result[0].mobile);
+              }
+              if(data.result[0].otherphone !== "") {
+                phone = phone.concat(data.result[0].otherphone);
+              }
+              if(data.result[0].phone !== "") {
+                phone = phone.concat(data.result[0].phone);
+              }
+
+              if(phone.length > 1) {
+                  this.presentMultipleNumbersModal(phone);
+                }
+                else {
+                  this.callNumber.callNumber(phone[0], true)
+                    .then(res => {
+                      this.msg = "Called " + phone[0];
+                      this.presentToast();
+                      this.presentModal();
+                    }).catch(err => {
+                      this.msg = "Error in dialer " + err;
+                      this.presentToast();
+                    });
+                }
+            }
+          });
+        }
+      });
     }
   }
 

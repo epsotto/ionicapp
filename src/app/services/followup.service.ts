@@ -29,4 +29,16 @@ export class FollowupService {
 
     return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
   }
+
+  getClientDetails(contactId:number, sessionName:string){
+    const query = "SELECT * FROM Contacts WHERE id = '" + contactId + "';" //WHERE id = '12x" + contactId + "'
+
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
 }
