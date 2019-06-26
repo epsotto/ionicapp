@@ -102,7 +102,7 @@
         </ion-text>
         <div class="formValue">
           <div class="contactNumberContainer">{{this.mobilePhone}}</div>
-          <ion-button class="callNumber" (click)="callNumber(this.mobilePhone)" *ngIf="this.mobilePhone !== ''">CALL</ion-button>
+          <ion-button class="callNumber" (click)="callClientNumber(this.mobilePhone)" *ngIf="this.mobilePhone !== ''">CALL</ion-button>
         </div>
       </ion-label>
     </ion-item>
@@ -113,7 +113,7 @@
         </ion-text>
         <div class="formValue">
           <div class="contactNumberContainer">{{this.homePhone}}</div>
-          <ion-button class="callNumber" (click)="callNumber(this.homePhone)" *ngIf="this.homePhone !== ''">CALL</ion-button>
+          <ion-button class="callNumber" (click)="callClientNumber(this.homePhone)" *ngIf="this.homePhone !== ''">CALL</ion-button>
         </div>
       </ion-label>
     </ion-item>
@@ -124,7 +124,7 @@
         </ion-text>
         <div class="formValue">
           <div class="contactNumberContainer">{{this.officePhone}}</div>
-          <ion-button class="callNumber" (click)="callNumber(this.officePhone)" *ngIf="this.officePhone !== ''">CALL</ion-button>
+          <ion-button class="callNumber" (click)="callClientNumber(this.officePhone)" *ngIf="this.officePhone !== ''">CALL</ion-button>
         </div>
       </ion-label>
     </ion-item>
@@ -135,7 +135,7 @@
         </ion-text>
         <div class="formValue">
           <div class="contactNumberContainer">{{this.otherNumber}}</div>
-          <ion-button class="callNumber" (click)="callNumber(this.otherNumber)" *ngIf="this.otherNumber !== ''">CALL</ion-button>
+          <ion-button class="callNumber" (click)="callClientNumber(this.otherNumber)" *ngIf="this.otherNumber !== ''">CALL</ion-button>
         </div>
       </ion-label>
     </ion-item>

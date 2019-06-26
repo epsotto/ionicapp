@@ -48,7 +48,6 @@ export class AppComponent {
     private toastController: ToastController
   ) {
     this.initializeApp();
-    this.backButtonEvent();
   }
 
   initializeApp() {
@@ -74,69 +73,7 @@ export class AppComponent {
     toast.present();
   }
 
-  backButtonEvent() {
-    this.platform.backButton.subscribeWithPriority(0, async () => {
-      // close action sheet
-      try {
-          const element = await this.actionSheetController.getTop();
-          if (element) {
-              element.dismiss();
-              return;
-          }
-      } catch (error) {
-      }
-
-      // close popover
-      try {
-          const element = await this.popoverController.getTop();
-          if (element) {
-              element.dismiss();
-              return;
-          }
-      } catch (error) {
-      }
-
-      // close modal
-      try {
-          const element = await this.modalController.getTop();
-          if (element) {
-              element.dismiss();
-              return;
-          }
-      } catch (error) {
-          console.log(error);
-
-      }
-
-      // close side menua
-      try {
-          const element = await this.menuController.getOpen();
-          if (element !== null) {
-              this.menuController.close();
-              return;
-
-          }
-
-      } catch (error) {
-
-      }
-
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        debugger;
-        if (outlet && outlet.canGoBack()) {
-            outlet.pop();
-
-        } else if (this.router.url === '/home') {
-          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
-              // this.platform.exitApp(); // Exit from app
-              navigator['app'].exitApp(); // work in ionic 4
-
-          } else {
-            this.presentToast("Press back again to exit App.");
-            this.lastTimeBackPress = new Date().getTime();
-          }
-        }
-      });
-    });
+  logout(){
+    this.authService.logout();
   }
 }

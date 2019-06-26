@@ -96,10 +96,6 @@ export class FollowupPage implements OnInit {
     });
   }
 
-  logout(){
-    this.authService.logout();
-  }
-
   DialNumber(contactId:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {

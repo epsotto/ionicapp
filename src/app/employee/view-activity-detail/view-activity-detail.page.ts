@@ -3,11 +3,12 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController, ModalController, LoadingController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
 import * as moment from "moment";
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -60,7 +61,16 @@ export class ViewActivityDetailPage implements OnInit {
               private alert: AlertController,
               private modal: ModalController,
               private loadingController: LoadingController,
-              private viewActivityDetailService: ViewActivityDetailService){}
+              private viewActivityDetailService: ViewActivityDetailService,
+              private callNumber: CallNumber,
+              private platform: Platform,
+              private nav: NavController){
+                this.platform.backButton.subscribeWithPriority(0, () => {
+                  if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
+                    this.nav.navigateRoot('/employee/followup');
+                  }
+                  });
+              }
   
   ngOnInit(){
     this.oppId = this.route.snapshot.params.OppId; //Only needed the params. Data passing is returning undefined.
@@ -76,7 +86,7 @@ export class ViewActivityDetailPage implements OnInit {
           const data = JSON.parse(res.data);
           
           if(data.success){
-            this.potentialNumber = data.result[0].potentail_no;
+            this.potentialNumber = data.result[0].potential_no;
             this.opportunityName = data.result[0].potentialname;
             this.oppDescription = data.result[0].description;
             this.jobInclusion = data.result[0].cf_800;
@@ -187,8 +197,13 @@ export class ViewActivityDetailPage implements OnInit {
     
   }
 
-  callNumber(number){
-    console.log(number);
+  callClientNumber(number){
+    if(number !== ""){
+      this.callNumber.callNumber(number, true).then(res => {
+        this.msg = "Called " + number;
+        this.presentToast();
+      });
+    }
   }
 
   showLoader(){

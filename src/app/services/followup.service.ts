@@ -17,8 +17,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE eventstatus != 'Held' " + 
-    // "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' AND assigned_user_id = '19x" + userId +"' LIMIT 20;";
-    "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' LIMIT 20;"; //AND assigned_user_id = '19x" + userId +"' LIMIT 20;";
+    "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' AND assigned_user_id = '19x" + userId +"' LIMIT 20;";
+    // "AND eventstatus != 'Not Held' AND due_date < '"+ dateToday +"' AND due_date > '" + startDueDate + "' LIMIT 20;"; //AND assigned_user_id = '19x" + userId +"' LIMIT 20;";
     const sessionName = sessionkey;
 
     var queryParams = {
