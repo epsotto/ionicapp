@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
           }
         });
 
-        // this.authService.loginSet("login","1","").then(() => {
+        // this.authService.loginSet("64be1a7f5d143f986758b","ercel.peter","FeEFeaTPNrnezmZz").then(() => {
         //   this.authModel = {
         //     username: "",
         //     accessKey: "",

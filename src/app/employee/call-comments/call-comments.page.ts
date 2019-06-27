@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavParams, ModalController, ToastController } from '@ionic/angular'
 import { CallLog, CallLogObject } from "@ionic-native/call-log/ngx";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-call-comments',
@@ -14,11 +15,16 @@ export class CallCommentsPage implements OnInit {
   phoneNumbers:string[];
   comment:string = "";
   markDone:boolean = false;
+  setNewActivity:boolean = false;
+  activityActionsList = [];
+  activityType:string = "";
+  minimumDate:string = "";
 
   constructor(private navParams: NavParams, private modalController: ModalController,
               private callLog: CallLog, private toastController : ToastController) { }
 
   ngOnInit() {
+    this.minimumDate = moment().format("YYYY-MM-DD");
   }
 
   dismissModal(){
@@ -65,5 +71,30 @@ export class CallCommentsPage implements OnInit {
     });
 
     toast.present();
+  }
+
+  getActivityActions(){
+    if(this.activityType === "meeting"){
+      this.activityActionsList = [{
+        value: "fsv",
+        text: "First Site Visit"
+      },
+      {
+        value: "ssv",
+        text: "Second Site Visit"
+      },
+    ]
+    } else if(this.activityType === "call"){
+      this.activityActionsList = [{
+        value: "ffm",
+        text: "Follow-up First Meeting"
+      },
+      {
+        value: "fqf",
+        text: "Follow-up Quote Feedback"
+      }]
+    } else {
+      this.activityActionsList = [];
+    }
   }
 }

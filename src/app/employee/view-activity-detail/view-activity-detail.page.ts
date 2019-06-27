@@ -252,7 +252,8 @@ export class ViewActivityDetailPage implements OnInit {
     const modal = await this.modal.create({
       component: CheckoutPage,
       componentProps: {
-        "oppId": this.oppId
+        "oppId": this.oppId,
+        "potentialNumber": this.potentialNumber
       }
     });
 

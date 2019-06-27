@@ -19,6 +19,50 @@
       <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
     </ion-item>
   </ion-list>
+  <ion-list *ngIf="markDone">
+    <ion-item>
+      <ion-checkbox [(ngModel)]="setNewActivity" checked="false" slot="start" color="primary"></ion-checkbox>
+      <ion-label>Set new activity?</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="markDone && setNewActivity">
+    <ion-item>
+      <ion-label position="floating">Please select type of Activity</ion-label>
+      <ion-select [(ngModel)]="activityType" name="activityType" placeholder="Select an Activity" (ionChange)="getActivityActions()">
+        <ion-select-option value="meeting">Meeting</ion-select-option>
+        <ion-select-option value="call">Call</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Please select Activity Action</ion-label>
+      <ion-select [(ngModel)]="selectedActivityAction" name="activityType" placeholder="Select an Activity Action">
+        <ion-select-option *ngFor="let activityAction of activityActionsList" value="{{activityAction.value}}">{{activityAction.text}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-grid class="datePickerContainer">
+        <ion-row>
+          <ion-col size=6>
+            <ion-label position="floating">Please select Date</ion-label>
+            <ion-datetime [(ngModel)]="taskScheduleDate" name="taskScheduleDate" min="{{minimumDate}}"
+            placeholder="Date" displayFormat="DD/MMM/YYYY"></ion-datetime>
+          </ion-col>
+          <ion-col size=6>
+            <ion-label position="floating">Please select Time</ion-label>
+            <ion-datetime [(ngModel)]="taskScheduleTime" name="taskScheduleTime"
+            placeholder="Time" displayFormat="HH:mm"></ion-datetime>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size=6>
+            <ion-label position="floating">Please select Duration</ion-label>
+            <ion-datetime [(ngModel)]="taskScheduleDuration" name="taskScheduleDuration" 
+            placeholder="Duration" displayFormat="HH"></ion-datetime>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
   <ion-button color="primary" expand="full" type="button" (click)="onSubmit()">SUBMIT</ion-button>
   {{phoneNumbers}}
   {{msg}}

@@ -29,7 +29,6 @@ export class FollowupPage implements OnInit {
   timePeriodToExit = 2000;
 
   constructor(private menuController: MenuController,
-              private authService: AuthenticationService,
               private callNumber: CallNumber,
               private toastController: ToastController,
               private statusBar: StatusBar,
@@ -37,9 +36,7 @@ export class FollowupPage implements OnInit {
               private dataStorage: DataStorageService,
               private modalController: ModalController,
               private platform: Platform,
-              private router: Router,
-              private followupService: FollowupService,
-              private storage: Storage) { 
+              private followupService: FollowupService) { 
                 // this.backButtonEvent();
                 // this.platform.backButton.subscribeWithPriority(0, () => {
                 //   if (this.routerOutlet && this.routerOutlet.canGoBack()) {
