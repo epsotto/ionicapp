@@ -3,7 +3,7 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
 import * as moment from "moment";
@@ -64,7 +64,8 @@ export class ViewActivityDetailPage implements OnInit {
               private viewActivityDetailService: ViewActivityDetailService,
               private callNumber: CallNumber,
               private platform: Platform,
-              private nav: NavController){
+              private nav: NavController,
+              private actionSheetController: ActionSheetController){
                 this.platform.backButton.subscribeWithPriority(0, () => {
                   if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
                     this.nav.navigateRoot('/employee/followup');
@@ -194,7 +195,24 @@ export class ViewActivityDetailPage implements OnInit {
   }
   
   callSupportNumber(){
-    
+    this.presentActionSheet();
+  }
+
+  async presentActionSheet(){
+    const actionSheet = await this.actionSheetController.create({
+      header: "Contact Persons:",
+      buttons:[{
+        text: "Richard: 0800999574",
+        handler: () => {this.callClientNumber("0800999574");}
+      },
+      {
+        text: "Ravin: 0211359467",
+        handler: () => {this.callClientNumber("0211359467");}
+      }
+    ]
+    });
+
+    await actionSheet.present();
   }
 
   callClientNumber(number){
