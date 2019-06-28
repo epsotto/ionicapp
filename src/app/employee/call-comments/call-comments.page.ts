@@ -74,25 +74,72 @@ export class CallCommentsPage implements OnInit {
   }
 
   getActivityActions(){
-    if(this.activityType === "meeting"){
+    if(this.activityType === "call"){
       this.activityActionsList = [{
-        value: "fsv",
-        text: "First Site Visit"
+        value: "Call : Arrange First Site Visit",
+        text: "Call : Arrange First Site Visit"
       },
       {
-        value: "ssv",
-        text: "Second Site Visit"
-      },
-    ]
-    } else if(this.activityType === "call"){
-      this.activityActionsList = [{
-        value: "ffm",
-        text: "Follow-up First Meeting"
+        value: "Call : Arrange Quote Presentation",
+        text: "Call : Arrange Quote Presentation"
       },
       {
-        value: "fqf",
-        text: "Follow-up Quote Feedback"
-      }]
+        value: "Call : Arrange Quote Presentation",
+        text: "Call : Arrange Quote Presentation"
+      },
+      {
+        value: "Call : Quote Follow Up",
+        text: "Call : Quote Follow Up"
+      },
+      {
+        value: "Call : Additional Info From Customer",
+        text: "Call : Additional Info From Customer"
+      },
+      {
+        value: "Call : Arrange Site Measurement",
+        text: "Call : Arrange Site Measurement"
+      },
+      {
+        value: "Call : Customer Feedback",
+        text: "Call : Customer Feedback"
+      },
+      {
+        value: "Call : Other",
+        text: "Call : Other"
+      }];
+    } else if(this.activityType === "meeting"){
+      this.activityActionsList = [{
+        value: "Meeting : First Site Visit",
+        text: "Meeting : First Site Visit"
+      },
+      {
+        value: "Meeting : Quote Presentation",
+        text: "Meeting : Quote Presentation"
+      },
+      {
+        value: "Meeting : Quote Presentation",
+        text: "Meeting : Quote Presentation"
+      },
+      {
+        value: "Meeting : Final Site Measurement",
+        text: "Meeting : Final Site Measurement"
+      },
+      {
+        value: "Meeting : Site Visit",
+        text: "Meeting : Site Visit"
+      },
+      {
+        value: "Meeting : Additional Customer Info",
+        text: "Meeting : Additional Customer Info"
+      },
+      {
+        value: "Meeting : Customer Feedback",
+        text: "Meeting : Customer Feedback"
+      },
+      {
+        value: "Meeting : Other",
+        text: "Meeting : Other"
+      },];
     } else {
       this.activityActionsList = [];
     }

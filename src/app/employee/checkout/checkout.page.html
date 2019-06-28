@@ -36,7 +36,8 @@
     </ion-item>
     <ion-item>
       <ion-label position="floating">Please select Activity Action</ion-label>
-      <ion-select [(ngModel)]="selectedActivityAction" name="activityType" placeholder="Select an Activity Action">
+      <ion-select [(ngModel)]="selectedActivityAction" name="activityType" 
+      placeholder="Select an Activity Action" [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
         <ion-select-option *ngFor="let activityAction of activityActionsList" value="{{activityAction.value}}">{{activityAction.text}}</ion-select-option>
       </ion-select>
     </ion-item>
