@@ -62,7 +62,6 @@ export class LoginPage implements OnInit {
         this.authService.userLogin(this.authModel).then(res => {
           let data = JSON.parse(res.data);
           if(data.success){
-            console.log(res);
             this.authService.loginSet(data.result.sessionName, data.result.userId, this.userAccess).then(() => {
               this.authModel = {
                     username: "",
