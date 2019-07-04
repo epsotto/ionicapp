@@ -10,9 +10,9 @@ import * as moment from "moment";
 })
 export class CallCommentsPage implements OnInit {
 
-  @Input() oppId:string;
+  @Input() calledNumber:string;
+  @Input() dateCalled:string;
   msg:string;
-  phoneNumbers:string[];
   comment:string = "";
   markDone:boolean = false;
   setNewActivity:boolean = false;
@@ -20,8 +20,11 @@ export class CallCommentsPage implements OnInit {
   activityType:string = "";
   minimumDate:string = "";
 
-  constructor(private navParams: NavParams, private modalController: ModalController,
-              private callLog: CallLog, private toastController : ToastController) { }
+  constructor(private navParams: NavParams,
+              private modalController: ModalController,
+              private callLog: CallLog, 
+              private toastController : ToastController,
+              ) { }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
@@ -37,24 +40,26 @@ export class CallCommentsPage implements OnInit {
         this.callLog.requestReadPermission();
       } else {
         var date = new Date();
-        var pastThreeDays = new Date(date.getFullYear(), date.getMonth(), date.getDate()-3).getTime();
-        let filters:CallLogObject[] = [{"name": "type",
+        let filters:CallLogObject[] = [
+                {"name": "number",
+                  "value": this.calledNumber,
+                  "operator": "=="
+                },
+                {"name": "type",
                   "value": "2",
                   "operator": "=="},
                 {
                   "name": "date",
-                  "value": pastThreeDays.toString(),
+                  "value": this.dateCalled,
                   "operator": ">="
                 }];
         this.callLog.getCallLog(filters).then(data => {
-          for(var i=0; i < data.length; i++){
-            this.msg = JSON.stringify(data[i]);
-            this.phoneNumbers = this.phoneNumbers.concat(data[i].number);
-          }
           this.msg = JSON.stringify(data);
           const ouput = {
             markedDone: this.markDone,
-            comment: this.comment
+            comment: this.comment,
+            duration: data[0].duration,
+            dateCalled: moment(data[0].date).format("DD-MM-YYYY")
           }
           this.modalController.dismiss(ouput);
         });

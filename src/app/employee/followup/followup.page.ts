@@ -22,6 +22,8 @@ export class FollowupPage implements OnInit {
   private msg: string = "";
   private selectedOppId:string = "";
   private retry:number = 3;
+  private calledNumber:string = "";
+  private dateCalled:number = 0;
   isLoading:boolean = true;
 
   @ViewChild(IonRouterOutlet) routerOutlet : IonRouterOutlet;
@@ -121,6 +123,8 @@ export class FollowupPage implements OnInit {
                   this.callNumber.callNumber(phone[0], true)
                     .then(res => {
                       this.msg = "Called " + phone[0];
+                      this.calledNumber = phone[0];
+                      this.dateCalled = (new Date).getTime();
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {
@@ -139,7 +143,8 @@ export class FollowupPage implements OnInit {
     const modal = await this.modalController.create({
       component: CallCommentsPage,
       componentProps: {
-        "oppId": this.selectedOppId,
+        "calledNumber": this.calledNumber,
+        "dateCalled": this.dateCalled
       }
     });
 
@@ -162,6 +167,7 @@ export class FollowupPage implements OnInit {
         this.callNumber.callNumber(res.data, true)
         .then(res => {
           this.msg = "Called " + res.data;
+          this.calledNumber = res.data;
           this.presentToast();
           this.presentModal();
         }).catch(err => {
