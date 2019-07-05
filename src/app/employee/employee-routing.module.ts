@@ -14,6 +14,8 @@ const routes: Routes = [
   { path: "activities", loadChildren: "./activities/activities.module#ActivitiesPageModule" },
   { path: 'multiple-numbers', loadChildren: './multiple-numbers/multiple-numbers.module#MultipleNumbersPageModule' },
   { path: 'checkout', loadChildren: './checkout/checkout.module#CheckoutPageModule' },
+  { path: 'calls-followups', loadChildren: './calls-followups/calls-followups.module#CallsFollowupsPageModule' },
+  { path: 'calls-without-followups', loadChildren: './calls-without-followups/calls-without-followups.module#CallsWithoutFollowupsPageModule' },
 ];
 
 @NgModule({

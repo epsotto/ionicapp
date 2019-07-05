@@ -13,19 +13,16 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
   public appPages = [
     {
-      title: "Home",
+      title: "Overdue Activities",
       url: "/employee/followup",
-      icon: "home",
     },
     {
-      title: "List",
-      url: "/list",
-      icon: "list",
+      title: "All Calls - Except Followups",
+      url: "/employee/calls-without-followups",
     },
     {
-      title: "Other",
-      url: "/employee/dashboard",
-      icon: "today",
+      title: "All Calls - Followups",
+      url: "/employee/calls-followups",
     }
   ];
 
