@@ -39,7 +39,7 @@
             <h2>{{item.OppName}}</h2>
           </ion-text>
         </ion-label>
-        <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId)">
+        <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId)">
           <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
         </ion-button>
       </ion-item>

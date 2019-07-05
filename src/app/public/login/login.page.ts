@@ -17,7 +17,7 @@ export class LoginPage implements OnInit {
               private menuController: MenuController,
               private alert: AlertController) { }
 
-  private imgsrc:any = "/assets/fresco-logo-original---115x75.png";
+  imgsrc:any = "/assets/fresco-logo-original---115x75.png";
   private errorMsg:string="";
   private passwordVisible:boolean = false;
   private passwordTextType:string="password";

@@ -10,6 +10,7 @@ import * as moment from "moment";
 })
 export class CallCommentsPage implements OnInit {
 
+  @Input() oppId:string;
   @Input() calledNumber:string;
   @Input() dateCalled:string;
   msg:string;

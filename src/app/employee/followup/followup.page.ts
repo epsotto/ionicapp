@@ -95,7 +95,7 @@ export class FollowupPage implements OnInit {
     });
   }
 
-  DialNumber(contactId:string){
+  DialNumber(contactId:string, oppId:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -125,6 +125,7 @@ export class FollowupPage implements OnInit {
                       this.msg = "Called " + phone[0];
                       this.calledNumber = phone[0];
                       this.dateCalled = (new Date).getTime();
+                      this.selectedOppId = oppId;
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {
@@ -143,6 +144,7 @@ export class FollowupPage implements OnInit {
     const modal = await this.modalController.create({
       component: CallCommentsPage,
       componentProps: {
+        "oppId": this.selectedOppId,
         "calledNumber": this.calledNumber,
         "dateCalled": this.dateCalled
       }
