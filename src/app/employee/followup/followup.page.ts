@@ -1,16 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController, ToastController, NavController, ModalController, IonRouterOutlet, Platform } from '@ionic/angular';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
-import { RouterOutlet, Router } from '@angular/router';
 import { FollowupService } from 'src/app/services/followup.service';
-import { Storage } from '@ionic/storage'
-
-const TOKEN_KEY = 'auth-token';
 
 @Component({
   selector: 'app-followup',
