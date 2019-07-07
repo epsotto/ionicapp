@@ -19,6 +19,7 @@ export class FollowupPage implements OnInit {
   private retry:number = 3;
   private calledNumber:string = "";
   private dateCalled:number = 0;
+  private totalRecordCount:number = 0;
   isLoading:boolean = true;
 
   @ViewChild(IonRouterOutlet) routerOutlet : IonRouterOutlet;
@@ -53,6 +54,21 @@ export class FollowupPage implements OnInit {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
     this.pullFollowupList();
+    this.getFollowupListTotalCount();
+  }
+
+  getFollowupListTotalCount() {
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.followupService.getFollowupTotalRecords(res.userId, res.sessionName).then((res) => {
+          const data = JSON.parse(res.data);
+          if(data.success){
+            this.totalRecordCount = data.result.count;
+          }
+          console.log(data.result);
+        });
+      }
+    });
   }
 
   pullFollowupList() {
@@ -213,6 +229,33 @@ export class FollowupPage implements OnInit {
     setTimeout(() => {
       event.target.disabled = false;
     }, 100);
+  }
+
+  loadData(event) {
+    if(this.followupList.length !== this.totalRecordCount){
+      this.dataStorage.retrieveCachedData().then((res) => {
+        if(res != null){
+          this.followupService.getMoreFollowupRecords(res.userId, res.sessionName, this.followupList.length + 1).then((res) => {
+            const data = JSON.parse(res.data);
+            console.log(data);
+            
+            for(var i = 0; i < data.result.length; i++){
+              let singleRecord = {
+                OppId: data.result[i].parent_id,
+                OppName: data.result[i].subject,
+                ContactId: data.result[i].contact_id
+              }
+    
+              this.followupList = this.followupList.concat(singleRecord);
+            }
+            
+            event.target.complete();
+          });
+        }
+      });
+    } else {
+      event.target.disabled = true;
+    }
   }
 
   // backButtonEvent(){
