@@ -38,6 +38,7 @@ export class CallsFollowupsPage implements OnInit {
   }
 
   pullCallFollowupList() {
+    this.isLoading = true;
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
         this.followupService.getCallFollowupList(res.userId, res.sessionName).then((res) => {
