@@ -41,7 +41,9 @@ export class ViewActivityDetailPage implements OnInit {
   officePhone:string = "";
   otherNumber:string = "";
   primaryEmail:string = "";
+  mailToPrimaryEmail:string = "";
   secondaryEmail:string = "";
+  mailToSecondaryEmail:string = "";
   doNotCallFlag:string = "";
 
   potentialNumber:string = "";
@@ -92,7 +94,7 @@ export class ViewActivityDetailPage implements OnInit {
             this.oppDescription = data.result[0].description;
             this.jobInclusion = data.result[0].cf_800;
             this.nextSteps = data.result[0].nextstep;
-            this.driveFolder = "https://drive.google.com/drive/folders/" + data.result[0].cf_751;
+            this.driveFolder = data.result[0].cf_751 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_751 : "";
           }
         })
       }
@@ -116,7 +118,9 @@ export class ViewActivityDetailPage implements OnInit {
             this.officePhone = data.result[0].phone;
             this.otherNumber = data.result[0].otherphone;
             this.primaryEmail = data.result[0].email;
+            this.mailToPrimaryEmail = "mailto:" + data.result[0].email;
             this.secondaryEmail = data.result[0].secondaryemail;
+            this.mailToSecondaryEmail = "mailto:" + data.result[0].secondaryEmail;
             this.doNotCallFlag = data.result[0].donotcall === "0" ? "No" : "Yes";
           }
         });

@@ -67,7 +67,7 @@
           <p class="formValue">{{nextSteps}}</p>
         </ion-label>
       </ion-item>
-    <ion-item>
+    <ion-item *ngIf="driveFolder != ''">
         <ion-label text-wrap>
           <ion-text color="primary">
             Team Drive folder directory
@@ -144,7 +144,7 @@
         <ion-text color="primary">
           Primary Email
         </ion-text>
-        <div class="formValue">{{primaryEmail}}</div>
+        <div class="formValue"><a href="{{mailToPrimaryEmail}}">{{primaryEmail}}</a></div>
       </ion-label>
     </ion-item>
     <ion-item>
@@ -152,7 +152,7 @@
         <ion-text color="primary">
           Secondary Email
         </ion-text>
-        <div class="formValue">{{secondaryEmail}}</div>
+        <div class="formValue"><a href="{{mailToSecondaryEmail}}">{{secondaryEmail}}</a></div>
       </ion-label>
     </ion-item>
     <ion-item>

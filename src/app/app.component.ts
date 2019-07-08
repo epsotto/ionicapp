@@ -1,6 +1,6 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Platform, IonRouterOutlet, ModalController, MenuController, ActionSheetController, PopoverController, ToastController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, ModalController, MenuController, ActionSheetController, PopoverController, ToastController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -42,7 +42,8 @@ export class AppComponent {
     private menuController: MenuController,
     private actionSheetController: ActionSheetController,
     private popoverController: PopoverController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -70,7 +71,23 @@ export class AppComponent {
     toast.present();
   }
 
+  async presentConfirmationLogout() {
+    const alert = await this.alertController.create({
+      header: "Logout Action",
+      message: "Are you sure you want to logout?",
+      buttons: ["No", {
+        text: "Yes",
+        role: "yesAction",
+        handler: () => {
+          this.authService.logout();
+        }
+      }]
+    });
+
+    await alert.present();
+  }
+
   logout(){
-    this.authService.logout();
+    this.presentConfirmationLogout();
   }
 }
