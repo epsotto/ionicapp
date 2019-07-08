@@ -19,6 +19,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
   private selectedOppId:string;
   private dateCalled:number;
   private retry = 3;
+  private totalRecordCount:number = 0;
   isLoading:boolean;
   callList = [];
 
@@ -35,6 +36,20 @@ export class CallsWithoutFollowupsPage implements OnInit {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
     this.pullCallList();
+    this.getTotalCallCount();
+  }
+
+  getTotalCallCount() {
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.followupService.getTotalCallRecords(res.userId, res.sessionName).then((res) => {
+          const data = JSON.parse(res.data);
+          if(data.success){
+            this.totalRecordCount = data.result.count;
+          }
+        });
+      }
+    });
   }
 
   pullCallList() {
@@ -135,5 +150,31 @@ export class CallsWithoutFollowupsPage implements OnInit {
     setTimeout(() => {
       event.target.disabled = false;
     }, 100);
+  }
+
+  loadData(event) {
+    if(this.callList.length !== this.totalRecordCount){
+      this.dataStorage.retrieveCachedData().then((res) => {
+        if(res != null){
+          this.followupService.getMoreCallRecords(res.userId, res.sessionName, this.callList.length + 1).then((res) => {
+            const data = JSON.parse(res.data);
+            
+            for(var i = 0; i < data.result.length; i++){
+              let singleRecord = {
+                OppId: data.result[i].parent_id,
+                OppName: data.result[i].subject,
+                ContactId: data.result[i].contact_id
+              }
+    
+              this.callList = this.callList.concat(singleRecord);
+            }
+            
+            event.target.complete();
+          });
+        }
+      });
+    } else {
+      event.target.disabled = true;
+    }
   }
 }

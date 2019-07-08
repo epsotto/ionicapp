@@ -65,7 +65,6 @@ export class FollowupPage implements OnInit {
           if(data.success){
             this.totalRecordCount = data.result.count;
           }
-          console.log(data.result);
         });
       }
     });
@@ -237,7 +236,6 @@ export class FollowupPage implements OnInit {
         if(res != null){
           this.followupService.getMoreFollowupRecords(res.userId, res.sessionName, this.followupList.length + 1).then((res) => {
             const data = JSON.parse(res.data);
-            console.log(data);
             
             for(var i = 0; i < data.result.length; i++){
               let singleRecord = {
