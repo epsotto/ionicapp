@@ -177,4 +177,59 @@ export class CallsWithoutFollowupsPage implements OnInit {
       event.target.disabled = true;
     }
   }
+
+  contactSelected(event, OppId, ContactId){
+    event.preventDefault();
+    const dataIds = {
+      OppId: OppId,
+      ContactId: ContactId
+    }
+    this.dataStorage.setData("dataIds", dataIds);
+    this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
+  }
+
+  DialNumber(contactId:string, oppId:string){
+    if(contactId){
+      this.dataStorage.retrieveCachedData().then((res) => {
+        if(res != null){
+          this.followupService.getClientDetails(contactId, res.sessionName).then((res) => {
+            let phone = [];
+            let data = JSON.parse(res.data);
+            if(data.success){
+              if(data.result[0].homephone !== "") {
+                phone = phone.concat(data.result[0].homephone);
+              }
+              if(data.result[0].mobile !== "") {
+                phone = phone.concat(data.result[0].mobile);
+              }
+              if(data.result[0].otherphone !== "") {
+                phone = phone.concat(data.result[0].otherphone);
+              }
+              if(data.result[0].phone !== "") {
+                phone = phone.concat(data.result[0].phone);
+              }
+
+              if(phone.length > 1) {
+                  this.presentMultipleNumbersModal(phone);
+                }
+                else {
+                  this.callNumber.callNumber(phone[0], true)
+                    .then(res => {
+                      this.msg = "Called " + phone[0];
+                      this.calledNumber = phone[0];
+                      this.dateCalled = (new Date).getTime();
+                      this.selectedOppId = oppId;
+                      this.presentToast();
+                      //this.presentModal();
+                    }).catch(err => {
+                      this.msg = "Error in dialer " + err;
+                      this.presentToast();
+                    });
+                }
+            }
+          });
+        }
+      });
+    }
+  }
 }

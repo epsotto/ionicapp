@@ -137,7 +137,7 @@ export class FollowupPage implements OnInit {
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
                       this.presentToast();
-                      this.presentModal();
+                      //this.presentModal();
                     }).catch(err => {
                       this.msg = "Error in dialer " + err;
                       this.presentToast();
@@ -183,7 +183,7 @@ export class FollowupPage implements OnInit {
           this.msg = "Called " + res.data;
           this.calledNumber = res.data;
           this.presentToast();
-          this.presentModal();
+          //this.presentModal();
         }).catch(err => {
           this.msg = "Error in dialer " + err;
           this.presentToast();
