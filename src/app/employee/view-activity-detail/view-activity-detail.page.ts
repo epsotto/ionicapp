@@ -53,6 +53,8 @@ export class ViewActivityDetailPage implements OnInit {
   nextSteps:string = "";
   driveFolder:string = "";
 
+  private activityType:string = "";
+
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
               private router: Router,
@@ -80,6 +82,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.dataIds = this.dataStorage.getData("dataIds");
     this.getOpportunityDetails(this.oppId);
     this.getClientDetails(this.dataIds.ContactId);
+    this.activityType = this.dataIds.ActivityType;
   }
 
   getOpportunityDetails(oppId:string){
@@ -176,7 +179,7 @@ export class ViewActivityDetailPage implements OnInit {
           latitude = res.coords.latitude;
           
           this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
-            .then((res: NativeGeocoderResult[]) => {
+            .then((res) => {
               this.loadingController.dismiss();
               this.checkIn={
                 location: "",
@@ -267,7 +270,7 @@ export class ViewActivityDetailPage implements OnInit {
       buttons: ['OK']
     });
 
-    await alert.present();
+    alert.present();
   }
 
   async presentCheckoutModal(){

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
+import { ViewActivityDetailPageModule } from '../employee/view-activity-detail/view-activity-detail.module';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,38 @@ export class ViewActivityDetailService {
       "sessionName": sessionName,
       "query": query
     };
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
+
+  markActivityComplete (sessionName:string, oppId:string, wfId:string, activityId:string) {
+    const envVars = {
+      activityId: activityId
+    };
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": wfId,
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    }
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
+
+  submitComments (sessionName:string, oppId:string, wfId:string, comments:string) {
+    const envVars = {
+      comments: comments
+    }
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": wfId,
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    }
 
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }

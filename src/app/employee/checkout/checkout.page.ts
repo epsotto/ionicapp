@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 
 @Component({
@@ -17,18 +17,33 @@ export class CheckoutPage implements OnInit {
   activityType:string = "";
   minimumDate:string = "";
 
-  constructor(private modal: ModalController) { }
+  constructor(private modal: ModalController,
+              private alertController: AlertController) { }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
   }
 
   onSubmit(){
-    const ouput = {
-      markedDone: this.markDone,
-      comment: this.comment
+    if(this.markDone){
+      const ouput = {
+        markedDone: this.markDone,
+        comment: this.comment
+      }
+      this.modal.dismiss(ouput);
+    } else {
+      this.presentAlert("Activity must be marked completed/held before submission.")
     }
-    this.modal.dismiss(ouput);  
+  }
+
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      header: "Alert",
+      message: msg,
+      buttons: ["OK"]
+    });
+
+    alert.present();
   }
 
   dismissModal() {

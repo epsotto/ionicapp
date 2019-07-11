@@ -14,7 +14,7 @@
       <ion-label>Mark activity as done?</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Enter comments for {{oppId}}</ion-label>
+      <ion-label position="floating">Enter comments for this activity</ion-label>
 
       <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
     </ion-item>
@@ -28,14 +28,15 @@
   <ion-list *ngIf="markDone && setNewActivity">
     <ion-item>
       <ion-label position="floating">Please select type of Activity</ion-label>
-      <ion-select [(ngModel)]="activityType" name="activityType" placeholder="Select an Activity" (ionChange)="getActivityActions()">
+      <ion-select [(ngModel)]="activityType" name="activityType" placeholder="Select an Activity" (ionChange)="getActivityActions()"
+      [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
         <ion-select-option value="meeting">Meeting</ion-select-option>
         <ion-select-option value="call">Call</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Please select Activity Action</ion-label>
-      <ion-select [(ngModel)]="selectedActivityAction" name="activityType" placeholder="Select an Activity Action"
+      <ion-select [(ngModel)]="selectedActivityAction" name="activityActionType" placeholder="Select an Activity Action"
       [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
         <ion-select-option *ngFor="let activityAction of activityActionsList" value="{{activityAction.value}}">{{activityAction.text}}</ion-select-option>
       </ion-select>

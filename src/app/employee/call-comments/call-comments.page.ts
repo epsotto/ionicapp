@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavParams, ModalController, ToastController } from '@ionic/angular'
+import { NavParams, ModalController, ToastController, AlertController } from '@ionic/angular'
 import { CallLog, CallLogObject } from "@ionic-native/call-log/ngx";
 import * as moment from "moment";
+import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
+import { DataStorageService } from 'src/app/services/data-storage.service';
 
 @Component({
   selector: 'app-call-comments',
@@ -10,10 +12,11 @@ import * as moment from "moment";
 })
 export class CallCommentsPage implements OnInit {
 
-  @Input() oppId:string;
-  @Input() calledNumber:string;
-  @Input() dateCalled:string;
-  msg:string;
+  @Input() oppId:string = "";
+  @Input() calledNumber:string = "";
+  @Input() dateCalled:string = "";
+  @Input() activityId:string = "";
+  msg:string = "";
   comment:string = "";
   markDone:boolean = false;
   setNewActivity:boolean = false;
@@ -21,14 +24,23 @@ export class CallCommentsPage implements OnInit {
   activityType:string = "";
   minimumDate:string = "";
 
+  private cachedData:any;
+
   constructor(private navParams: NavParams,
               private modalController: ModalController,
               private callLog: CallLog, 
-              private toastController : ToastController,
+              private toastController: ToastController,
+              private alertController: AlertController,
+              private activityDetailService: ViewActivityDetailService,
+              private dataStorage: DataStorageService
               ) { }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+
+    this.dataStorage.retrieveCachedData().then((res) => {
+      this.cachedData = res;
+    });
   }
 
   dismissModal(){
@@ -36,36 +48,68 @@ export class CallCommentsPage implements OnInit {
   }
 
   onSubmit() {
-    this.callLog.hasReadPermission().then(hasPermission => {
-      if(!hasPermission){
-        this.callLog.requestReadPermission();
-      } else {
-        var date = new Date();
-        let filters:CallLogObject[] = [
-                {"name": "number",
-                  "value": this.calledNumber,
-                  "operator": "=="
-                },
-                {"name": "type",
-                  "value": "2",
-                  "operator": "=="},
-                {
-                  "name": "date",
-                  "value": this.dateCalled,
-                  "operator": ">="
-                }];
-        this.callLog.getCallLog(filters).then(data => {
-          this.msg = JSON.stringify(data);
-          const ouput = {
-            markedDone: this.markDone,
-            comment: this.comment,
-            duration: data[0].duration,
-            dateCalled: moment(data[0].date).format("DD-MM-YYYY")
-          }
-          this.modalController.dismiss(ouput);
-        });
-      }
-    });
+    if(this.markDone){
+      // this.callLog.hasReadPermission().then(hasPermission => {
+      //   if(!hasPermission){
+      //     this.callLog.requestReadPermission();
+      //   } else {
+      //     var date = new Date();
+      //     let filters:CallLogObject[] = [
+      //             {"name": "number",
+      //               "value": this.calledNumber,
+      //               "operator": "=="
+      //             },
+      //             {"name": "type",
+      //               "value": "2",
+      //               "operator": "=="},
+      //             {
+      //               "name": "date",
+      //               "value": this.dateCalled,
+      //               "operator": ">="
+      //             }];
+      //     this.callLog.getCallLog(filters).then(data => {
+      //       this.msg = JSON.stringify(data);
+      //       const ouput = {
+      //         markedDone: this.markDone,
+      //         comment: this.comment,
+      //         duration: data[0].duration,
+      //         dateCalled: moment(data[0].date).format("DD-MM-YYYY")
+      //       }
+      //       this.modalController.dismiss(ouput);
+      //     });
+      //   }
+      // });
+
+      this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+        this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+        this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+          .then((res) => {
+            const data = JSON.parse(res.data);
+
+            if(data.success){
+              this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "125",
+                this.comment).then((res) => {
+                  debugger;
+                  console.log(res);
+                  this.modalController.dismiss();
+                });
+            }
+          });
+
+    } else {
+      this.presentAlert("Activity must be marked completed/held before submission.");
+    }
+  }
+
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      header: "Alert",
+      message: msg,
+      buttons: ["OK"]
+    })
+
+    alert.present();
   }
 
   async presentToast(){
