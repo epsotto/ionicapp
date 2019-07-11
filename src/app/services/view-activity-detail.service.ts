@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, wtfEndTimeRange } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ViewActivityDetailPageModule } from '../employee/view-activity-detail/view-activity-detail.module';
 
@@ -60,6 +60,26 @@ export class ViewActivityDetailService {
       "sessionName": sessionName,
       "wfId": wfId,
       "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    }
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
+
+  createNewActivity(sessionName: string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string) {
+    const envVars = {
+      "event_subject": "Auto Generated",
+      "activity_type": activityType,
+      "activity_action": activityAction,
+      "start_date": startDate,
+      "start_time": startTime,
+      "duration": duration
+    }
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": wfId,
       "envVars": JSON.stringify(envVars)
     }
 

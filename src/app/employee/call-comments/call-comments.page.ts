@@ -23,6 +23,11 @@ export class CallCommentsPage implements OnInit {
   activityActionsList = [];
   activityType:string = "";
   minimumDate:string = "";
+  selectedActivityAction:string = "";
+  taskScheduleDate:string = "";
+  taskScheduleTime:string = "";
+  taskScheduleDuration:string = "";
+  taskDurationList = [];
 
   private cachedData:any;
 
@@ -37,6 +42,16 @@ export class CallCommentsPage implements OnInit {
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+    this.taskDurationList = [{value: "5", text: "5 mins"},
+    {value: "5", text: "5 mins"},
+    {value: "10", text: "10 mins"},
+    {value: "15", text: "15 mins"},
+    {value: "20", text: "20 mins"},
+    {value: "30", text: "30 mins"},
+    {value: "60", text: "60 mins"},
+    {value: "90", text: "90 mins"},
+    {value: "120", text: "120 mins"},
+    {value: "130", text: "130 mins"},]
 
     this.dataStorage.retrieveCachedData().then((res) => {
       this.cachedData = res;
@@ -90,9 +105,20 @@ export class CallCommentsPage implements OnInit {
               this.activityDetailService.submitComments(this.cachedData.sessionName, 
                 this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "125",
                 this.comment).then((res) => {
-                  debugger;
-                  console.log(res);
-                  this.modalController.dismiss();
+                  const data = JSON.parse(res.data);
+                  
+                  if(data.success){
+                    if(this.setNewActivity){
+                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, "124", this.activityType, 
+                      this.selectedActivityAction, this.taskScheduleDate, this.taskScheduleTime, this.taskScheduleDuration)
+                        .then((res) => {
+                          console.log(res);
+                          this.modalController.dismiss();
+                        });
+                    } else {          
+                      this.modalController.dismiss();
+                    }
+                  }
                 });
             }
           });
