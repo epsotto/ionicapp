@@ -110,7 +110,7 @@ export class CallCommentsPage implements OnInit {
                   if(data.success){
                     if(this.setNewActivity){
                       this.activityDetailService.createNewActivity(this.cachedData.sessionName, "124", this.activityType, 
-                      this.selectedActivityAction, this.taskScheduleDate, this.taskScheduleTime, this.taskScheduleDuration)
+                      this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration)
                         .then((res) => {
                           console.log(res);
                           this.modalController.dismiss();
@@ -150,7 +150,7 @@ export class CallCommentsPage implements OnInit {
   }
 
   getActivityActions(){
-    if(this.activityType === "call"){
+    if(this.activityType.toLowerCase() === "call"){
       this.activityActionsList = [{
         value: "Call : Arrange First Site Visit",
         text: "Call : Arrange First Site Visit"
@@ -183,7 +183,7 @@ export class CallCommentsPage implements OnInit {
         value: "Call : Other",
         text: "Call : Other"
       }];
-    } else if(this.activityType === "meeting"){
+    } else if(this.activityType.toLowerCase() === "meeting"){
       this.activityActionsList = [{
         value: "Meeting : First Site Visit",
         text: "Meeting : First Site Visit"
