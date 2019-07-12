@@ -52,7 +52,7 @@ export class ViewActivityDetailService {
 
   submitComments (sessionName:string, oppId:string, wfId:string, comments:string) {
     const envVars = {
-      comments: comments
+      "comments": comments
     }
 
     const queryParams = {
@@ -66,20 +66,22 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
-  createNewActivity(sessionName: string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string) {
+  createNewActivity(sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string) {
     const envVars = {
       "event_subject": "Auto Generated",
-      "activity_type": activityType,
-      "activity_action": activityAction,
+      "activity_type": activityType, // "Mobile Call"
+      "activity_action": activityAction, //"Mobile Call : Call Logging"
       "start_date": startDate,
       "start_time": startTime,
-      "duration": duration
+      "duration": duration,
+      //"activity_status": "Planned" || "Held"
     }
 
     const queryParams = {
       "operation": "executeWF",
       "sessionName": sessionName,
       "wfId": wfId,
+      "crmId": oppId,
       "envVars": JSON.stringify(envVars)
     }
 

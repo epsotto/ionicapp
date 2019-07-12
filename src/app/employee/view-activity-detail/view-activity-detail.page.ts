@@ -54,6 +54,7 @@ export class ViewActivityDetailPage implements OnInit {
   driveFolder:string = "";
 
   private activityType:string = "";
+  private activityId:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -83,6 +84,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.getOpportunityDetails(this.oppId);
     this.getClientDetails(this.dataIds.ContactId);
     this.activityType = this.dataIds.ActivityType;
+    this.activityId = this.dataIds.ActivityId;
   }
 
   getOpportunityDetails(oppId:string){
@@ -278,7 +280,8 @@ export class ViewActivityDetailPage implements OnInit {
       component: CheckoutPage,
       componentProps: {
         "oppId": this.oppId,
-        "potentialNumber": this.potentialNumber
+        "potentialNumber": this.potentialNumber,
+        "activityId": this.activityId
       }
     });
 

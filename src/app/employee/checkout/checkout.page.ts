@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import * as moment from 'moment';
+import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
+import { DataStorageService } from 'src/app/services/data-storage.service';
 
 @Component({
   selector: 'app-checkout',
@@ -10,6 +12,7 @@ import * as moment from 'moment';
 export class CheckoutPage implements OnInit {
   @Input() oppId:string;
   @Input() potentialNumber:string;
+  @Input() activityId:string;
   comment:string = "";
   markDone:boolean = false;
   setNewActivity:boolean = false;
@@ -17,23 +20,78 @@ export class CheckoutPage implements OnInit {
   activityType:string = "";
   minimumDate:string = "";
 
+  selectedActivityAction:string = "";
+  taskScheduleDate:string = "";
+  taskScheduleTime:string = "";
+  taskScheduleDuration:string = "";
+  taskDurationList = [];
+
+  private cachedData;
+
   constructor(private modal: ModalController,
-              private alertController: AlertController) { }
+              private alertController: AlertController,
+              private activityDetailService: ViewActivityDetailService,
+              private dataStorage: DataStorageService) { }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+    this.dataStorage.retrieveCachedData().then((res) => {
+      this.cachedData = res;
+    });
+
+    this.taskDurationList = [{value: "5", text: "5 mins"},
+    {value: "5", text: "5 mins"},
+    {value: "10", text: "10 mins"},
+    {value: "15", text: "15 mins"},
+    {value: "20", text: "20 mins"},
+    {value: "30", text: "30 mins"},
+    {value: "60", text: "60 mins"},
+    {value: "90", text: "90 mins"},
+    {value: "120", text: "120 mins"},
+    {value: "130", text: "130 mins"},];
   }
 
   onSubmit(){
     if(this.markDone){
-      const ouput = {
-        markedDone: this.markDone,
-        comment: this.comment
+    // if(this.markDone){
+    //   const ouput = {
+    //     markedDone: this.markDone,
+    //     comment: this.comment
+    //   }
+    //   this.modal.dismiss(ouput);
+    // } else {
+    //   this.presentAlert("Activity must be marked completed/held before submission.")
+    // }
+
+    this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+      this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+      this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+        .then((res) => {
+          const data = JSON.parse(res.data);
+
+          if(data.success){
+            this.activityDetailService.submitComments(this.cachedData.sessionName, 
+              this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+              this.comment).then((res) => {
+                const data = JSON.parse(res.data);
+                
+                if(data.success){
+                  if(this.setNewActivity){
+                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                    "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
+                    moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration)
+                      .then((res) => {
+                        console.log(res);
+                        this.modal.dismiss();
+                      });
+                  } else {          
+                    this.modal.dismiss();
+                  }
+                }
+              });
+          }
+        });
       }
-      this.modal.dismiss(ouput);
-    } else {
-      this.presentAlert("Activity must be marked completed/held before submission.")
-    }
   }
 
   async presentAlert(msg:string) {
@@ -51,7 +109,7 @@ export class CheckoutPage implements OnInit {
   }
 
   getActivityActions(){
-    if(this.activityType === "call"){
+    if(this.activityType.toLowerCase() === "call"){
       this.activityActionsList = [{
         value: "Call : Arrange First Site Visit",
         text: "Call : Arrange First Site Visit"
@@ -84,7 +142,7 @@ export class CheckoutPage implements OnInit {
         value: "Call : Other",
         text: "Call : Other"
       }];
-    } else if(this.activityType === "meeting"){
+    } else if(this.activityType.toLowerCase() === "meeting"){
       this.activityActionsList = [{
         value: "Meeting : First Site Visit",
         text: "Meeting : First Site Visit"

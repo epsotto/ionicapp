@@ -51,7 +51,7 @@ export class CallCommentsPage implements OnInit {
     {value: "60", text: "60 mins"},
     {value: "90", text: "90 mins"},
     {value: "120", text: "120 mins"},
-    {value: "130", text: "130 mins"},]
+    {value: "130", text: "130 mins"},];
 
     this.dataStorage.retrieveCachedData().then((res) => {
       this.cachedData = res;
@@ -103,14 +103,15 @@ export class CallCommentsPage implements OnInit {
 
             if(data.success){
               this.activityDetailService.submitComments(this.cachedData.sessionName, 
-                this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "125",
+                this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
                 this.comment).then((res) => {
                   const data = JSON.parse(res.data);
                   
                   if(data.success){
                     if(this.setNewActivity){
-                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, "124", this.activityType, 
-                      this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration)
+                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                      "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration)
                         .then((res) => {
                           console.log(res);
                           this.modalController.dismiss();

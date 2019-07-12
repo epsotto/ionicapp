@@ -57,10 +57,12 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size=6>
+          <ion-col size=12>
             <ion-label position="floating">Please select Duration</ion-label>
-            <ion-datetime [(ngModel)]="taskScheduleDuration" name="taskScheduleDuration" 
-            placeholder="Duration" displayFormat="HH"></ion-datetime>
+            <ion-select [(ngModel)]="taskScheduleDuration" name="taskScheduleDuration" placeholder="Duration"
+              [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
+              <ion-select-option *ngFor="let duration of taskDurationList" value="{{duration.value}}">{{duration.text}}</ion-select-option>
+            </ion-select>
           </ion-col>
         </ion-row>
       </ion-grid>

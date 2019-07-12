@@ -211,12 +211,13 @@ export class FollowupPage implements OnInit {
     toast.present();
   }
 
-  contactSelected(event, OppId, ContactId, activityType){
+  contactSelected(event, OppId, ContactId, activityType, activityId){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
       ContactId: ContactId,
       ActivityType: activityType,
+      ActivityId: activityId
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
