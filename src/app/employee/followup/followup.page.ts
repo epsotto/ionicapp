@@ -100,7 +100,6 @@ export class FollowupPage implements OnInit {
     
               this.followupList = this.followupList.concat(singleRecord);
             }
-            console.log(data);
           }
 
           this.isLoading = false;
@@ -169,7 +168,6 @@ export class FollowupPage implements OnInit {
     modal.onDidDismiss().then(res => {
       this.calledNumber = "";
       this.dateCalled = 0;
-      console.log(res);
     });
     modal.present();
   }
