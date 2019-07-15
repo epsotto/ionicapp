@@ -161,7 +161,8 @@ export class FollowupPage implements OnInit {
         "oppId": this.selectedOppId,
         "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
-        "dateCalled": this.dateCalled
+        "dateCalled": this.dateCalled,
+        "isFromViewDetail": false
       }
     });
 

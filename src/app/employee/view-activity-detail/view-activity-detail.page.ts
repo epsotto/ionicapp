@@ -9,6 +9,7 @@ import { CheckoutPage } from '../checkout/checkout.page';
 import * as moment from "moment";
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallCommentsPage } from '../call-comments/call-comments.page';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -73,7 +74,7 @@ export class ViewActivityDetailPage implements OnInit {
               private actionSheetController: ActionSheetController){
                 this.platform.backButton.subscribeWithPriority(0, () => {
                   if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
-                    this.nav.navigateRoot('/employee/followup');
+                    this.nav.navigateRoot("/employee/followup");
                   }
                   });
               }
@@ -281,17 +282,42 @@ export class ViewActivityDetailPage implements OnInit {
       componentProps: {
         "oppId": this.oppId,
         "potentialNumber": this.potentialNumber,
-        "activityId": this.activityId
+        "activityId": this.activityId,
       }
     });
 
     modal.onDidDismiss().then(res => {
-      if(res.data != "" && typeof(res.data) !== 'undefined'){
-        this.checkIn = {
-          location: "",
-          time: "",
-        }
-        this.presentAlert("Checked Out", "You have checked out from the client site at "+ moment(new Date()).format("LLL") +".");
+      if(res.data.isSuccess){
+        this.nav.navigateRoot("/employee/followup");
+      }
+    });
+
+    modal.present();
+  }
+
+  markActivityComplete(){
+    if(this.activityType.toLowerCase() === "call"){
+      this.ShowCallCommentModal();
+    } else {
+      this.presentCheckoutModal();
+    }
+  }
+
+  async ShowCallCommentModal(){
+    const modal = await this.modal.create({
+      component: CallCommentsPage,
+      componentProps: {
+        "oppId": this.oppId,
+        "activityId": this.activityId,
+        "calledNumber": "",
+        "dateCalled": "",
+        "isFromViewDetail": true
+      }
+    });
+
+    modal.onDidDismiss().then((res) => {
+      if(res.data.isSuccess){
+        this.nav.navigateRoot("/employee/followup");
       }
     });
 

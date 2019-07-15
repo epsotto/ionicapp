@@ -82,10 +82,10 @@ export class CheckoutPage implements OnInit {
                     moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
                       .then((res) => {
                         console.log(res);
-                        this.modal.dismiss();
+                        this.modal.dismiss({isSuccess: true});
                       });
                   } else {          
-                    this.modal.dismiss();
+                    this.modal.dismiss({isSuccess: true});
                   }
                 }
               });
