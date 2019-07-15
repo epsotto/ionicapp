@@ -6,7 +6,6 @@ import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@io
 import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
-import * as moment from "moment";
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
@@ -53,6 +52,7 @@ export class ViewActivityDetailPage implements OnInit {
   jobInclusion:string = "";
   nextSteps:string = "";
   driveFolder:string = "";
+  activityName:string = "";
 
   private activityType:string = "";
   private activityId:string = "";
@@ -86,6 +86,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.getClientDetails(this.dataIds.ContactId);
     this.activityType = this.dataIds.ActivityType;
     this.activityId = this.dataIds.ActivityId;
+    this.activityName = this.dataIds.ActivityName;
   }
 
   getOpportunityDetails(oppId:string){
@@ -230,6 +231,10 @@ export class ViewActivityDetailPage implements OnInit {
       this.callNumber.callNumber(number, true).then(res => {
         this.msg = "Called " + number;
         this.presentToast();
+        if(this.activityType.toLowerCase() === "call"){
+          const today = (new Date).getTime();
+          this.triggerMarkingCall(number, today);
+        }
       });
     }
   }
@@ -312,6 +317,27 @@ export class ViewActivityDetailPage implements OnInit {
         "calledNumber": "",
         "dateCalled": "",
         "isFromViewDetail": true
+      }
+    });
+
+    modal.onDidDismiss().then((res) => {
+      if(res.data.isSuccess){
+        this.nav.navigateRoot("/employee/followup");
+      }
+    });
+
+    modal.present();
+  }
+
+  async triggerMarkingCall(dialedNumber:string, today:number){
+    const modal = await this.modal.create({
+      component: CallCommentsPage,
+      componentProps: {
+        "oppId": this.oppId,
+        "activityId": this.activityId,
+        "calledNumber": dialedNumber,
+        "dateCalled": today,
+        "isFromViewDetail": false
       }
     });
 

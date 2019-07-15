@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
         <ion-back-button icon="arrow-back" defaultHref="/employee/followup"></ion-back-button>
     </ion-buttons>
-    <ion-title>Opportunity {{potentialNumber}}</ion-title>
+    <ion-title>{{this.activityName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -34,58 +34,6 @@
   </ion-grid>
 
   <ion-list *ngIf="activeTab === 'firstTab'">
-    <ion-item>
-      <ion-label text-wrap>
-        <ion-text color="primary">
-          Opportunity Name
-        </ion-text>
-          <p class="formValue">{{opportunityName}}</p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <ion-text color="primary">
-          Contact Name
-        </ion-text>
-        <p class="formValue">{{contactName}}</p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-        <ion-label>
-          <ion-text color="primary">
-            Job Includes
-          </ion-text>
-          <p class="formValue">{{jobInclusion}}</p>
-        </ion-label>
-      </ion-item>
-    <ion-item>
-      <ion-label text-wrap>
-        <ion-text color="primary">
-          Description
-        </ion-text>
-        <p class="formValue">{{oppDescription}}</p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-        <ion-label>
-          <ion-text color="primary">
-            Next Steps
-          </ion-text>
-          <p class="formValue">{{nextSteps}}</p>
-        </ion-label>
-      </ion-item>
-    <ion-item *ngIf="driveFolder != ''">
-        <ion-label text-wrap>
-          <ion-text color="primary">
-            Team Drive folder directory
-          </ion-text>
-          <p class="formValue"><a href="{{driveFolder}}" target="_blank">{{driveFolder}}</a></p>
-        </ion-label>
-      </ion-item>
-  </ion-list>
-
-
-  <ion-list *ngIf="activeTab !== 'firstTab'">
     <ion-item>
       <ion-label text-wrap>
         <ion-text color="primary">
@@ -172,6 +120,57 @@
     </ion-item>
   </ion-list>
 
+  <ion-list *ngIf="activeTab !== 'firstTab'">
+      <ion-item>
+        <ion-label text-wrap>
+          <ion-text color="primary">
+            Opportunity Name
+          </ion-text>
+            <p class="formValue">{{opportunityName}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <ion-text color="primary">
+            Contact Name
+          </ion-text>
+          <p class="formValue">{{contactName}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              Job Includes
+            </ion-text>
+            <p class="formValue">{{jobInclusion}}</p>
+          </ion-label>
+        </ion-item>
+      <ion-item>
+        <ion-label text-wrap>
+          <ion-text color="primary">
+            Description
+          </ion-text>
+          <p class="formValue">{{oppDescription}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              Next Steps
+            </ion-text>
+            <p class="formValue">{{nextSteps}}</p>
+          </ion-label>
+        </ion-item>
+      <ion-item *ngIf="driveFolder != ''">
+          <ion-label text-wrap>
+            <ion-text color="primary">
+              Team Drive folder directory
+            </ion-text>
+            <p class="formValue"><a href="{{driveFolder}}" target="_blank">{{driveFolder}}</a></p>
+          </ion-label>
+        </ion-item>
+      </ion-list>  
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <!-- <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button> -->
       <ion-fab-button><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button>
@@ -194,14 +193,14 @@
       <ion-row>
         <ion-col class="button-container" size="6" align-self-center [ngClass]="{'active': activeTab == 'firstTab'}">
           <ion-button class="align-button-center" fill="clear" (click)="changeTabs('firstTab')">
-            <ion-icon slot="icon-only" name="document"></ion-icon>
-            <ion-label>Opportunity</ion-label>
+            <ion-icon slot="icon-only" name="contacts"></ion-icon>
+            <ion-label>Client Details</ion-label>
           </ion-button>
         </ion-col>
         <ion-col class="button-container" size="6" align-self-center [ngClass]="{'active': activeTab == 'secondTab'}">
           <ion-button class="align-button-center" fill="clear" (click)="changeTabs('secondTab')">
-            <ion-icon slot="icon-only" name="contacts"></ion-icon>
-            <ion-label>Client Details</ion-label>
+            <ion-icon slot="icon-only" name="document"></ion-icon>
+            <ion-label>Activity</ion-label>
           </ion-button>
         </ion-col>
       </ion-row>

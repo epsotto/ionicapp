@@ -24,7 +24,7 @@
   <ion-list *ngIf="!isLoading && followupList.length > 0">
     <ion-item button *ngFor="let item of followupList">
       <ion-ripple-effect></ion-ripple-effect>
-      <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId)">
+      <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName)">
         <ion-text text-wrap class="contentText">
           <h2>{{item.OppName}}</h2>
         </ion-text>

@@ -54,7 +54,7 @@
 </ion-list>
 
 <div *ngIf="!isLoading && callList.length == 0" class="emptyList">
-    No overdue activities found.
+    No items found.
 </div>
 
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">

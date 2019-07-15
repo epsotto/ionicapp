@@ -10,23 +10,19 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-checkbox [(ngModel)]="markDone" checked="false" slot="start" color="primary"></ion-checkbox>
-      <ion-label>Mark meeting as held?</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Enter comments for this activity</ion-label>
+      <ion-label position="floating" class="ion-text-wrap">Before marking this activity as completed, please enter comments for this activity</ion-label>
 
       <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="markDone">
+  <ion-list>
     <ion-item>
       <ion-checkbox [(ngModel)]="setNewActivity" checked="false" slot="start" color="primary"></ion-checkbox>
       <ion-label>Set new activity?</ion-label>
     </ion-item>
   </ion-list>
-  <ion-list *ngIf="markDone && setNewActivity">
+  <ion-list *ngIf="setNewActivity">
     <ion-item>
       <ion-label position="floating">Please select type of Activity</ion-label>
       <ion-select [(ngModel)]="activityType" name="activityType" placeholder="Select an Activity" (ionChange)="getActivityActions()"

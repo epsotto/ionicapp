@@ -14,7 +14,6 @@ export class CheckoutPage implements OnInit {
   @Input() potentialNumber:string;
   @Input() activityId:string;
   comment:string = "";
-  markDone:boolean = false;
   setNewActivity:boolean = false;
   activityActionsList = [];
   activityType:string = "";
@@ -40,7 +39,6 @@ export class CheckoutPage implements OnInit {
     });
 
     this.taskDurationList = [{value: "5", text: "5 mins"},
-    {value: "5", text: "5 mins"},
     {value: "10", text: "10 mins"},
     {value: "15", text: "15 mins"},
     {value: "20", text: "20 mins"},
@@ -48,50 +46,48 @@ export class CheckoutPage implements OnInit {
     {value: "60", text: "60 mins"},
     {value: "90", text: "90 mins"},
     {value: "120", text: "120 mins"},
-    {value: "130", text: "130 mins"},];
+    {value: "180", text: "180 mins"},];
   }
 
   onSubmit(){
-    if(this.markDone){
-    // if(this.markDone){
-    //   const ouput = {
-    //     markedDone: this.markDone,
-    //     comment: this.comment
-    //   }
-    //   this.modal.dismiss(ouput);
-    // } else {
-    //   this.presentAlert("Activity must be marked completed/held before submission.")
-    // }
+  // if(this.markDone){
+  //   const ouput = {
+  //     markedDone: this.markDone,
+  //     comment: this.comment
+  //   }
+  //   this.modal.dismiss(ouput);
+  // } else {
+  //   this.presentAlert("Activity must be marked completed/held before submission.")
+  // }
 
-    this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
-      this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
-      this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
-        .then((res) => {
-          const data = JSON.parse(res.data);
+  this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+    this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+    this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+      .then((res) => {
+        const data = JSON.parse(res.data);
 
-          if(data.success){
-            this.activityDetailService.submitComments(this.cachedData.sessionName, 
-              this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-              this.comment).then((res) => {
-                const data = JSON.parse(res.data);
-                
-                if(data.success){
-                  if(this.setNewActivity){
-                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-                    "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                    moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                      .then((res) => {
-                        console.log(res);
-                        this.modal.dismiss({isSuccess: true});
-                      });
-                  } else {          
-                    this.modal.dismiss({isSuccess: true});
-                  }
+        if(data.success){
+          this.activityDetailService.submitComments(this.cachedData.sessionName, 
+            this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+            this.comment).then((res) => {
+              const data = JSON.parse(res.data);
+              
+              if(data.success){
+                if(this.setNewActivity){
+                  this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                  "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
+                  moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                    .then((res) => {
+                      console.log(res);
+                      this.modal.dismiss({isSuccess: true});
+                    });
+                } else {          
+                  this.modal.dismiss({isSuccess: true});
                 }
-              });
-          }
-        });
-      }
+              }
+            });
+        }
+      });
   }
 
   async presentAlert(msg:string) {
