@@ -17,7 +17,7 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE eventstatus = 'Planned' " + 
-    "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start DESC LIMIT 20;";
     // "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;";
     const sessionName = sessionKey;
 
