@@ -6,6 +6,7 @@ import { FollowupService } from 'src/app/services/followup.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-calls-without-followups',
@@ -74,7 +75,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
             let singleRecord = {
               OppId: data.result[i].parent_id,
               OppName: data.result[i].subject,
-              ContactId: data.result[i].contact_id
+              ContactId: data.result[i].contact_id,
+              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
             }
   
             this.callList = this.callList.concat(singleRecord);

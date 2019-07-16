@@ -6,6 +6,7 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
 import { FollowupService } from 'src/app/services/followup.service';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-followup',
@@ -96,6 +97,7 @@ export class FollowupPage implements OnInit {
                 ContactId: data.result[i].contact_id,
                 ActivityId: data.result[i].id,
                 ActivityType: data.result[i].activitytype,
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
               }
     
               this.followupList = this.followupList.concat(singleRecord);

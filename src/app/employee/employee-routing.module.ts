@@ -15,6 +15,9 @@ const routes: Routes = [
   { path: 'checkout', loadChildren: './checkout/checkout.module#CheckoutPageModule' },
   { path: 'calls-followups', loadChildren: './calls-followups/calls-followups.module#CallsFollowupsPageModule' },
   { path: 'calls-without-followups', loadChildren: './calls-without-followups/calls-without-followups.module#CallsWithoutFollowupsPageModule' },
+  { path: 'calls-arrange-fsv', loadChildren: './calls-arrange-fsv/calls-arrange-fsv.module#CallsArrangeFsvPageModule' },
+  { path: 'calls-planned', loadChildren: './calls-planned/calls-planned.module#CallsPlannedPageModule' },
+  { path: 'meetings-planned', loadChildren: './meetings-planned/meetings-planned.module#MeetingsPlannedPageModule' },
 ];
 
 @NgModule({

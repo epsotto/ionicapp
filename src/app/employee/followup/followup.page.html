@@ -27,6 +27,7 @@
       <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName)">
         <ion-text text-wrap class="contentText">
           <h2>{{item.OppName}}</h2>
+          <p>Start Date: {{item.StartDate}}</p>
         </ion-text>
       </ion-label>
       <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId, item.ActivityId)" *ngIf="item.ActivityType === 'Call'">
