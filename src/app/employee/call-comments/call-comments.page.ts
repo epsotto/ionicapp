@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavParams, ModalController, ToastController, AlertController } from '@ionic/angular'
+import { NavParams, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular'
 import { CallLog, CallLogObject } from "@ionic-native/call-log/ngx";
 import * as moment from "moment";
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
@@ -41,7 +41,8 @@ export class CallCommentsPage implements OnInit {
               private toastController: ToastController,
               private alertController: AlertController,
               private activityDetailService: ViewActivityDetailService,
-              private dataStorage: DataStorageService
+              private dataStorage: DataStorageService,
+              private loader: LoadingController
               ) { }
 
   ngOnInit() {
@@ -66,6 +67,7 @@ export class CallCommentsPage implements OnInit {
   }
 
   onSubmit() {
+    this.presentLoader();
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
@@ -116,11 +118,13 @@ export class CallCommentsPage implements OnInit {
                                     const data = JSON.parse(res.data);
     
                                     if(data.success){
+                                      this.loader.dismiss();
                                       this.modalController.dismiss({isSuccess: true});
                                     }
                                   });
                               }
                               else if(data.success && !this.setNewActivity) {
+                                this.loader.dismiss();
                                 this.modalController.dismiss({isSuccess: true});
                               }
                             });
@@ -132,6 +136,7 @@ export class CallCommentsPage implements OnInit {
                                 const data = JSON.parse(res.data);
 
                                 if(data.success){
+                                  this.loader.dismiss();
                                   this.modalController.dismiss({isSuccess: true});
                                 }
                               });
@@ -192,6 +197,14 @@ export class CallCommentsPage implements OnInit {
     });
 
     toast.present();
+  }
+
+  async presentLoader() {
+    const load = await this.loader.create({
+      message: "Please wait..."
+    })
+
+    load.present();
   }
 
   getActivityActions(){

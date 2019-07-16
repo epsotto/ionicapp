@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { DataStorageService } from 'src/app/services/data-storage.service';
@@ -30,7 +30,8 @@ export class CheckoutPage implements OnInit {
   constructor(private modal: ModalController,
               private alertController: AlertController,
               private activityDetailService: ViewActivityDetailService,
-              private dataStorage: DataStorageService) { }
+              private dataStorage: DataStorageService,
+              private loader: LoadingController) { }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
@@ -50,6 +51,7 @@ export class CheckoutPage implements OnInit {
   }
 
   onSubmit(){
+    this.presentLoader();
   // if(this.markDone){
   //   const ouput = {
   //     markedDone: this.markDone,
@@ -78,10 +80,11 @@ export class CheckoutPage implements OnInit {
                   "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
                   moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
                     .then((res) => {
-                      console.log(res);
+                      this.loader.dismiss();
                       this.modal.dismiss({isSuccess: true});
                     });
-                } else {          
+                } else {
+                  this.loader.dismiss();
                   this.modal.dismiss({isSuccess: true});
                 }
               }
@@ -102,6 +105,14 @@ export class CheckoutPage implements OnInit {
 
   dismissModal() {
     this.modal.dismiss();
+  }
+
+  async presentLoader() {
+    const load = await this.loader.create({
+      message: "Please wait..."
+    });
+
+    load.present();
   }
 
   getActivityActions(){
