@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { DataResolverService } from '../resolver/data-resolver.service';
 
 const routes: Routes = [
-  { path: "dashboard", loadChildren: "./dashboard/dashboard.module#DashboardPageModule" },
   { path: "followup", loadChildren: "./followup/followup.module#FollowupPageModule" },
   { path: "view-activity-detail/:OppId", 
     resolve: {
