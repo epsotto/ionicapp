@@ -316,13 +316,15 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": "",
         "dateCalled": "",
-        "isFromViewDetail": true
+        "isDirectlyMarkedComplete": true
       }
     });
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
         this.nav.navigateRoot("/employee/followup");
+      } else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
     });
 
@@ -337,13 +339,15 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": dialedNumber,
         "dateCalled": today,
-        "isFromViewDetail": false
+        "isDirectlyMarkedComplete": false
       }
     });
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
         this.nav.navigateRoot("/employee/followup");
+      } else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
     });
 

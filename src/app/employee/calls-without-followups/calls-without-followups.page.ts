@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ToastController, NavController, ModalController } from '@ionic/angular';
+import { MenuController, ToastController, NavController, ModalController, AlertController } from '@ionic/angular';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
@@ -23,6 +23,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
   private totalRecordCount:number = 0;
   isLoading:boolean;
   callList = [];
+  private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
               private callNumber: CallNumber,
@@ -31,7 +32,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
               private nav: NavController,
               private dataStorage: DataStorageService,
               private modalController: ModalController,
-              private followupService: FollowupService) { }
+              private followupService: FollowupService,
+              private alertController: AlertController) { }
 
   ngOnInit() {
     this.menuController.enable(true);
@@ -77,7 +79,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
               OppName: data.result[i].subject,
               ContactId: data.result[i].contact_id,
               ActivityType: data.result[i].activitytype,
-              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
+              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY"),
+              ActivityId: data.result[i].id
             }
   
             this.callList = this.callList.concat(singleRecord);
@@ -95,15 +98,21 @@ export class CallsWithoutFollowupsPage implements OnInit {
       component: CallCommentsPage,
       componentProps: {
         "oppId": this.selectedOppId,
+        "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
-        "dateCalled": this.dateCalled
+        "dateCalled": this.dateCalled,
+        "isDirectlyMarkedComplete": false
       }
     });
 
     modal.onDidDismiss().then(res => {
-      this.calledNumber = "";
-      this.dateCalled = 0;
-      console.log(res);
+      if(res.data.isSuccess){
+        this.calledNumber = "";
+        this.dateCalled = 0;
+      }
+      else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
+      }
     });
     modal.present();
   }
@@ -123,7 +132,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
           this.msg = "Called " + res.data;
           this.calledNumber = res.data;
           this.presentToast();
-          //this.presentModal();
+          this.presentModal();
         }).catch(err => {
           this.msg = "Error in dialer " + err;
           this.presentToast();
@@ -168,7 +177,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY"),
+                ActivityId: data.result[i].id,
               }
     
               this.callList = this.callList.concat(singleRecord);
@@ -183,17 +193,20 @@ export class CallsWithoutFollowupsPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId){
+  contactSelected(event, OppId, ContactId, activityType, activityId, activityName){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
-      ContactId: ContactId
+      ContactId: ContactId,
+      ActivityType: activityType,
+      ActivityId: activityId,
+      ActivityName: activityName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -224,8 +237,9 @@ export class CallsWithoutFollowupsPage implements OnInit {
                       this.calledNumber = phone[0];
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
+                      this.selectedActivityId = activityId;
                       this.presentToast();
-                      //this.presentModal();
+                      this.presentModal();
                     }).catch(err => {
                       this.msg = "Error in dialer " + err;
                       this.presentToast();
@@ -236,5 +250,15 @@ export class CallsWithoutFollowupsPage implements OnInit {
         }
       });
     }
+  }
+
+  async presentAlert(header:string, msg:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: msg,
+      buttons: ["OK"]
+    });
+
+    alert.present();
   }
 }

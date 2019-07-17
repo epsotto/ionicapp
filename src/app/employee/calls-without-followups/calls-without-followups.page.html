@@ -24,20 +24,20 @@
 <ion-list *ngIf="!isLoading && callList.length > 0">
   <ion-item button *ngFor="let item of callList">
     <ion-ripple-effect></ion-ripple-effect>
-    <ion-label (click)="contactSelected($event,item.OppId, item.ContactId)">
+    <ion-label (click)="contactSelected($event,item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName)">
       <ion-text text-wrap class="contentText">
         <h2>{{item.OppName}}</h2>
         <p>Start Date: {{item.StartDate}}</p>
       </ion-text>
     </ion-label>
-    <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId)">
+    <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId, item.ActivityId)">
       <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
     </ion-button>
   </ion-item>
 </ion-list>
 
 <div *ngIf="!isLoading && callList.length == 0" class="emptyList">
-    No items found.
+    No records found.
 </div>
 
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
