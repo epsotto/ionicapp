@@ -8,13 +8,33 @@
       </ion-header>
       <ion-content>
         <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-label>
-                {{p.title}}
-              </ion-label>
+          <div *ngFor="let p of appPages">
+            <ion-menu-toggle auto-hide="false" *ngIf="p.url">
+              <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive= "active">
+                <ion-label>
+                  {{p.title}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-item button *ngIf="p.children?.length > 0" (click)="p.open = !p.open" [class.parent-active]="p.open" detail="false">
+              <ion-icon slot="start" name="arrow-dropright" *ngIf="!p.open"></ion-icon>
+              <ion-icon slot="start" name="arrow-dropdown" *ngIf="p.open"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>
+         
+            <!-- Children List for clicked Item -->
+            <ion-list *ngIf="p.open">
+              <ion-menu-toggle>
+                <ion-item *ngFor="let sub of p.children" class="sub-item" [routerLink]="sub.url" routerDirection="root"
+                  routerLinkActive="active">
+                  <ion-label>
+                    {{ sub.title }}
+                  </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+          </div>
         </ion-list>
         <ion-item (click)="logout()">
           <ion-label>

@@ -1,6 +1,6 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Platform, IonRouterOutlet, ModalController, MenuController, ActionSheetController, PopoverController, ToastController, AlertController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, ModalController, ToastController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent {
   public appPages = [
@@ -17,13 +18,28 @@ export class AppComponent {
       url: "/employee/followup",
     },
     {
-      title: "All Calls - Except Followups",
-      url: "/employee/calls-without-followups",
+      title: "Calls",
+      children: [{
+          title: "All Calls - AFSV",
+          url: "/employee/calls-arrange-fsv",
+        },
+        {
+          title: "All Calls - Except Followups",
+          url: "/employee/calls-without-followups",
+        },
+        {
+          title: "All Calls - Followups",
+          url: "/employee/calls-followups",
+        },
+        {
+          title: "All Calls - Planned",
+          url: "/employee/calls-planned",
+        }]
     },
     {
-      title: "All Calls - Followups",
-      url: "/employee/calls-followups",
-    }
+      title: "All Meetings - Planned",
+      url: "/employee/meetings-planned",
+    },
   ];
 
   lastTimeBackPress = 0;
@@ -39,9 +55,6 @@ export class AppComponent {
     private router: Router,
     private authService: AuthenticationService,
     public modalController: ModalController,
-    private menuController: MenuController,
-    private actionSheetController: ActionSheetController,
-    private popoverController: PopoverController,
     private toastController: ToastController,
     private alertController: AlertController
   ) {

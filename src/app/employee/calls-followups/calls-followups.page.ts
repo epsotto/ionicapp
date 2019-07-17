@@ -45,7 +45,7 @@ export class CallsFollowupsPage implements OnInit {
         this.followupService.getTotalCallFollowupRecords(res.userId, res.sessionName).then((res) => {
           const data = JSON.parse(res.data);
           if(data.success){
-            this.totalRecordCount = data.result.count;
+            this.totalRecordCount = data.result[0].count;
           }
         });
       }
@@ -75,6 +75,7 @@ export class CallsFollowupsPage implements OnInit {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
+                ActivityType: data.result[i].activitytype,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
               }
     
@@ -164,7 +165,9 @@ export class CallsFollowupsPage implements OnInit {
               let singleRecord = {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
-                ContactId: data.result[i].contact_id
+                ContactId: data.result[i].contact_id,
+                ActivityType: data.result[i].activitytype,
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
               }
     
               this.callFollowupList = this.callFollowupList.concat(singleRecord);

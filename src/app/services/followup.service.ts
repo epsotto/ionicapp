@@ -17,8 +17,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE eventstatus = 'Planned' " + 
-    "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start DESC LIMIT 20;";
-    // "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;";
+    "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;";
     const sessionName = sessionKey;
 
     var queryParams = {
@@ -34,8 +34,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT COUNT(*) FROM Events WHERE eventstatus = 'Planned' " + 
-    "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
-    // "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start;"; //AND assigned_user_id = '" + userId +"';";
+    "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
+    // "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start;"; //AND assigned_user_id = '" + userId +"';";
     const sessionName = sessionKey;
 
     var queryParams = {
@@ -51,8 +51,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE eventstatus = 'Planned' " + 
-    "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
-    // "AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
     const sessionName = sessionKey;
 
     var queryParams = {
@@ -68,8 +68,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;"; 
+    "AND eventstatus = 'Planned' AND date_start <= '" + dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' AND date_start >= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;"; 
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -85,8 +85,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT COUNT(*) FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start;";
+    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
+    // "AND eventstatus = 'Planned' AND date_start >= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -102,8 +102,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday + "' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' AND date_start >= '" + dateToday + "' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -119,8 +119,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT 20;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -136,8 +136,8 @@ export class FollowupService {
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT COUNT(*) FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -150,11 +150,156 @@ export class FollowupService {
   }
 
   getMoreCallFollowupRecords(userId:string, sessionKey:string, offset:number) {
+    const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT " + offset + ",20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getCallAFSVList(userId:string, sessionKey:string){
+    const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Arrange First Site Visit' AND activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getTotalCallAFSVRecords(userId:string, sessionKey:string) {
+    const query = "SELECT COUNT(*) FROM Events WHERE cf_985 = 'Call : Arrange First Site Visit' AND activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getMoreCallAFSVList(userId:string, sessionKey:string, offset:number){
+    const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Arrange First Site Visit' AND activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT " + offset + ",20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getCallPlannedList(userId:string, sessionKey:string){
     const dateToday = moment().format("YYYY-MM-DD");
     const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
-    const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    const query = "SELECT * FROM Events WHERE activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getTotalCallPlannedRecords(userId:string, sessionKey:string) {
+    const dateToday = moment().format("YYYY-MM-DD");
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT COUNT(*) FROM Events WHERE activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getMoreCallPlannedList(userId:string, sessionKey:string, offset:number){
+    const dateToday = moment().format("YYYY-MM-DD");
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT * FROM Events WHERE activitytype = 'Call'" + 
+    "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getMeetingPlannedList(userId:string, sessionKey:string){
+    const dateToday = moment().format("YYYY-MM-DD");
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT * FROM Events WHERE activitytype = 'Meeting'" + 
+    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getTotalMeetingPlannedRecords(userId:string, sessionKey:string) {
+    const dateToday = moment().format("YYYY-MM-DD");
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT COUNT(*) FROM Events WHERE activitytype = 'Meeting'" + 
+    "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT 20;";
+    const sessionName = sessionKey;
+    
+    var queryParams = {
+      "operation": "query",
+      "sessionName": sessionName,
+      "query": query
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
+  }
+
+  getMoreMeetingPlannedList(userId:string, sessionKey:string, offset:number){
+    const dateToday = moment().format("YYYY-MM-DD");
+    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
+    const query = "SELECT * FROM Events WHERE activitytype = 'Meeting'" + 
+    "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' AND date_start > '" + dateToday + "' ORDER BY date_start LIMIT " + offset + ",20;";
     const sessionName = sessionKey;
     
     var queryParams = {
