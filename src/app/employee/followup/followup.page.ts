@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MenuController, ToastController, NavController, ModalController, IonRouterOutlet, Platform } from '@ionic/angular';
+import { MenuController, ToastController, NavController, ModalController, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
@@ -34,21 +34,8 @@ export class FollowupPage implements OnInit {
               private nav: NavController,
               private dataStorage: DataStorageService,
               private modalController: ModalController,
-              private platform: Platform,
+              private alertController: AlertController,
               private followupService: FollowupService) { 
-                // this.backButtonEvent();
-                // this.platform.backButton.subscribeWithPriority(0, () => {
-                //   if (this.routerOutlet && this.routerOutlet.canGoBack()) {
-                //     this.routerOutlet.pop();
-                //   } else if (this.router.url === '/LoginPage') {
-                    
-              
-                //     // or if that doesn't work, try
-                //     navigator['app'].exitApp();
-                //   } else {
-                //     //this.generic.showAlert("Exit", "Do you want to exit the app?", this.onYesHandler, this.onNoHandler, "backPress");
-                //   }
-                // });
               }
 
   ngOnInit() {
@@ -167,8 +154,13 @@ export class FollowupPage implements OnInit {
     });
 
     modal.onDidDismiss().then(res => {
-      this.calledNumber = "";
-      this.dateCalled = 0;
+      if(res.data.isSuccess){
+        this.calledNumber = "";
+        this.dateCalled = 0;
+      }
+      else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
+      }
     });
     modal.present();
   }
@@ -261,26 +253,13 @@ export class FollowupPage implements OnInit {
     }
   }
 
-  // backButtonEvent(){
-  //   this.platform.backButton.subscribeWithPriority(0, async () => {
-  //     this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-  //       this.msg = "back button pressed.";
-  //       this.presentToast();
-  //       if (outlet && outlet.canGoBack()) {
-  //           outlet.pop();
+  async presentAlert(header:string, msg:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: msg,
+      buttons: ["OK"]
+    });
 
-  //       } else if (this.router.url === '/home') {
-  //         if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
-  //             // this.platform.exitApp(); // Exit from app
-  //             navigator['app'].exitApp(); // work in ionic 4
-
-  //         } else {
-  //           this.msg = "Press back again to exit App.";
-  //           this.presentToast();
-  //           this.lastTimeBackPress = new Date().getTime();
-  //         }
-  //       }
-  //     });
-  //   });
-  // }
+    alert.present();
+  }
 }

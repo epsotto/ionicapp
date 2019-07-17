@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ToastController, NavController, ModalController } from '@ionic/angular';
+import { MenuController, ToastController, NavController, ModalController, AlertController } from '@ionic/angular';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
@@ -31,7 +31,8 @@ export class CallsFollowupsPage implements OnInit {
     private nav: NavController,
     private dataStorage: DataStorageService,
     private modalController: ModalController,
-    private followupService: FollowupService) { }
+    private followupService: FollowupService,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.menuController.enable(true);
@@ -103,9 +104,13 @@ export class CallsFollowupsPage implements OnInit {
     });
 
     modal.onDidDismiss().then(res => {
-      this.calledNumber = "";
-      this.dateCalled = 0;
-      console.log(res);
+      if(res.data.isSuccess){
+        this.calledNumber = "";
+        this.dateCalled = 0;
+      }
+      else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
+      }
     });
     modal.present();
   }
@@ -242,5 +247,15 @@ export class CallsFollowupsPage implements OnInit {
         }
       });
     }
+  }
+
+  async presentAlert(header:string, msg:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: msg,
+      buttons: ["OK"]
+    });
+
+    alert.present();
   }
 }

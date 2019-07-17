@@ -140,6 +140,12 @@ export class CallCommentsPage implements OnInit {
                                   this.modalController.dismiss({isSuccess: true});
                                 }
                               });
+                      } else if (data.success) {
+                        this.loader.dismiss();
+                        this.modalController.dismiss({isSuccess: true});
+                      } else {
+                        this.loader.dismiss();
+                        this.modalController.dismiss({isSuccess: false});
                       }
                     });
                 }

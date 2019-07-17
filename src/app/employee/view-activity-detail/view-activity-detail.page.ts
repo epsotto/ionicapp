@@ -323,6 +323,8 @@ export class ViewActivityDetailPage implements OnInit {
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
         this.nav.navigateRoot("/employee/followup");
+      } else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
     });
 
@@ -344,6 +346,8 @@ export class ViewActivityDetailPage implements OnInit {
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
         this.nav.navigateRoot("/employee/followup");
+      } else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
     });
 
