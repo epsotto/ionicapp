@@ -23,6 +23,7 @@ export class CallsPlannedPage implements OnInit {
   private totalRecordCount:number = 0;
   callPlannedList = [];
   isLoading:boolean;
+  private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
               private callNumber: CallNumber,
@@ -95,8 +96,10 @@ export class CallsPlannedPage implements OnInit {
       component: CallCommentsPage,
       componentProps: {
         "oppId": this.selectedOppId,
+        "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
-        "dateCalled": this.dateCalled
+        "dateCalled": this.dateCalled,
+        "isDirectlyMarkedComplete": false
       }
     });
 
@@ -123,7 +126,7 @@ export class CallsPlannedPage implements OnInit {
           this.msg = "Called " + res.data;
           this.calledNumber = res.data;
           this.presentToast();
-          //this.presentModal();
+          this.presentModal();
         }).catch(err => {
           this.msg = "Error in dialer " + err;
           this.presentToast();
@@ -193,7 +196,7 @@ export class CallsPlannedPage implements OnInit {
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -224,8 +227,9 @@ export class CallsPlannedPage implements OnInit {
                       this.calledNumber = phone[0];
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
+                      this.selectedActivityId = activityId;
                       this.presentToast();
-                      //this.presentModal();
+                      this.presentModal();
                     }).catch(err => {
                       this.msg = "Error in dialer " + err;
                       this.presentToast();
