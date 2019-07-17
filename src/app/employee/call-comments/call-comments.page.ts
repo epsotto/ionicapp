@@ -16,7 +16,7 @@ export class CallCommentsPage implements OnInit {
   @Input() calledNumber:string;
   @Input() dateCalled:string;
   @Input() activityId:string;
-  @Input() isFromViewDetail:boolean;
+  @Input() isDirectlyMarkedComplete:boolean;
   msg:string = "";
   comment:string = "";
   setNewActivity:boolean = false;
@@ -87,9 +87,9 @@ export class CallCommentsPage implements OnInit {
                   "operator": ">="
                 }];
         this.callLog.getCallLog(filters).then(data => {
-          this.actualDateCalled = this.isFromViewDetail ? "" : moment(data[0].date).format("YYYY/MM/DD");
-          this.actualTimeCalled = this.isFromViewDetail ? "" : moment(data[0].date).format("HH:mm");
-          this.callDuration = this.isFromViewDetail ? "" : moment(data[0].duration).format("mm");
+          this.actualDateCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("YYYY/MM/DD");
+          this.actualTimeCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("HH:mm");
+          this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
 
           this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
             this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
@@ -103,7 +103,7 @@ export class CallCommentsPage implements OnInit {
                     this.comment).then((res) => {
                       const data = JSON.parse(res.data);
                       
-                      if(data.success && this.isFromViewDetail){
+                      if(data.success && !this.isDirectlyMarkedComplete){
                         this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                           "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
                           this.actualTimeCalled, this.callDuration, "Held")

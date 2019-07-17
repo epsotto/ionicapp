@@ -65,11 +65,9 @@ export class FollowupService {
   }
 
   getCallList(userId:string, sessionKey:string) {
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;"; 
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT 20;"; 
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -82,11 +80,9 @@ export class FollowupService {
   }
 
   getTotalCallRecords(userId:string, sessionKey:string){
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT COUNT(*) FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -99,11 +95,9 @@ export class FollowupService {
   }
 
   getMoreCallRecords(userId:string, sessionKey:string, offset:number){
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 != 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start > '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
-    // "AND eventstatus = 'Planned' AND date_start >= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT " + offset + ",20;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -116,11 +110,9 @@ export class FollowupService {
   }
 
   getCallFollowupList(userId:string, sessionKey:string) {
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT 20;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT 20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT 20;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -133,11 +125,9 @@ export class FollowupService {
   }
 
   getTotalCallFollowupRecords(userId:string, sessionKey:string) {
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT COUNT(*) FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start;";
     const sessionName = sessionKey;
     
     var queryParams = {
@@ -150,11 +140,9 @@ export class FollowupService {
   }
 
   getMoreCallFollowupRecords(userId:string, sessionKey:string, offset:number) {
-    const dateToday = moment().format("YYYY-MM-DD");
-    const startDueDate = moment().subtract(120, 'days').format("YYYY-MM-DD");
     const query = "SELECT * FROM Events WHERE cf_985 = 'Call : Quote Follow Up' AND activitytype = 'Call'" + 
-    "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
-    // "AND eventstatus = 'Planned' AND date_start <= '"+ dateToday +"' AND date_start >= '" + startDueDate + "' ORDER BY date_start LIMIT " + offset + ",20;";
+    "AND eventstatus = 'Planned' AND assigned_user_id = '" + userId +"' ORDER BY date_start LIMIT " + offset + ",20;";
+    // "AND eventstatus = 'Planned' ORDER BY date_start LIMIT " + offset + ",20;";
     const sessionName = sessionKey;
     
     var queryParams = {

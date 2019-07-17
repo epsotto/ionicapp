@@ -316,7 +316,7 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": "",
         "dateCalled": "",
-        "isFromViewDetail": true
+        "isDirectlyMarkedComplete": true
       }
     });
 
@@ -337,7 +337,7 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": dialedNumber,
         "dateCalled": today,
-        "isFromViewDetail": false
+        "isDirectlyMarkedComplete": false
       }
     });
 

@@ -22,6 +22,7 @@ export class CallsFollowupsPage implements OnInit {
   private totalRecordCount:number = 0;
   callFollowupList = [];
   isLoading:boolean;
+  private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
     private callNumber: CallNumber,
@@ -74,7 +75,9 @@ export class CallsFollowupsPage implements OnInit {
               let singleRecord = {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
-                ContactId: data.result[i].contact_id
+                ContactId: data.result[i].contact_id,
+                ActivityId: data.result[i].id,
+                ActivityType: data.result[i].activitytype,
               }
     
               this.callFollowupList = this.callFollowupList.concat(singleRecord);
@@ -92,8 +95,10 @@ export class CallsFollowupsPage implements OnInit {
       component: CallCommentsPage,
       componentProps: {
         "oppId": this.selectedOppId,
+        "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
-        "dateCalled": this.dateCalled
+        "dateCalled": this.dateCalled,
+        "isDirectlyMarkedComplete": false
       }
     });
 
@@ -120,7 +125,7 @@ export class CallsFollowupsPage implements OnInit {
           this.msg = "Called " + res.data;
           this.calledNumber = res.data;
           this.presentToast();
-          //this.presentModal();
+          this.presentModal();
         }).catch(err => {
           this.msg = "Error in dialer " + err;
           this.presentToast();
@@ -163,7 +168,9 @@ export class CallsFollowupsPage implements OnInit {
               let singleRecord = {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
-                ContactId: data.result[i].contact_id
+                ContactId: data.result[i].contact_id,
+                ActivityId: data.result[i].id,
+                ActivityType: data.result[i].activitytype,
               }
     
               this.callFollowupList = this.callFollowupList.concat(singleRecord);
@@ -178,17 +185,20 @@ export class CallsFollowupsPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId){
+  contactSelected(event, OppId, ContactId, activityType, activityId, activityName){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
-      ContactId: ContactId
+      ContactId: ContactId,
+      ActivityType: activityType,
+      ActivityId: activityId,
+      ActivityName: activityName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -219,8 +229,9 @@ export class CallsFollowupsPage implements OnInit {
                       this.calledNumber = phone[0];
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
+                      this.selectedActivityId = activityId;
                       this.presentToast();
-                      //this.presentModal();
+                      this.presentModal();
                     }).catch(err => {
                       this.msg = "Error in dialer " + err;
                       this.presentToast();

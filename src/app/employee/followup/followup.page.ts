@@ -162,7 +162,7 @@ export class FollowupPage implements OnInit {
         "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
         "dateCalled": this.dateCalled,
-        "isFromViewDetail": false
+        "isDirectlyMarkedComplete": false
       }
     });
 
@@ -223,11 +223,6 @@ export class FollowupPage implements OnInit {
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  markDone(oppId){
-    this.selectedOppId = oppId;
-    this.presentModal();
-  }
-
   doRefresh(event) {
     this.followupList = [];
     this.pullFollowupList();
@@ -249,7 +244,9 @@ export class FollowupPage implements OnInit {
               let singleRecord = {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
-                ContactId: data.result[i].contact_id
+                ContactId: data.result[i].contact_id,
+                ActivityId: data.result[i].id,
+                ActivityType: data.result[i].activitytype,
               }
     
               this.followupList = this.followupList.concat(singleRecord);
