@@ -63,7 +63,7 @@ export class CallCommentsPage implements OnInit {
   }
 
   dismissModal(){
-    this.modalController.dismiss();
+    this.modalController.dismiss({isSuccess: true});
   }
 
   onSubmit() {
