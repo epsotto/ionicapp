@@ -186,11 +186,14 @@ export class MeetingsPlannedPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId){
+  contactSelected(event, OppId, ContactId, activityType, activityId, activityName){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
-      ContactId: ContactId
+      ContactId: ContactId,
+      ActivityType: activityType,
+      ActivityId: activityId,
+      ActivityName: activityName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
