@@ -10,9 +10,13 @@
 <ion-content padding>
   <ion-list>
     <ion-item>
-      <ion-label position="floating" class="ion-text-wrap">Before marking this activity as completed, please enter comments for this activity</ion-label>
-
-      <ion-textarea [(ngModel)]="comment" rows="4"></ion-textarea>
+      <ion-label position="floating" class="ion-text-wrap label-custom-wrap">Before marking this activity as completed, please enter comments for this activity</ion-label>
+      <ion-select [(ngModel)]="selectedReason" name="quickReason" placeholder="Select Reason"
+      [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
+        <ion-select-option *ngFor="let reason of commonReasonList" value="{{reason.value}}">{{reason.text}}</ion-select-option>
+      </ion-select>
+      <ion-textarea [(ngModel)]="comment" rows="4" *ngIf="selectedReason.toLowerCase() === 'other'" placeholder="Enter custom coment here.">
+      </ion-textarea>
     </ion-item>
   </ion-list>
 

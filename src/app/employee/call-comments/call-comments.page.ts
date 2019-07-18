@@ -28,6 +28,8 @@ export class CallCommentsPage implements OnInit {
   taskScheduleTime:string = "";
   taskScheduleDuration:string = "";
   taskDurationList = [];
+  commonReasonList = [];
+  selectedReason:string = "";
 
   private actualDateCalled:string = "";
   private actualTimeCalled:string = "";
@@ -56,6 +58,11 @@ export class CallCommentsPage implements OnInit {
     {value: "90", text: "90 mins"},
     {value: "120", text: "120 mins"},
     {value: "180", text: "180 mins"},];
+
+    this.commonReasonList = [{value: "No answer", text: "No answer"},
+    {value: "Client not interested", text: "Client not interested"},
+    {value: "Client backed out", text: "Client backed out"},
+    {value: "Other", text: "Other"}];
 
     this.dataStorage.retrieveCachedData().then((res) => {
       this.cachedData = res;
@@ -98,6 +105,7 @@ export class CallCommentsPage implements OnInit {
                 const data = JSON.parse(res.data);
     
                 if(data.success){
+                  this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
                   this.activityDetailService.submitComments(this.cachedData.sessionName, 
                     this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
                     this.comment).then((res) => {
