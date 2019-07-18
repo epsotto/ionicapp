@@ -76,6 +76,7 @@ export class CheckoutPage implements OnInit {
               
               if(data.success){
                 if(this.setNewActivity){
+                  this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
                   this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
                   "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
                   moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
