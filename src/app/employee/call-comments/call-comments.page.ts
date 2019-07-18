@@ -111,6 +111,7 @@ export class CallCommentsPage implements OnInit {
                               const data = JSON.parse(res.data);
 
                               if(data.success && this.setNewActivity){
+                                this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
                                 this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                                 "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                                 moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
@@ -129,17 +130,18 @@ export class CallCommentsPage implements OnInit {
                               }
                             });
                       } else if(data.success && this.setNewActivity){
-                          this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                            "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-                            moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                              .then((res) => {
-                                const data = JSON.parse(res.data);
+                        this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                          "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                          moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                            .then((res) => {
+                              const data = JSON.parse(res.data);
 
-                                if(data.success){
-                                  this.loader.dismiss();
-                                  this.modalController.dismiss({isSuccess: true});
-                                }
-                              });
+                              if(data.success){
+                                this.loader.dismiss();
+                                this.modalController.dismiss({isSuccess: true});
+                              }
+                            });
                       } else if (data.success) {
                         this.loader.dismiss();
                         this.modalController.dismiss({isSuccess: true});
