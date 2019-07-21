@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DataResolverService } from '../resolver/data-resolver.service';
 
 const routes: Routes = [
-  { path: "followup", loadChildren: "./followup/followup.module#FollowupPageModule" },
+  { path: "overdues", loadChildren: "./overdues/overdues.module#OverduesPageModule" },
   { path: "view-activity-detail/:OppId", 
     resolve: {
       special: DataResolverService

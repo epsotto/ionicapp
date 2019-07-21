@@ -74,7 +74,7 @@ export class ViewActivityDetailPage implements OnInit {
               private actionSheetController: ActionSheetController){
                 this.platform.backButton.subscribeWithPriority(0, () => {
                   if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
-                    this.nav.navigateRoot("/employee/followup");
+                    this.nav.navigateRoot("/employee/overdues");
                   }
                   });
               }
@@ -293,7 +293,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then(res => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/followup");
+        this.nav.navigateRoot("/employee/overdues");
       }
     });
 
@@ -322,7 +322,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/followup");
+        this.nav.navigateRoot("/employee/overdues");
       } else {
         this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
@@ -345,7 +345,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/followup");
+        this.nav.navigateRoot("/employee/overdues");
       } else {
         this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }

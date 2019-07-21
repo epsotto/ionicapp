@@ -15,7 +15,7 @@ export class AppComponent {
   public appPages = [
     {
       title: "Overdue Activities",
-      url: "/employee/followup",
+      url: "/employee/overdues",
     },
     {
       title: "Calls",
@@ -69,7 +69,7 @@ export class AppComponent {
 
     this.authService.authenticationState.subscribe(state => {
       if(state){
-        this.router.navigate(["employee", "followup"]);
+        this.router.navigate(["employee", "overdues"]);
       } else {
         this.router.navigate(["login"]);
       }

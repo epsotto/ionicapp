@@ -9,11 +9,11 @@ import { FollowupService } from 'src/app/services/followup.service';
 import * as moment from "moment";
 
 @Component({
-  selector: 'app-followup',
-  templateUrl: './followup.page.html',
-  styleUrls: ['./followup.page.scss'],
+  selector: 'app-overdues',
+  templateUrl: './overdues.page.html',
+  styleUrls: ['./overdues.page.scss'],
 })
-export class FollowupPage implements OnInit {
+export class OverduesPage implements OnInit {
   public followupList = [];
   private msg: string = "";
   private selectedOppId:string = "";
