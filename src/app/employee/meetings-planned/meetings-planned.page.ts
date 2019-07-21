@@ -193,7 +193,8 @@ export class MeetingsPlannedPage implements OnInit {
       ContactId: ContactId,
       ActivityType: activityType,
       ActivityId: activityId,
-      ActivityName: activityName
+      ActivityName: activityName,
+      OriginURL: "meetings-planned"
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);

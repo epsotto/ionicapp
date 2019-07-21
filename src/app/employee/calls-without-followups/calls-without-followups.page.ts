@@ -200,7 +200,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
       ContactId: ContactId,
       ActivityType: activityType,
       ActivityId: activityId,
-      ActivityName: activityName
+      ActivityName: activityName,
+      OriginURL: "calls-without-followups"
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);

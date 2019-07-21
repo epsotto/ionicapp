@@ -53,7 +53,8 @@ export class ViewActivityDetailPage implements OnInit {
   nextSteps:string = "";
   driveFolder:string = "";
   activityName:string = "";
-
+  
+  private originURL:string = "";
   private activityType:string = "";
   private activityId:string = "";
 
@@ -73,9 +74,7 @@ export class ViewActivityDetailPage implements OnInit {
               private nav: NavController,
               private actionSheetController: ActionSheetController){
                 this.platform.backButton.subscribeWithPriority(0, () => {
-                  if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
-                    this.nav.navigateRoot("/employee/overdues");
-                  }
+                    this.redirectToOriginPage();
                   });
               }
   
@@ -87,6 +86,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.activityType = this.dataIds.ActivityType;
     this.activityId = this.dataIds.ActivityId;
     this.activityName = this.dataIds.ActivityName;
+    this.originURL = this.dataIds.OriginURL;
   }
 
   getOpportunityDetails(oppId:string){
@@ -293,7 +293,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then(res => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/overdues");
+        this.redirectToOriginPage();
       }
     });
 
@@ -322,7 +322,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/overdues");
+        this.redirectToOriginPage();
       } else {
         this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
@@ -345,12 +345,37 @@ export class ViewActivityDetailPage implements OnInit {
 
     modal.onDidDismiss().then((res) => {
       if(res.data.isSuccess){
-        this.nav.navigateRoot("/employee/overdues");
+        this.redirectToOriginPage();
       } else {
         this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
       }
     });
 
     modal.present();
+  }
+
+  redirectToOriginPage() {
+    if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
+      switch(this.originURL){
+        case "calls-arrange-fsv":
+          this.nav.navigateRoot("/employee/calls-arrange-fsv");
+          break;
+        case "calls-followups":
+          this.nav.navigateRoot("/employee/calls-followups");
+          break;
+        case "calls-planned":
+          this.nav.navigateRoot("/employee/calls-planned");
+          break;
+        case "calls-without-followups":
+          this.nav.navigateRoot("/employee/calls-without-followups");
+          break;
+        case "meetings-planned":
+          this.nav.navigateRoot("/employee/meetings-planned");
+          break;
+        case "overdues":
+          this.nav.navigateRoot("/employee/overdues");
+          break;
+      }
+    }
   }
 }
