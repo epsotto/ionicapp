@@ -48,7 +48,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
         this.followupService.getTotalCallRecords(res.userId, res.sessionName).then((res) => {
           const data = JSON.parse(res.data);
           if(data.success){
-            this.totalRecordCount = data.result[0].count;
+            this.totalRecordCount = parseInt(data.result[0].count);
           }
         });
       }
