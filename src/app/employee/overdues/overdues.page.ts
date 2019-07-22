@@ -36,8 +36,7 @@ export class OverduesPage implements OnInit {
               private dataStorage: DataStorageService,
               private modalController: ModalController,
               private alertController: AlertController,
-              private followupService: FollowupService) { 
-              }
+              private followupService: FollowupService) { }
 
   ngOnInit() {
     this.menuController.enable(true);

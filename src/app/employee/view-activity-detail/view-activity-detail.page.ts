@@ -3,7 +3,7 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController, Events } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
@@ -72,7 +72,8 @@ export class ViewActivityDetailPage implements OnInit {
               private callNumber: CallNumber,
               private platform: Platform,
               private nav: NavController,
-              private actionSheetController: ActionSheetController){
+              private actionSheetController: ActionSheetController,
+              private events: Events){
                 this.platform.backButton.subscribeWithPriority(0, () => {
                     this.redirectToOriginPage();
                   });
@@ -358,22 +359,22 @@ export class ViewActivityDetailPage implements OnInit {
     if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
       switch(this.originURL){
         case "calls-arrange-fsv":
-          this.nav.navigateRoot("/employee/calls-arrange-fsv");
+          this.router.navigateByUrl("/employee/calls-arrange-fsv");
           break;
         case "calls-followups":
-          this.nav.navigateRoot("/employee/calls-followups");
+          this.router.navigate(["employee", "calls-followups"]);
           break;
         case "calls-planned":
-          this.nav.navigateRoot("/employee/calls-planned");
+          this.router.navigate(["employee", "calls-planned"]);
           break;
         case "calls-without-followups":
-          this.nav.navigateRoot("/employee/calls-without-followups");
+          this.router.navigate(["employee", "calls-without-followups"]);
           break;
         case "meetings-planned":
-          this.nav.navigateRoot("/employee/meetings-planned");
+          this.router.navigate(["employee", "meetings-planned"]);
           break;
         case "overdues":
-          this.nav.navigateRoot("/employee/overdues");
+          this.router.navigateByUrl("/employee/overdues");
           break;
       }
     }
