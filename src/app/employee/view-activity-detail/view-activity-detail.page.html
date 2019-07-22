@@ -14,21 +14,19 @@
         Planned activity start date: {{this.startDate}}
       </ion-col>
     </ion-row>
-    <!-- <ion-row>
+    <ion-row>
       <ion-col size=12 *ngIf="this.activityType.toLowerCase() === 'meeting'">
-        <ion-buttons>
-          <ion-button class="locationButtons" (click)="getLocation()" fill="solid" [disabled]="checkIn.location !== ''" color="success">
-            <ion-icon name="pin" class="fabItemListCustom"></ion-icon>
-            <ion-label>Check-in</ion-label>
-          </ion-button>
+        <ion-button (click)="getLocation()" expand="block" fill="solid" *ngIf="checkIn.location === ''" color="success">
+          <ion-icon name="pin"></ion-icon>
+          <ion-label>Check-in</ion-label>
+        </ion-button>
 
-          <ion-button class="locationButtons" (click)="checkOutFromSite()" fill="solid" [disabled]="checkIn.location === ''" color="danger">
-            <ion-icon name="pin"></ion-icon>
-            <ion-label>Check-out</ion-label>
-          </ion-button> 
-        </ion-buttons>
+        <ion-button (click)="checkOutFromSite()" expand="block" fill="solid" *ngIf="checkIn.location !== ''" color="danger">
+          <ion-icon name="pin"></ion-icon>
+          <ion-label>Check-out</ion-label>
+        </ion-button>
       </ion-col>
-    </ion-row> -->
+    </ion-row>
     <ion-row>
       <ion-col size=12>
         <ion-button color="primary" (click)="markActivityComplete()" fill="solid" expand="block">
