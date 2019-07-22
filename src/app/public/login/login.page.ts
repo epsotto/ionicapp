@@ -46,13 +46,18 @@ export class LoginPage implements OnInit {
       this.authModel.accessKey = loginForm.value.password;
       
       if(!this.successUserName){
-        this.userNameDisplay = loginForm.value.username;
-        this.successUserName = true;
         this.authService.getChallengeToken(this.authModel.username).then(res => {
-          if(res.status) {
+          if(res.status == 200) {
             let data = JSON.parse(res.data);
-            this.authModel.token = data.result.token;
-            this.successUserName = res.status == 200 ? true : false;
+            if(data.success){
+              this.authModel.token = data.result.token;
+              this.successUserName = true;
+              this.userNameDisplay = loginForm.value.username;
+            } else {
+              this.successUserName = false;
+              this.errorMsg = "Username does not exist.";
+              this.presentToast();
+            }
           } 
         });
       }
@@ -70,6 +75,9 @@ export class LoginPage implements OnInit {
                   }
               this.successUserName = false;
             });
+          } else {
+            this.errorMsg = "Invalid Access Key.";
+            this.presentToast();
           }
         });
 

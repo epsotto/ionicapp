@@ -3,12 +3,13 @@ import { DataStorageService } from 'src/app/services/data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController, Events } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController, Platform, NavController, ActionSheetController } from '@ionic/angular';
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPage } from '../checkout/checkout.page';
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -53,6 +54,8 @@ export class ViewActivityDetailPage implements OnInit {
   nextSteps:string = "";
   driveFolder:string = "";
   activityName:string = "";
+  startDate:string = "";
+  backToOriginURL:string = "";
   
   private originURL:string = "";
   private activityType:string = "";
@@ -72,8 +75,7 @@ export class ViewActivityDetailPage implements OnInit {
               private callNumber: CallNumber,
               private platform: Platform,
               private nav: NavController,
-              private actionSheetController: ActionSheetController,
-              private events: Events){
+              private actionSheetController: ActionSheetController){
                 this.platform.backButton.subscribeWithPriority(0, () => {
                     this.redirectToOriginPage();
                   });
@@ -88,6 +90,8 @@ export class ViewActivityDetailPage implements OnInit {
     this.activityId = this.dataIds.ActivityId;
     this.activityName = this.dataIds.ActivityName;
     this.originURL = this.dataIds.OriginURL;
+    this.backToOriginURL = "/employee/" + this.originURL;
+    this.startDate = this.dataIds.StartDate;
   }
 
   getOpportunityDetails(oppId:string){
@@ -359,24 +363,33 @@ export class ViewActivityDetailPage implements OnInit {
     if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
       switch(this.originURL){
         case "calls-arrange-fsv":
-          this.router.navigateByUrl("/employee/calls-arrange-fsv");
+          this.nav.navigateRoot("/employee/calls-arrange-fsv");
           break;
         case "calls-followups":
-          this.router.navigate(["employee", "calls-followups"]);
+          this.nav.navigateRoot("/employee/calls-followups");
           break;
         case "calls-planned":
-          this.router.navigate(["employee", "calls-planned"]);
+          this.nav.navigateRoot("/employee/calls-planned");
           break;
         case "calls-without-followups":
-          this.router.navigate(["employee", "calls-without-followups"]);
+          this.nav.navigateRoot("/employee/calls-without-followups");
           break;
         case "meetings-planned":
-          this.router.navigate(["employee", "meetings-planned"]);
+          this.nav.navigateRoot("/employee/meetings-planned");
           break;
         case "overdues":
-          this.router.navigateByUrl("/employee/overdues");
+          this.nav.navigateRoot("/employee/overdues");
           break;
       }
+    }
+  }
+
+  changeBackground() {
+    const today = moment().format("DD MMM, YYYY HH:mm");
+    if(this.startDate < today){
+      return "overdue-activity";
+    } else if(this.startDate >= today){
+      return "planned-activity";
     }
   }
 }

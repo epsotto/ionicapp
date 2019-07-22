@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-        <ion-back-button icon="arrow-back" defaultHref="/employee/overdues"></ion-back-button>
+        <ion-back-button icon="arrow-back" defaultHref="{{this.backToOriginURL}}"></ion-back-button>
     </ion-buttons>
     <ion-title>{{this.activityName}}</ion-title>
   </ion-toolbar>
@@ -9,6 +9,11 @@
 
 <ion-content>
   <ion-grid>
+    <ion-row>
+      <ion-col size=12 class="{{this.changeBackground()}}">
+        Planned activity start date: {{this.startDate}}
+      </ion-col>
+    </ion-row>
     <!-- <ion-row>
       <ion-col size=12 *ngIf="this.activityType.toLowerCase() === 'meeting'">
         <ion-buttons>

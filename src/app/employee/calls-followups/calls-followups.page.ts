@@ -78,7 +78,7 @@ export class CallsFollowupsPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY"),
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
                 ActivityId: data.result[i].id,
               }
     
@@ -176,7 +176,7 @@ export class CallsFollowupsPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY"),
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
                 ActivityId: data.result[i].id,
               }
     
@@ -192,7 +192,7 @@ export class CallsFollowupsPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName){
+  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startDate){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -200,7 +200,8 @@ export class CallsFollowupsPage implements OnInit {
       ActivityType: activityType,
       ActivityId: activityId,
       ActivityName: activityName,
-      OriginURL: "calls-followups"
+      OriginURL: "calls-followups",
+      StartDate: startDate
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);

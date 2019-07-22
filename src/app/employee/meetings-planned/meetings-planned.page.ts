@@ -78,7 +78,7 @@ export class MeetingsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
               }
     
               this.meetingPlannedList = this.meetingPlannedList.concat(singleRecord);
@@ -171,7 +171,7 @@ export class MeetingsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
               }
     
               this.meetingPlannedList = this.meetingPlannedList.concat(singleRecord);
@@ -186,7 +186,7 @@ export class MeetingsPlannedPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName){
+  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startdate){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -194,7 +194,8 @@ export class MeetingsPlannedPage implements OnInit {
       ActivityType: activityType,
       ActivityId: activityId,
       ActivityName: activityName,
-      OriginURL: "meetings-planned"
+      OriginURL: "meetings-planned",
+      Startdate: startdate
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
