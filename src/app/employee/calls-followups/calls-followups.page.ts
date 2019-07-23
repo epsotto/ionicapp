@@ -20,6 +20,8 @@ export class CallsFollowupsPage implements OnInit {
   private dateCalled:number;
   private retry = 3;
   private totalRecordCount:number = 0;
+  private lastName:string = "";
+  private eventNameSelected:string = "";
   callFollowupList = [];
   isLoading:boolean;
   private selectedActivityId:string = "";
@@ -80,6 +82,7 @@ export class CallsFollowupsPage implements OnInit {
                 ActivityType: data.result[i].activitytype,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
                 ActivityId: data.result[i].id,
+                EventName: data.result[i].cf_985
               }
     
               this.callFollowupList = this.callFollowupList.concat(singleRecord);
@@ -100,7 +103,9 @@ export class CallsFollowupsPage implements OnInit {
         "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
         "dateCalled": this.dateCalled,
-        "isDirectlyMarkedComplete": false
+        "isDirectlyMarkedComplete": false,
+        "lastName": this.lastName,
+        "eventName": this.eventNameSelected
       }
     });
 
@@ -178,6 +183,7 @@ export class CallsFollowupsPage implements OnInit {
                 ActivityType: data.result[i].activitytype,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
                 ActivityId: data.result[i].id,
+                EventName: data.result[i].cf_985
               }
     
               this.callFollowupList = this.callFollowupList.concat(singleRecord);
@@ -207,7 +213,7 @@ export class CallsFollowupsPage implements OnInit {
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string, activityId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string, eventName:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -215,6 +221,7 @@ export class CallsFollowupsPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
+              this.lastName = data.result[0].lastName;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
@@ -239,6 +246,7 @@ export class CallsFollowupsPage implements OnInit {
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
                       this.selectedActivityId = activityId;
+                      this.eventNameSelected = eventName;
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {

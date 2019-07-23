@@ -5,8 +5,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
 import * as moment from "moment";
-import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
-import { CallCommentsPage } from '../call-comments/call-comments.page';
 
 @Component({
   selector: 'app-meetings-planned',
@@ -16,22 +14,16 @@ import { CallCommentsPage } from '../call-comments/call-comments.page';
 export class MeetingsPlannedPage implements OnInit {
 
   private msg:string;
-  private calledNumber:string;
-  private selectedOppId:string;
-  private dateCalled:number;
   private retry = 3;
   private totalRecordCount:number = 0;
   meetingPlannedList = [];
   isLoading:boolean;
-  private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
-              private callNumber: CallNumber,
               private toastController: ToastController,
               private statusBar: StatusBar,
               private nav: NavController,
               private dataStorage: DataStorageService,
-              private modalController: ModalController,
               private followupService: FollowupService) { }
 
   ngOnInit() {
@@ -89,52 +81,6 @@ export class MeetingsPlannedPage implements OnInit {
         })
       }
     });
-  }
-
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: CallCommentsPage,
-      componentProps: {
-        "oppId": this.selectedOppId,
-        "activityId": this.selectedActivityId,
-        "calledNumber": this.calledNumber,
-        "dateCalled": this.dateCalled,
-        "isDirectlyMarkedComplete": false
-      }
-    });
-
-    modal.onDidDismiss().then(res => {
-      this.calledNumber = "";
-      this.dateCalled = 0;
-      console.log(res);
-    });
-    modal.present();
-  }
-
-  async presentMultipleNumbersModal(contactNumbers){
-    const modal = await this.modalController.create({
-      component: MultipleNumbersPage,
-      componentProps: {
-        "contactNumbers": contactNumbers
-      }
-    });
-
-    modal.onDidDismiss().then(res => {
-      if(res.data != "" && typeof(res.data) !== "undefined"){
-        this.callNumber.callNumber(res.data, true)
-        .then(res => {
-          this.msg = "Called " + res.data;
-          this.calledNumber = res.data;
-          this.presentToast();
-          this.presentModal();
-        }).catch(err => {
-          this.msg = "Error in dialer " + err;
-          this.presentToast();
-        });
-      }
-    });
-
-    modal.present();
   }
 
   async presentToast(){
@@ -199,51 +145,5 @@ export class MeetingsPlannedPage implements OnInit {
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
-  }
-
-  DialNumber(contactId:string, oppId:string, activityId:string){
-    if(contactId){
-      this.dataStorage.retrieveCachedData().then((res) => {
-        if(res != null){
-          this.followupService.getClientDetails(contactId, res.sessionName).then((res) => {
-            let phone = [];
-            let data = JSON.parse(res.data);
-            if(data.success){
-              if(data.result[0].homephone !== "") {
-                phone = phone.concat(data.result[0].homephone);
-              }
-              if(data.result[0].mobile !== "") {
-                phone = phone.concat(data.result[0].mobile);
-              }
-              if(data.result[0].otherphone !== "") {
-                phone = phone.concat(data.result[0].otherphone);
-              }
-              if(data.result[0].phone !== "") {
-                phone = phone.concat(data.result[0].phone);
-              }
-
-              if(phone.length > 1) {
-                  this.presentMultipleNumbersModal(phone);
-                }
-                else {
-                  this.callNumber.callNumber(phone[0], true)
-                    .then(res => {
-                      this.msg = "Called " + phone[0];
-                      this.calledNumber = phone[0];
-                      this.dateCalled = (new Date).getTime();
-                      this.selectedOppId = oppId;
-                      this.selectedActivityId = activityId;
-                      this.presentToast();
-                      this.presentModal();
-                    }).catch(err => {
-                      this.msg = "Error in dialer " + err;
-                      this.presentToast();
-                    });
-                }
-            }
-          });
-        }
-      });
-    }
   }
 }

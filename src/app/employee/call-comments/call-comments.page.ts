@@ -17,6 +17,8 @@ export class CallCommentsPage implements OnInit {
   @Input() dateCalled:string;
   @Input() activityId:string;
   @Input() isDirectlyMarkedComplete:boolean;
+  @Input() lastName:string;
+  @Input() eventName:string;
   msg:string = "";
   comment:string = "";
   setNewActivity:boolean = false;
@@ -112,9 +114,9 @@ export class CallCommentsPage implements OnInit {
                       const data = JSON.parse(res.data);
                       
                       if(data.success && !this.isDirectlyMarkedComplete){
-                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                        this.activityDetailService.createMobileCallActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                           "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
-                          this.actualTimeCalled, this.callDuration, "Held")
+                          this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
                             .then((res) => {
                               const data = JSON.parse(res.data);
 

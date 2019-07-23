@@ -87,4 +87,26 @@ export class ViewActivityDetailService {
 
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
+
+  createMobileCallActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string, subjectHeader:string) {
+    const envVars = {
+      "event_subject": subjectHeader,
+      "activity_type": activityType, // "Mobile Call"
+      "activity_action": activityAction, //"Mobile Call : Call Logging"
+      "start_date": startDate,
+      "start_time": startTime,
+      "duration": duration,
+      "activity_status": activityStatus
+    }
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": wfId,
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    }
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
 }

@@ -30,9 +30,6 @@
         <p>Start Date: {{item.StartDate}}</p>
       </ion-text>
     </ion-label>
-    <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId, item.ActivityId)" *ngIf="item.ActivityType === 'Call'">
-      <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
-    </ion-button>
   </ion-item>
 </ion-list>
 

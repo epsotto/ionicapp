@@ -21,6 +21,8 @@ export class CallsPlannedPage implements OnInit {
   private dateCalled:number;
   private retry = 3;
   private totalRecordCount:number = 0;
+  private lastName:string = "";
+  private eventNameSelected:string = "";
   callPlannedList = [];
   isLoading:boolean;
   private selectedActivityId:string = "";
@@ -78,7 +80,8 @@ export class CallsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                EventName: data.result[i].cf_985
               }
     
               this.callPlannedList = this.callPlannedList.concat(singleRecord);
@@ -171,7 +174,8 @@ export class CallsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                EventName: data.result[i].cf_985
               }
     
               this.callPlannedList = this.callPlannedList.concat(singleRecord);
@@ -201,7 +205,7 @@ export class CallsPlannedPage implements OnInit {
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string, activityId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string, eventName:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -209,6 +213,7 @@ export class CallsPlannedPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
+              this.lastName = data.result[0].lastName
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
@@ -233,6 +238,7 @@ export class CallsPlannedPage implements OnInit {
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
                       this.selectedActivityId = activityId;
+                      this.eventNameSelected = eventName;
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {

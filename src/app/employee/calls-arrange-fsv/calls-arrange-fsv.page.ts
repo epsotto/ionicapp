@@ -21,6 +21,8 @@ export class CallsArrangeFsvPage implements OnInit {
   private dateCalled:number;
   private retry = 3;
   private totalRecordCount:number = 0;
+  private lastName:string = "";
+  private eventNameSelected:string = "";
   callASFVList = [];
   isLoading:boolean;
   private selectedActivityId:string = "";
@@ -78,6 +80,7 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
+                EventName: data.result[i].cf_985,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
               }
     
@@ -99,7 +102,9 @@ export class CallsArrangeFsvPage implements OnInit {
         "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
         "dateCalled": this.dateCalled,
-        "isDirectlyMarkedComplete": false
+        "isDirectlyMarkedComplete": false,
+        "lastName": this.lastName,
+        "eventName": this.eventNameSelected
       }
     });
 
@@ -171,7 +176,8 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                EventName: data.result[i].cf_985
               }
     
               this.callASFVList = this.callASFVList.concat(singleRecord);
@@ -201,7 +207,7 @@ export class CallsArrangeFsvPage implements OnInit {
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string, activityId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string, eventName:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -209,6 +215,7 @@ export class CallsArrangeFsvPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
+              this.lastName = data.result[0].lastname;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
@@ -233,6 +240,7 @@ export class CallsArrangeFsvPage implements OnInit {
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
                       this.selectedActivityId = activityId;
+                      this.eventNameSelected = eventName;
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {
