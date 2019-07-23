@@ -80,7 +80,7 @@ export class CallsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
                 EventName: data.result[i].cf_985
               }
     
@@ -174,7 +174,7 @@ export class CallsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
                 EventName: data.result[i].cf_985
               }
     

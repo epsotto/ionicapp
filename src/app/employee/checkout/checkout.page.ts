@@ -135,10 +135,6 @@ export class CheckoutPage implements OnInit {
         text: "Call : Arrange Quote Presentation"
       },
       {
-        value: "Call : Arrange Quote Presentation",
-        text: "Call : Arrange Quote Presentation"
-      },
-      {
         value: "Call : Quote Follow Up",
         text: "Call : Quote Follow Up"
       },
@@ -162,10 +158,6 @@ export class CheckoutPage implements OnInit {
       this.activityActionsList = [{
         value: "Meeting : First Site Visit",
         text: "Meeting : First Site Visit"
-      },
-      {
-        value: "Meeting : Quote Presentation",
-        text: "Meeting : Quote Presentation"
       },
       {
         value: "Meeting : Quote Presentation",

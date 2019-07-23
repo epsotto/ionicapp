@@ -70,7 +70,7 @@ export class MeetingsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
               }
     
               this.meetingPlannedList = this.meetingPlannedList.concat(singleRecord);
@@ -117,7 +117,7 @@ export class MeetingsPlannedPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm")
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
               }
     
               this.meetingPlannedList = this.meetingPlannedList.concat(singleRecord);

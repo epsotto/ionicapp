@@ -54,7 +54,7 @@ export class ViewActivityDetailPage implements OnInit {
   nextSteps:string = "";
   driveFolder:string = "";
   activityName:string = "";
-  startDate:string = "";
+  startDateTime:string = "";
   backToOriginURL:string = "";
   
   private originURL:string = "";
@@ -91,7 +91,7 @@ export class ViewActivityDetailPage implements OnInit {
     this.activityName = this.dataIds.ActivityName;
     this.originURL = this.dataIds.OriginURL;
     this.backToOriginURL = "/employee/" + this.originURL;
-    this.startDate = this.dataIds.StartDate;
+    this.startDateTime = this.dataIds.StartDate;
   }
 
   getOpportunityDetails(oppId:string){
@@ -385,10 +385,10 @@ export class ViewActivityDetailPage implements OnInit {
   }
 
   changeBackground() {
-    const today = moment().format("DD MMM, YYYY HH:mm");
-    if(this.startDate < today){
+    const today = new Date().getTime();
+    if(new Date(this.startDateTime).getTime() < today){
       return "overdue-activity";
-    } else if(this.startDate >= today){
+    } else if(new Date(this.startDateTime).getTime() >= today){
       return "planned-activity";
     }
   }
