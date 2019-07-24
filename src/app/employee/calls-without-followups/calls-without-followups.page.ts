@@ -21,6 +21,8 @@ export class CallsWithoutFollowupsPage implements OnInit {
   private dateCalled:number;
   private retry = 3;
   private totalRecordCount:number = 0;
+  private lastName:string = "";
+  private eventNameSelected:string = "";
   isLoading:boolean;
   callList = [];
   private selectedActivityId:string = "";
@@ -79,8 +81,9 @@ export class CallsWithoutFollowupsPage implements OnInit {
               OppName: data.result[i].subject,
               ContactId: data.result[i].contact_id,
               ActivityType: data.result[i].activitytype,
-              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
-              ActivityId: data.result[i].id
+              ActivityId: data.result[i].id,
+              EventName: data.result[i].cf_895,
+              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
             }
   
             this.callList = this.callList.concat(singleRecord);
@@ -101,7 +104,9 @@ export class CallsWithoutFollowupsPage implements OnInit {
         "activityId": this.selectedActivityId,
         "calledNumber": this.calledNumber,
         "dateCalled": this.dateCalled,
-        "isDirectlyMarkedComplete": false
+        "isDirectlyMarkedComplete": false,
+        "lastName": this.lastName,
+        "eventName": this.eventNameSelected
       }
     });
 
@@ -177,8 +182,9 @@ export class CallsWithoutFollowupsPage implements OnInit {
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
                 ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY HH:mm"),
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
                 ActivityId: data.result[i].id,
+                EventName: data.result[i].cf_985
               }
     
               this.callList = this.callList.concat(singleRecord);
@@ -193,7 +199,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startDate){
+  contactSelected(event, OppId:string, ContactId:string, activityType:string, activityId:string, activityName:string, startDate:string, eventName:string){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -201,14 +207,15 @@ export class CallsWithoutFollowupsPage implements OnInit {
       ActivityType: activityType,
       ActivityId: activityId,
       ActivityName: activityName,
-      OriginURL: "calls-without-followups",
-      StartDate: startDate
+      OriginURL: "overdues",
+      StartDate: startDate,
+      EventName: eventName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
   }
 
-  DialNumber(contactId:string, oppId:string, activityId:string){
+  DialNumber(contactId:string, oppId:string, activityId:string, eventName:string){
     if(contactId){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
@@ -216,6 +223,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
+              this.lastName = data.result[0].lastname;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
@@ -240,6 +248,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
                       this.dateCalled = (new Date).getTime();
                       this.selectedOppId = oppId;
                       this.selectedActivityId = activityId;
+                      this.eventNameSelected = eventName;
                       this.presentToast();
                       this.presentModal();
                     }).catch(err => {

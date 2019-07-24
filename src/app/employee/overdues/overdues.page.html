@@ -24,13 +24,13 @@
   <ion-list *ngIf="!isLoading && followupList.length > 0">
     <ion-item button *ngFor="let item of followupList">
       <ion-ripple-effect></ion-ripple-effect>
-      <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName, item.StartDate)">
+      <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName, item.StartDate, item.EventName)">
         <ion-text text-wrap class="contentText">
           <h2>{{item.OppName}}</h2>
           <p>Start Date: {{item.StartDate}}</p>
         </ion-text>
       </ion-label>
-      <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId, item.ActivityId)" *ngIf="item.ActivityType === 'Call'">
+      <ion-button slot="end" size="large" color="success" (click)="DialNumber(item.ContactId, item.OppId, item.ActivityId, item.EventName)" *ngIf="item.ActivityType === 'Call'">
         <ion-icon slot="icon-only" name="call" size="large"></ion-icon>
       </ion-button>
     </ion-item>

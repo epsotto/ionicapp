@@ -17,6 +17,8 @@ export class CallCommentsPage implements OnInit {
   @Input() dateCalled:string;
   @Input() activityId:string;
   @Input() isDirectlyMarkedComplete:boolean;
+  @Input() lastName:string;
+  @Input() eventName:string;
   msg:string = "";
   comment:string = "";
   setNewActivity:boolean = false;
@@ -78,90 +80,89 @@ export class CallCommentsPage implements OnInit {
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
-      } else {
-        var date = new Date();
-        let filters:CallLogObject[] = [
-                {"name": "number",
-                  "value": this.calledNumber,
-                  "operator": "=="
-                },
-                {"name": "type",
-                  "value": "2",
-                  "operator": "=="},
-                {
-                  "name": "date",
-                  "value": this.dateCalled,
-                  "operator": ">="
-                }];
-        this.callLog.getCallLog(filters).then(data => {
-          this.actualDateCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("YYYY/MM/DD");
-          this.actualTimeCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("HH:mm");
-          this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
-
-          this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
-            this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
-            this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
-              .then((res) => {
-                const data = JSON.parse(res.data);
-    
-                if(data.success){
-                  this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-                  this.activityDetailService.submitComments(this.cachedData.sessionName, 
-                    this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-                    this.comment).then((res) => {
-                      const data = JSON.parse(res.data);
-                      
-                      if(data.success && !this.isDirectlyMarkedComplete){
-                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                          "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
-                          this.actualTimeCalled, this.callDuration, "Held")
-                            .then((res) => {
-                              const data = JSON.parse(res.data);
-
-                              if(data.success && this.setNewActivity){
-                                this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                                this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                                "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-                                moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                                  .then((res) => {
-                                    const data = JSON.parse(res.data);
-    
-                                    if(data.success){
-                                      this.loader.dismiss();
-                                      this.modalController.dismiss({isSuccess: true});
-                                    }
-                                  });
-                              }
-                              else if(data.success && !this.setNewActivity) {
-                                this.loader.dismiss();
-                                this.modalController.dismiss({isSuccess: true});
-                              }
-                            });
-                      } else if(data.success && this.setNewActivity){
-                        this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                          "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-                          moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                            .then((res) => {
-                              const data = JSON.parse(res.data);
-
-                              if(data.success){
-                                this.loader.dismiss();
-                                this.modalController.dismiss({isSuccess: true});
-                              }
-                            });
-                      } else if (data.success) {
-                        this.loader.dismiss();
-                        this.modalController.dismiss({isSuccess: true});
-                      } else {
-                        this.loader.dismiss();
-                        this.modalController.dismiss({isSuccess: false});
-                      }
-                    });
-                }
-              });
-        });
       }
+
+      let filters:CallLogObject[] = [
+              {"name": "number",
+                "value": this.calledNumber,
+                "operator": "=="
+              },
+              {"name": "type",
+                "value": "2",
+                "operator": "=="},
+              {
+                "name": "date",
+                "value": this.dateCalled,
+                "operator": ">="
+              }];
+      this.callLog.getCallLog(filters).then(data => {
+        this.actualDateCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("YYYY/MM/DD");
+        this.actualTimeCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("HH:mm");
+        this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
+
+        this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+          this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+          this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+            .then((res) => {
+              const data = JSON.parse(res.data);
+  
+              if(data.success){
+                this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+                this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                  this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+                  this.comment).then((res) => {
+                    const data = JSON.parse(res.data);
+                    
+                    if(data.success && !this.isDirectlyMarkedComplete){
+                      this.activityDetailService.createMobileCallActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                        "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
+                        this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
+                          .then((res) => {
+                            const data = JSON.parse(res.data);
+
+                            if(data.success && this.setNewActivity){
+                              this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                              this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                              "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                              moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                                .then((res) => {
+                                  const data = JSON.parse(res.data);
+  
+                                  if(data.success){
+                                    this.loader.dismiss();
+                                    this.modalController.dismiss({isSuccess: true});
+                                  }
+                                });
+                            }
+                            else if(data.success && !this.setNewActivity) {
+                              this.loader.dismiss();
+                              this.modalController.dismiss({isSuccess: true});
+                            }
+                          });
+                    } else if(data.success && this.setNewActivity){
+                      this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                          .then((res) => {
+                            const data = JSON.parse(res.data);
+
+                            if(data.success){
+                              this.loader.dismiss();
+                              this.modalController.dismiss({isSuccess: true});
+                            }
+                          });
+                    } else if (data.success) {
+                      this.loader.dismiss();
+                      this.modalController.dismiss({isSuccess: true});
+                    } else {
+                      this.loader.dismiss();
+                      this.modalController.dismiss({isSuccess: false});
+                    }
+                  });
+              }
+            });
+      });
     });
 
     // this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
@@ -234,10 +235,6 @@ export class CallCommentsPage implements OnInit {
         text: "Call : Arrange Quote Presentation"
       },
       {
-        value: "Call : Arrange Quote Presentation",
-        text: "Call : Arrange Quote Presentation"
-      },
-      {
         value: "Call : Quote Follow Up",
         text: "Call : Quote Follow Up"
       },
@@ -261,10 +258,6 @@ export class CallCommentsPage implements OnInit {
       this.activityActionsList = [{
         value: "Meeting : First Site Visit",
         text: "Meeting : First Site Visit"
-      },
-      {
-        value: "Meeting : Quote Presentation",
-        text: "Meeting : Quote Presentation"
       },
       {
         value: "Meeting : Quote Presentation",

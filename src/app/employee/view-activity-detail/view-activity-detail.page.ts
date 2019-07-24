@@ -54,12 +54,14 @@ export class ViewActivityDetailPage implements OnInit {
   nextSteps:string = "";
   driveFolder:string = "";
   activityName:string = "";
-  startDate:string = "";
+  startDateTime:string = "";
   backToOriginURL:string = "";
   
   private originURL:string = "";
   private activityType:string = "";
   private activityId:string = "";
+  private lastName:string = "";
+  private eventAction:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -91,7 +93,8 @@ export class ViewActivityDetailPage implements OnInit {
     this.activityName = this.dataIds.ActivityName;
     this.originURL = this.dataIds.OriginURL;
     this.backToOriginURL = "/employee/" + this.originURL;
-    this.startDate = this.dataIds.StartDate;
+    this.startDateTime = this.dataIds.StartDate;
+    this.eventAction = this.dataIds.EventName;
   }
 
   getOpportunityDetails(oppId:string){
@@ -119,6 +122,7 @@ export class ViewActivityDetailPage implements OnInit {
         this.viewActivityDetailService.getClientDetailData(res.sessionName, contactId).then((res) => {
           const data = JSON.parse(res.data);
           if(data.success){
+            this.lastName = data.result[0].lastname;
             this.contactName = data.result[0].lastname + ", " + data.result[0].firstname;
             this.clientAddress = data.result[0].mailingstreet  + ", " + 
                                 data.result[0].mailingcity + ", " + 
@@ -219,11 +223,11 @@ export class ViewActivityDetailPage implements OnInit {
       header: "Contact Persons:",
       buttons:[{
         text: "Richard: 0800999574",
-        handler: () => {this.callClientNumber("0800999574");}
+        handler: () => {this.dialSupportNumber("0800999574");}
       },
       {
         text: "Ravin: 0211359467",
-        handler: () => {this.callClientNumber("0211359467");}
+        handler: () => {this.dialSupportNumber("0211359467");}
       }
     ]
     });
@@ -242,6 +246,13 @@ export class ViewActivityDetailPage implements OnInit {
         }
       });
     }
+  }
+
+  dialSupportNumber(number) {
+    this.callNumber.callNumber(number, true).then(res => {
+      this.msg = "Called " + number;
+      this.presentToast();
+    });
   }
 
   showLoader(){
@@ -344,7 +355,9 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": dialedNumber,
         "dateCalled": today,
-        "isDirectlyMarkedComplete": false
+        "isDirectlyMarkedComplete": false,
+        "lastName": this.lastName,
+        "eventName": this.eventAction
       }
     });
 
@@ -385,10 +398,10 @@ export class ViewActivityDetailPage implements OnInit {
   }
 
   changeBackground() {
-    const today = moment().format("DD MMM, YYYY HH:mm");
-    if(this.startDate < today){
+    const today = new Date().getTime();
+    if(new Date(this.startDateTime).getTime() < today){
       return "overdue-activity";
-    } else if(this.startDate >= today){
+    } else if(new Date(this.startDateTime).getTime() >= today){
       return "planned-activity";
     }
   }
