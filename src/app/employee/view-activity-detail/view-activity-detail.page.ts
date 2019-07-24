@@ -35,6 +35,7 @@ export class ViewActivityDetailPage implements OnInit {
     maxResults: 5
   };
   
+  isCheckIn:boolean = false;
   contactName:string = "";
   clientAddress:string = "";
   mobilePhone:string = "";
@@ -95,6 +96,10 @@ export class ViewActivityDetailPage implements OnInit {
     this.backToOriginURL = "/employee/" + this.originURL;
     this.startDateTime = this.dataIds.StartDate;
     this.eventAction = this.dataIds.EventName;
+
+    this.dataStorage.getCheckedInLocation("location"+this.activityId).then(res => {
+      this.isCheckIn = res === null ? true : false;
+    });
   }
 
   getOpportunityDetails(oppId:string){
@@ -157,6 +162,7 @@ export class ViewActivityDetailPage implements OnInit {
   }
 
   getLocation(){
+    this.showLoader();
     this.diagnostic.isLocationEnabled().then(res => {
       if(res){
         this.geo.getCurrentPosition().then(res => {
@@ -169,6 +175,11 @@ export class ViewActivityDetailPage implements OnInit {
                 location: this.generateAddress(res[0]),
                 time: new Date().getTime()
               }
+
+              this.dataStorage.saveCheckedInLocation("location" + this.activityId, this.checkIn).then((result) => {
+                this.isCheckIn = false;
+                this.loadingController.dismiss();
+              });
             });
         }).catch(err => {
           this.msg = err;
@@ -176,6 +187,7 @@ export class ViewActivityDetailPage implements OnInit {
         });
       }
       else {
+        window.setTimeout(() => {this.loadingController.dismiss();}, 100);
         this.presentAlert("Location", "Please turn on Location on your device.");
       }
     });
@@ -184,34 +196,11 @@ export class ViewActivityDetailPage implements OnInit {
 
   checkOutFromSite(){
     this.showLoader();
-    this.diagnostic.isLocationEnabled().then(res => {
-      if(res){
-        this.geo.getCurrentPosition().then(res => {
-          let longtitude, latitude;
-          longtitude = res.coords.longitude;
-          latitude = res.coords.latitude;
-          
-          this.geoCoder.reverseGeocode(latitude, longtitude, this.geoEncoderOptions)
-            .then((res) => {
-              this.loadingController.dismiss();
-              this.checkIn={
-                location: "",
-                time: "",
-              }
-              this.checkOut ={
-                location: this.generateAddress(res[0]),
-                time: new Date().getTime()
-              };
-              this.presentCheckoutModal();
-            });
-        });
-      }
-      else {
-        this.presentAlert("Location", "Please turn on Location on your device.");
-      }
-    });
-
     // this.presentCheckoutModal();
+    this.dataStorage.removeCheckedInLocation("location" + this.activityId).then((res) => {
+      this.loadingController.dismiss();
+      this.isCheckIn = true;
+    });
   }
   
   callSupportNumber(){
@@ -308,9 +297,11 @@ export class ViewActivityDetailPage implements OnInit {
     });
 
     modal.onDidDismiss().then(res => {
-      if(res.data.isSuccess){
-        this.redirectToOriginPage();
-      }
+      this.dataStorage.removeCheckedInLocation("location" + this.activityId);
+      // if(res.data.isSuccess){
+      //   this.dataStorage.removeCheckedInLocation("location" + this.activityId);
+      //   this.redirectToOriginPage();
+      // }
     });
 
     modal.present();

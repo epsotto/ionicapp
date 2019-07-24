@@ -28,4 +28,16 @@ export class DataStorageService {
   retrieveCachedData(){
     return this.storage.get(token);
   }
+
+  saveCheckedInLocation(key:string, data:any){
+    return this.storage.set(key, data);
+  }
+
+  getCheckedInLocation(key){
+    return this.storage.get(key);
+  }
+
+  removeCheckedInLocation(key){
+    return this.storage.remove(key);
+  }
 }

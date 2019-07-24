@@ -16,12 +16,12 @@
     </ion-row>
     <ion-row>
       <ion-col size=12 *ngIf="this.activityType.toLowerCase() === 'meeting'">
-        <ion-button (click)="getLocation()" expand="block" fill="solid" *ngIf="checkIn.location === ''" color="success">
+        <ion-button (click)="getLocation()" expand="block" fill="solid" *ngIf="isCheckIn" color="success">
           <ion-icon name="pin"></ion-icon>
           <ion-label>Check-in</ion-label>
         </ion-button>
 
-        <ion-button (click)="checkOutFromSite()" expand="block" fill="solid" *ngIf="checkIn.location !== ''" color="danger">
+        <ion-button (click)="checkOutFromSite()" expand="block" fill="solid" *ngIf="!isCheckIn" color="danger">
           <ion-icon name="pin"></ion-icon>
           <ion-label>Check-out</ion-label>
         </ion-button>
