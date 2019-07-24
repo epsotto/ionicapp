@@ -132,7 +132,7 @@ export class MeetingsPlannedPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startdate){
+  contactSelected(event, OppId:string, ContactId:string, activityType:string, activityId:string, activityName:string, startDate:string, eventName:string){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -140,8 +140,9 @@ export class MeetingsPlannedPage implements OnInit {
       ActivityType: activityType,
       ActivityId: activityId,
       ActivityName: activityName,
-      OriginURL: "meetings-planned",
-      Startdate: startdate
+      OriginURL: "overdues",
+      StartDate: startDate,
+      EventName: eventName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);

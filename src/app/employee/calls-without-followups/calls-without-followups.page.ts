@@ -199,7 +199,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
     }
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startDate){
+  contactSelected(event, OppId:string, ContactId:string, activityType:string, activityId:string, activityName:string, startDate:string, eventName:string){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -207,8 +207,9 @@ export class CallsWithoutFollowupsPage implements OnInit {
       ActivityType: activityType,
       ActivityId: activityId,
       ActivityName: activityName,
-      OriginURL: "calls-without-followups",
-      StartDate: startDate
+      OriginURL: "overdues",
+      StartDate: startDate,
+      EventName: eventName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);

@@ -24,7 +24,7 @@
 <ion-list *ngIf="!isLoading && meetingPlannedList.length > 0">
   <ion-item button *ngFor="let item of meetingPlannedList">
     <ion-ripple-effect></ion-ripple-effect>
-    <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName, item.StartDate)">
+    <ion-label (click)="contactSelected($event, item.OppId, item.ContactId, item.ActivityType, item.ActivityId, item.OppName, item.StartDate, item.EventName)">
       <ion-text text-wrap class="contentText">
         <h2>{{item.OppName}}</h2>
         <p>Start Date: {{item.StartDate}}</p>

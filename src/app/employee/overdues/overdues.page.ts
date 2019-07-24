@@ -210,7 +210,7 @@ export class OverduesPage implements OnInit {
     toast.present();
   }
 
-  contactSelected(event, OppId, ContactId, activityType, activityId, activityName, startDate){
+  contactSelected(event, OppId:string, ContactId:string, activityType:string, activityId:string, activityName:string, startDate:string, eventName:string){
     event.preventDefault();
     const dataIds = {
       OppId: OppId,
@@ -219,7 +219,8 @@ export class OverduesPage implements OnInit {
       ActivityId: activityId,
       ActivityName: activityName,
       OriginURL: "overdues",
-      StartDate: startDate
+      StartDate: startDate,
+      EventName: eventName
     }
     this.dataStorage.setData("dataIds", dataIds);
     this.nav.navigateRoot(`/employee/view-activity-detail/${OppId}`);
