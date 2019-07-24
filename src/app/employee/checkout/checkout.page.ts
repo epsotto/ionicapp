@@ -59,47 +59,46 @@ export class CheckoutPage implements OnInit {
 
   onSubmit(){
     this.presentLoader();
-  // if(this.markDone){
-  //   const ouput = {
-  //     markedDone: this.markDone,
-  //     comment: this.comment
-  //   }
-  //   this.modal.dismiss(ouput);
-  // } else {
-  //   this.presentAlert("Activity must be marked completed/held before submission.")
-  // }
 
-  this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
-    this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
-    this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
-      .then((res) => {
-        const data = JSON.parse(res.data);
+    if(this.setNewActivity){
+      if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
+        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+        window.setTimeout(() => {this.loader.dismiss()}, 100);
+        return false;
+      }
+    }
+  
+    this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+      this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+      this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+        .then((res) => {
+          const data = JSON.parse(res.data);
 
-        if(data.success){
-          this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-          this.activityDetailService.submitComments(this.cachedData.sessionName, 
-            this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-            this.comment).then((res) => {
-              const data = JSON.parse(res.data);
-              
-              if(data.success){
-                if(this.setNewActivity){
-                  this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                  this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-                  "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                  moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                    .then((res) => {
-                      this.loader.dismiss();
-                      this.modal.dismiss({isSuccess: true});
-                    });
-                } else {
-                  this.loader.dismiss();
-                  this.modal.dismiss({isSuccess: true});
+          if(data.success){
+            this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+            this.activityDetailService.submitComments(this.cachedData.sessionName, 
+              this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+              this.comment).then((res) => {
+                const data = JSON.parse(res.data);
+                
+                if(data.success){
+                  if(this.setNewActivity){
+                    this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                    "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
+                    moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                      .then((res) => {
+                        this.loader.dismiss();
+                        this.modal.dismiss({isSuccess: true});
+                      });
+                  } else {
+                    this.loader.dismiss();
+                    this.modal.dismiss({isSuccess: true});
+                  }
                 }
-              }
-            });
-        }
-      });
+              });
+          }
+        });
   }
 
   async presentAlert(msg:string) {

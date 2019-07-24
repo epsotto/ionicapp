@@ -77,6 +77,13 @@ export class CallCommentsPage implements OnInit {
 
   onSubmit() {
     this.presentLoader();
+    if(this.setNewActivity) {
+      if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
+        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+        window.setTimeout(() => {this.loader.dismiss()}, 100);
+        return false;
+      }
+    }
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
