@@ -128,7 +128,9 @@ export class CallCommentsPage implements OnInit {
                             const data = JSON.parse(res.data);
 
                             if(data.success && this.setNewActivity){
-                              this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                              const today = new Date();
+                              this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
+                              this.taskScheduleDuration = this.taskScheduleDuration === "" ? "5" : this.taskScheduleDuration;
                               this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                               "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                               moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
@@ -147,7 +149,9 @@ export class CallCommentsPage implements OnInit {
                             }
                           });
                     } else if(data.success && this.setNewActivity){
-                      this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                      const today = new Date();
+                      this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
+                              this.taskScheduleDuration = this.taskScheduleDuration === "" ? "5" : this.taskScheduleDuration;
                       this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                         "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                         moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
@@ -171,35 +175,6 @@ export class CallCommentsPage implements OnInit {
             });
       });
     });
-
-    // this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
-    //   this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
-    //   this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
-    //     .then((res) => {
-    //       const data = JSON.parse(res.data);
-
-    //       if(data.success){
-    //         this.activityDetailService.submitComments(this.cachedData.sessionName, 
-    //           this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-    //           this.comment).then((res) => {
-    //             const data = JSON.parse(res.data);
-                
-    //             if(data.success){
-    //               if(this.setNewActivity){
-    //                 this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-    //                 "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-    //                 moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration)
-    //                   .then((res) => {
-    //                     console.log(res);
-    //                     this.modalController.dismiss();
-    //                   });
-    //               } else {          
-    //                 this.modalController.dismiss();
-    //               }
-    //             }
-    //           });
-    //       }
-    //     });
   }
 
   async presentAlert(msg:string) {
