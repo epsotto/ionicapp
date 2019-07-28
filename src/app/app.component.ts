@@ -1,6 +1,6 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Platform, IonRouterOutlet, ModalController, ToastController, AlertController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, ModalController, ToastController, AlertController, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -34,6 +34,10 @@ export class AppComponent {
         {
           title: "All Calls - Planned",
           url: "/employee/calls-planned",
+        },
+        {
+          title: "Test Dashboard",
+          url: "/employee/test",
         }]
     },
     {
@@ -56,7 +60,8 @@ export class AppComponent {
     private authService: AuthenticationService,
     public modalController: ModalController,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private nav: NavController
   ) {
     this.initializeApp();
   }
@@ -69,7 +74,7 @@ export class AppComponent {
 
     this.authService.authenticationState.subscribe(state => {
       if(state){
-        this.router.navigate(["employee", "overdues"]);
+        this.nav.navigateRoot("/employee/overdues");
       } else {
         this.router.navigate(["login"]);
       }
