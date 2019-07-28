@@ -63,6 +63,7 @@ export class CallCommentsPage implements OnInit {
 
     this.commonReasonList = [{value: "No answer", text: "No answer"},
     {value: "Client not interested", text: "Client not interested"},
+    {value: "Left a voicemail", text: "Left a voicemail"},
     {value: "Client backed out", text: "Client backed out"},
     {value: "Other", text: "Other"}];
 
