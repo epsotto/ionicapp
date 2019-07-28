@@ -281,6 +281,10 @@ export class CallCommentsPage implements OnInit {
                 this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
                   .then((res) => {
                     const data = JSON.parse(res.data);
+
+                    if(!data.success) {
+                      this.presentAlert("Error sending call logs. Please try again or contact Support.");
+                    }
                   });
         }
       }
