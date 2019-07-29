@@ -62,10 +62,18 @@ export class CheckoutPage implements OnInit {
     this.presentLoader();
 
     if(this.setNewActivity){
-      if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
-        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
-        window.setTimeout(() => {this.loader.dismiss()}, 100);
-        return false;
+      if(this.activityType.toLowerCase() === "call") {
+        if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      } else if(this.activityType.toLowerCase() === "meeting" || this.activityType.toLowerCase() === "task") {
+        if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
       }
     }
   
@@ -87,10 +95,8 @@ export class CheckoutPage implements OnInit {
                     
                     if(data.success){
                       if(this.setNewActivity){
-                        //Add conditional logic that will check if activity type is Task. 
-                        //Call the service for creating mobile call activity instead for custom activity. 
-                        //Also rename mobile call activity to create custom activity
-                        this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                        this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                          this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
                         this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
                         "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
                         moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)

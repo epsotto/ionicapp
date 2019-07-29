@@ -110,11 +110,19 @@ export class CallCommentsPage implements OnInit {
   onSubmit() {
     this.presentLoader();
     if(this.setNewActivity) {
-      if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
-        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
-        window.setTimeout(() => {this.loader.dismiss()}, 100);
-        return false;
-      }
+      if(this.activityType.toLowerCase() === "call") {
+        if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      } else if(this.activityType.toLowerCase() === "meeting" || this.activityType.toLowerCase() === "task") {
+        if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      }    
     }
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
@@ -137,7 +145,8 @@ export class CallCommentsPage implements OnInit {
                   if(data.success && this.setNewActivity){
                     const today = new Date();
                     this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
-                            this.taskScheduleDuration = this.taskScheduleDuration === "" ? "5" : this.taskScheduleDuration;
+                    this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                      this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
                     this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                       "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                       moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
