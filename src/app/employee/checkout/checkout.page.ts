@@ -13,6 +13,7 @@ export class CheckoutPage implements OnInit {
   @Input() oppId:string;
   @Input() potentialNumber:string;
   @Input() activityId:string;
+  @Input() lastName:string;
   comment:string = "";
   setNewActivity:boolean = false;
   activityActionsList = [];
@@ -86,10 +87,13 @@ export class CheckoutPage implements OnInit {
                     
                     if(data.success){
                       if(this.setNewActivity){
+                        //Add conditional logic that will check if activity type is Task. 
+                        //Call the service for creating mobile call activity instead for custom activity. 
+                        //Also rename mobile call activity to create custom activity
                         this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                        this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
                         "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
                           .then((res) => {
                             this.loader.dismiss();
                             this.modal.dismiss({isSuccess: true});
@@ -187,6 +191,33 @@ export class CheckoutPage implements OnInit {
         value: "Meeting : Other",
         text: "Meeting : Other"
       },];
+    } else if(this.activityType.toLowerCase() === 'task') {
+      this.activityActionsList = [
+        {
+        value: "Get Tech Support",
+        text: "Get Tech Support"
+        },
+        {
+          value: "Prepare a Quote",
+          text: "Prepare a Quote"
+        },
+        {
+          value: "Send Quote Email",
+          text: "Send Quote Email"
+        },
+        {
+          value: "Prepare a Requote",
+          text: "Prepare a Requote"
+        },
+        {
+          value: "Write Up Job",
+          text: "Write Up Job"
+        },
+        {
+          value: "Other",
+          text: "Other"
+        },
+      ];
     } else {
       this.activityActionsList = [];
     }

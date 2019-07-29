@@ -284,6 +284,7 @@ export class ViewActivityDetailPage implements OnInit {
         "oppId": this.oppId,
         "potentialNumber": this.potentialNumber,
         "activityId": this.activityId,
+        "lastName": this.lastName
       }
     });
 

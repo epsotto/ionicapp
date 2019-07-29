@@ -250,6 +250,33 @@ export class CallCommentsPage implements OnInit {
         value: "Meeting : Other",
         text: "Meeting : Other"
       },];
+    } else if(this.activityType.toLowerCase() === 'task') {
+      this.activityActionsList = [
+        {
+        value: "Get Tech Support",
+        text: "Get Tech Support"
+        },
+        {
+          value: "Prepare a Quote",
+          text: "Prepare a Quote"
+        },
+        {
+          value: "Send Quote Email",
+          text: "Send Quote Email"
+        },
+        {
+          value: "Prepare a Requote",
+          text: "Prepare a Requote"
+        },
+        {
+          value: "Write Up Job",
+          text: "Write Up Job"
+        },
+        {
+          value: "Other",
+          text: "Other"
+        },
+      ];
     } else {
       this.activityActionsList = [];
     }
@@ -276,7 +303,7 @@ export class CallCommentsPage implements OnInit {
         this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
 
         if(!this.isDirectlyMarkedComplete){
-          this.activityDetailService.createMobileCallActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+          this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                 "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
                 this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
                   .then((res) => {
