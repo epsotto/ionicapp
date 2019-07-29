@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavParams, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular'
+import { NavParams, ModalController, ToastController, AlertController, LoadingController, Platform } from '@ionic/angular'
 import { CallLog, CallLogObject } from "@ionic-native/call-log/ngx";
 import * as moment from "moment";
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { DataStorageService } from 'src/app/services/data-storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-call-comments',
@@ -38,6 +39,8 @@ export class CallCommentsPage implements OnInit {
   private callDuration:string = "";
 
   private cachedData:any;
+  private onResumeSubscription: Subscription;
+  private onPauseSubscription: Subscription;
 
   constructor(private navParams: NavParams,
               private modalController: ModalController,
@@ -46,8 +49,31 @@ export class CallCommentsPage implements OnInit {
               private alertController: AlertController,
               private activityDetailService: ViewActivityDetailService,
               private dataStorage: DataStorageService,
-              private loader: LoadingController
-              ) { }
+              private loader: LoadingController,
+              private platform: Platform
+              ) {
+                this.onResumeSubscription = this.platform.resume.subscribe(() => {
+                  if(!this.isDirectlyMarkedComplete){
+                    this.callLog.hasReadPermission().then(hasPermission => {
+                      if(!hasPermission){
+                        this.callLog.requestReadPermission();
+                      }
+            
+                      this.sendCallLogs();
+                    });
+                  }
+                });
+            
+                this.onPauseSubscription = this.platform.pause.subscribe(() => {
+                  if(!this.isDirectlyMarkedComplete){
+                    this.callLog.hasReadPermission().then(hasPermission => {
+                      if(!hasPermission){
+                        this.callLog.requestReadPermission();
+                      }
+                    });
+                  }
+                });
+              }
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
@@ -63,6 +89,7 @@ export class CallCommentsPage implements OnInit {
 
     this.commonReasonList = [{value: "No answer", text: "No answer"},
     {value: "Client not interested", text: "Client not interested"},
+    {value: "Left a voicemail", text: "Left a voicemail"},
     {value: "Client backed out", text: "Client backed out"},
     {value: "Other", text: "Other"}];
 
@@ -71,109 +98,76 @@ export class CallCommentsPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.onPauseSubscription.unsubscribe();
+    this.onResumeSubscription.unsubscribe();
+  }
+
   dismissModal(){
-    this.modalController.dismiss();
+    this.modalController.dismiss({isSuccess: true});
   }
 
   onSubmit() {
     this.presentLoader();
     if(this.setNewActivity) {
-      if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
-        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
-        window.setTimeout(() => {this.loader.dismiss()}, 100);
-        return false;
-      }
+      if(this.activityType.toLowerCase() === "call") {
+        if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      } else if(this.activityType.toLowerCase() === "meeting" || this.activityType.toLowerCase() === "task") {
+        if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      }    
     }
     this.callLog.hasReadPermission().then(hasPermission => {
       if(!hasPermission){
         this.callLog.requestReadPermission();
       }
 
-      let filters:CallLogObject[] = [
-              {"name": "number",
-                "value": this.calledNumber,
-                "operator": "=="
-              },
-              {"name": "type",
-                "value": "2",
-                "operator": "=="},
-              {
-                "name": "date",
-                "value": this.dateCalled,
-                "operator": ">="
-              }];
-      this.callLog.getCallLog(filters).then(data => {
-        this.actualDateCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("YYYY/MM/DD");
-        this.actualTimeCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("HH:mm");
-        this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
+      this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
+        this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
+        this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
+          .then((res) => {
+            const data = JSON.parse(res.data);
 
-        this.activityDetailService.markActivityComplete(this.cachedData.sessionName, 
-          this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
-          this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
-            .then((res) => {
-              const data = JSON.parse(res.data);
-  
-              if(data.success){
-                this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-                this.activityDetailService.submitComments(this.cachedData.sessionName, 
-                  this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-                  this.comment).then((res) => {
-                    const data = JSON.parse(res.data);
-                    
-                    if(data.success && !this.isDirectlyMarkedComplete){
-                      this.activityDetailService.createMobileCallActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                        "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
-                        this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
-                          .then((res) => {
-                            const data = JSON.parse(res.data);
+            if(data.success){
+              this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+              this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+                this.comment, null).then((res) => {
+                  const data = JSON.parse(res.data);
+                  
+                  if(data.success && this.setNewActivity){
+                    const today = new Date();
+                    this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
+                    this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                      this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
+                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                      "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                        .then((res) => {
+                          const data = JSON.parse(res.data);
 
-                            if(data.success && this.setNewActivity){
-                              const today = new Date();
-                              this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
-                              this.taskScheduleDuration = this.taskScheduleDuration === "" ? "5" : this.taskScheduleDuration;
-                              this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                              "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-                              moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                                .then((res) => {
-                                  const data = JSON.parse(res.data);
-  
-                                  if(data.success){
-                                    this.loader.dismiss();
-                                    this.modalController.dismiss({isSuccess: true});
-                                  }
-                                });
-                            }
-                            else if(data.success && !this.setNewActivity) {
-                              this.loader.dismiss();
-                              this.modalController.dismiss({isSuccess: true});
-                            }
-                          });
-                    } else if(data.success && this.setNewActivity){
-                      const today = new Date();
-                      this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
-                              this.taskScheduleDuration = this.taskScheduleDuration === "" ? "5" : this.taskScheduleDuration;
-                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
-                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
-                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                          .then((res) => {
-                            const data = JSON.parse(res.data);
-
-                            if(data.success){
-                              this.loader.dismiss();
-                              this.modalController.dismiss({isSuccess: true});
-                            }
-                          });
-                    } else if (data.success) {
-                      this.loader.dismiss();
-                      this.modalController.dismiss({isSuccess: true});
-                    } else {
-                      this.loader.dismiss();
-                      this.modalController.dismiss({isSuccess: false});
-                    }
-                  });
-              }
-            });
-      });
+                          if(data.success){
+                            this.loader.dismiss();
+                            this.modalController.dismiss({isSuccess: true});
+                          }
+                        });
+                  } else if (data.success) {
+                    this.loader.dismiss();
+                    this.modalController.dismiss({isSuccess: true});
+                  } else {
+                    this.loader.dismiss();
+                    this.modalController.dismiss({isSuccess: false});
+                  }
+                });
+            }
+          });
     });
   }
 
@@ -265,8 +259,71 @@ export class CallCommentsPage implements OnInit {
         value: "Meeting : Other",
         text: "Meeting : Other"
       },];
+    } else if(this.activityType.toLowerCase() === 'task') {
+      this.activityActionsList = [
+        {
+        value: "Get Tech Support",
+        text: "Get Tech Support"
+        },
+        {
+          value: "Prepare a Quote",
+          text: "Prepare a Quote"
+        },
+        {
+          value: "Send Quote Email",
+          text: "Send Quote Email"
+        },
+        {
+          value: "Prepare a Requote",
+          text: "Prepare a Requote"
+        },
+        {
+          value: "Write Up Job",
+          text: "Write Up Job"
+        },
+        {
+          value: "Other",
+          text: "Other"
+        },
+      ];
     } else {
       this.activityActionsList = [];
     }
+  }
+
+  sendCallLogs() {
+    let filters:CallLogObject[] = [
+      {"name": "number",
+        "value": this.calledNumber,
+        "operator": "=="
+      },
+      {"name": "type",
+        "value": "2",
+        "operator": "=="},
+      {
+        "name": "date",
+        "value": this.dateCalled,
+        "operator": ">="
+      }];
+    this.callLog.getCallLog(filters).then(data => {
+      if(data.length > 0) {
+        this.actualDateCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("YYYY/MM/DD");
+        this.actualTimeCalled = this.isDirectlyMarkedComplete ? "" : moment(data[0].date).format("HH:mm");
+        this.callDuration = this.isDirectlyMarkedComplete ? "" : moment(data[0].duration).format("mm");
+
+        if(!this.isDirectlyMarkedComplete){
+          this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
+                this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
+                  .then((res) => {
+                    const data = JSON.parse(res.data);
+
+                    if(!data.success) {
+                      this.presentAlert("Error sending call logs. Please try again or contact Support.");
+                    }
+                  });
+        }
+      }
+    });
   }
 }

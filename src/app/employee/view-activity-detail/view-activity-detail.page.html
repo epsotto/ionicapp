@@ -28,7 +28,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size=12>
+      <ion-col size=12 *ngIf="this.activityType.toLowerCase() !== 'meeting' || (this.activityType.toLowerCase() === 'meeting' && isCheckIn)">
         <ion-button color="primary" (click)="markActivityComplete()" fill="solid" expand="block">
           <ion-label>Mark {{this.activityType}} As Completed</ion-label>
         </ion-button>
@@ -186,8 +186,6 @@
       </ion-fab-list>
       <!-- -->
   </ion-fab>
-  
-{{checkIn.location}}
 </ion-content>
 
 <ion-footer transparent no-border>

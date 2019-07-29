@@ -32,6 +32,7 @@
       [interfaceOptions]="customActionSheetOptions" interface="action-sheet">
         <ion-select-option value="Meeting">Meeting</ion-select-option>
         <ion-select-option value="Call">Call</ion-select-option>
+        <ion-select-option value="Task">Task</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
@@ -45,12 +46,12 @@
       <ion-grid class="datePickerContainer">
         <ion-row>
           <ion-col size=6>
-            <ion-label position="floating">Please select Date <span class="required-field">*</span></ion-label>
+            <ion-label position="floating" class="custom-overflow">Please select Date <span class="required-field">*</span></ion-label>
             <ion-datetime [(ngModel)]="taskScheduleDate" name="taskScheduleDate" min="{{minimumDate}}"
             placeholder="Date" displayFormat="DD/MMM/YYYY"></ion-datetime>
           </ion-col>
           <ion-col size=6>
-            <ion-label position="floating">Please select Time</ion-label>
+            <ion-label position="floating" class="custom-overflow">Please select Time <span class="required-field" *ngIf="activityType.toLowerCase() !== 'call'">*</span></ion-label>
             <ion-datetime [(ngModel)]="taskScheduleTime" name="taskScheduleTime"
             placeholder="Time" displayFormat="HH:mm"></ion-datetime>
           </ion-col>

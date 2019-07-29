@@ -50,9 +50,10 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
-  submitComments (sessionName:string, oppId:string, wfId:string, comments:string) {
+  submitComments (sessionName:string, oppId:string, wfId:string, comments:string, userLocation:string) {
     const envVars = {
-      "comments": comments
+      "comments": comments,
+      "gps_location": userLocation
     }
 
     const queryParams = {
@@ -88,7 +89,7 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
-  createMobileCallActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string, subjectHeader:string) {
+  createCustomActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string, subjectHeader:string) {
     const envVars = {
       "event_subject": subjectHeader,
       "activity_type": activityType, // "Mobile Call"

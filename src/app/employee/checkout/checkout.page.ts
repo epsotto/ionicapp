@@ -13,6 +13,7 @@ export class CheckoutPage implements OnInit {
   @Input() oppId:string;
   @Input() potentialNumber:string;
   @Input() activityId:string;
+  @Input() lastName:string;
   comment:string = "";
   setNewActivity:boolean = false;
   activityActionsList = [];
@@ -51,7 +52,7 @@ export class CheckoutPage implements OnInit {
     {value: "120", text: "120 mins"},
     {value: "180", text: "180 mins"},];
 
-    this.commonReasonList = [{value: "No answer", text: "No answer"},
+    this.commonReasonList = [{value: "Client was not available", text: "Client was not available"},
     {value: "Client not interested", text: "Client not interested"},
     {value: "Client backed out", text: "Client backed out"},
     {value: "Other", text: "Other"}];
@@ -61,10 +62,18 @@ export class CheckoutPage implements OnInit {
     this.presentLoader();
 
     if(this.setNewActivity){
-      if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
-        this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
-        window.setTimeout(() => {this.loader.dismiss()}, 100);
-        return false;
+      if(this.activityType.toLowerCase() === "call") {
+        if(this.selectedActivityAction === "" || this.activityType === "" || this.taskScheduleDate === "") {
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
+      } else if(this.activityType.toLowerCase() === "meeting" || this.activityType.toLowerCase() === "task") {
+        if(this.activityType === "" || this.selectedActivityAction === "" || this.taskScheduleDate === "" || this.taskScheduleTime === ""){
+          this.presentAlert("Some required fields were not filled out. Please fill out required fields marked with red asterisks.");
+          window.setTimeout(() => {this.loader.dismiss()}, 100);
+          return false;
+        }
       }
     }
   
@@ -75,28 +84,34 @@ export class CheckoutPage implements OnInit {
           const data = JSON.parse(res.data);
 
           if(data.success){
-            this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-            this.activityDetailService.submitComments(this.cachedData.sessionName, 
-              this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-              this.comment).then((res) => {
-                const data = JSON.parse(res.data);
-                
-                if(data.success){
-                  if(this.setNewActivity){
-                    this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-                    "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                    moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                      .then((res) => {
+            this.dataStorage.getCheckedInLocation("location" + this.activityId).then((data) => {
+              const userLocation = data;
+              if(data != null){
+                this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+                this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                  this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+                  this.comment, userLocation.location).then((res) => {
+                    const data = JSON.parse(res.data);
+                    
+                    if(data.success){
+                      if(this.setNewActivity){
+                        this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                          this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
+                        this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
+                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+                          .then((res) => {
+                            this.loader.dismiss();
+                            this.modal.dismiss({isSuccess: true});
+                          });
+                      } else {
                         this.loader.dismiss();
                         this.modal.dismiss({isSuccess: true});
-                      });
-                  } else {
-                    this.loader.dismiss();
-                    this.modal.dismiss({isSuccess: true});
-                  }
-                }
-              });
+                      }
+                    }
+                  });
+              }
+            });
           }
         });
   }
@@ -182,6 +197,33 @@ export class CheckoutPage implements OnInit {
         value: "Meeting : Other",
         text: "Meeting : Other"
       },];
+    } else if(this.activityType.toLowerCase() === 'task') {
+      this.activityActionsList = [
+        {
+        value: "Get Tech Support",
+        text: "Get Tech Support"
+        },
+        {
+          value: "Prepare a Quote",
+          text: "Prepare a Quote"
+        },
+        {
+          value: "Send Quote Email",
+          text: "Send Quote Email"
+        },
+        {
+          value: "Prepare a Requote",
+          text: "Prepare a Requote"
+        },
+        {
+          value: "Write Up Job",
+          text: "Write Up Job"
+        },
+        {
+          value: "Other",
+          text: "Other"
+        },
+      ];
     } else {
       this.activityActionsList = [];
     }
