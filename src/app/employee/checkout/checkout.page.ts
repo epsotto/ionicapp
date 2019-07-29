@@ -51,7 +51,7 @@ export class CheckoutPage implements OnInit {
     {value: "120", text: "120 mins"},
     {value: "180", text: "180 mins"},];
 
-    this.commonReasonList = [{value: "No answer", text: "No answer"},
+    this.commonReasonList = [{value: "Client was not available", text: "Client was not available"},
     {value: "Client not interested", text: "Client not interested"},
     {value: "Client backed out", text: "Client backed out"},
     {value: "Other", text: "Other"}];
