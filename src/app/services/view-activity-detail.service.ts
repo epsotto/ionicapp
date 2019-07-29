@@ -50,9 +50,10 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
-  submitComments (sessionName:string, oppId:string, wfId:string, comments:string) {
+  submitComments (sessionName:string, oppId:string, wfId:string, comments:string, userLocation:string) {
     const envVars = {
-      "comments": comments
+      "comments": comments,
+      "gps_location": userLocation
     }
 
     const queryParams = {

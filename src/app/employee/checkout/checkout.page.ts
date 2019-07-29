@@ -75,28 +75,33 @@ export class CheckoutPage implements OnInit {
           const data = JSON.parse(res.data);
 
           if(data.success){
-            this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-            this.activityDetailService.submitComments(this.cachedData.sessionName, 
-              this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-              this.comment).then((res) => {
-                const data = JSON.parse(res.data);
-                
-                if(data.success){
-                  if(this.setNewActivity){
-                    this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
-                    this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-                    "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                    moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
-                      .then((res) => {
+            this.dataStorage.getCheckedInLocation("location" + this.activityId).then((data) => {
+              const userLocation = data;
+              if(data != null){
+                this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+                this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                  this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+                  this.comment, userLocation.location).then((res) => {
+                    const data = JSON.parse(res.data);
+                    
+                    if(data.success){
+                      if(this.setNewActivity){
+                        this.taskScheduleDuration = this.taskScheduleDuration !== "" ? this.taskScheduleDuration : "60";
+                        this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
+                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
+                          .then((res) => {
+                            this.loader.dismiss();
+                            this.modal.dismiss({isSuccess: true});
+                          });
+                      } else {
                         this.loader.dismiss();
                         this.modal.dismiss({isSuccess: true});
-                      });
-                  } else {
-                    this.loader.dismiss();
-                    this.modal.dismiss({isSuccess: true});
-                  }
-                }
-              });
+                      }
+                    }
+                  });
+              }
+            });
           }
         });
   }

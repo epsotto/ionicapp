@@ -131,7 +131,7 @@ export class CallCommentsPage implements OnInit {
               this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
               this.activityDetailService.submitComments(this.cachedData.sessionName, 
                 this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-                this.comment).then((res) => {
+                this.comment, null).then((res) => {
                   const data = JSON.parse(res.data);
                   
                   if(data.success && this.setNewActivity){

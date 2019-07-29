@@ -25,10 +25,6 @@ export class ViewActivityDetailPage implements OnInit {
     time: "",
   }
   msg:string;
-  checkOut:any = {
-    location: "",
-    time: "",
-  }
 
   geoEncoderOptions: NativeGeocoderOptions = {
     useLocale: true,
@@ -195,12 +191,7 @@ export class ViewActivityDetailPage implements OnInit {
   }
 
   checkOutFromSite(){
-    this.showLoader();
-    // this.presentCheckoutModal();
-    this.dataStorage.removeCheckedInLocation("location" + this.activityId).then((res) => {
-      this.loadingController.dismiss();
-      this.isCheckIn = true;
-    });
+    this.presentCheckoutModal();
   }
   
   callSupportNumber(){
@@ -296,12 +287,13 @@ export class ViewActivityDetailPage implements OnInit {
       }
     });
 
-    modal.onDidDismiss().then(res => {
-      this.dataStorage.removeCheckedInLocation("location" + this.activityId);
-      // if(res.data.isSuccess){
-      //   this.dataStorage.removeCheckedInLocation("location" + this.activityId);
-      //   this.redirectToOriginPage();
-      // }
+    modal.onDidDismiss().then((res) => {
+      if(res.data.isSuccess){
+        this.dataStorage.removeCheckedInLocation("location" + this.activityId).then((res) => {
+            this.isCheckIn = true;
+            this.redirectToOriginPage();
+        });
+      }
     });
 
     modal.present();
