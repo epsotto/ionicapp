@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService } from "src/app/services/dashboard.service"
 import * as highchart from "highcharts"
+import { DataStorageService } from 'src/app/services/data-storage.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-test',
@@ -8,7 +11,8 @@ import * as highchart from "highcharts"
 })
 export class TestPage implements OnInit {
 
-  constructor() { }
+  constructor(private dashboardService:DashboardService,
+              private dataStorage: DataStorageService) { }
 
   ngOnInit() {
     var myChart = highchart.chart('container', {
@@ -35,6 +39,18 @@ export class TestPage implements OnInit {
         type: undefined,
         data: [5, 7, 3]
       }]
+    });
+
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null){
+        this.dashboardService.getDataForChart(res.sessionName, moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'), 
+        moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'))
+          .then((res) => {
+            const data = JSON.parse(res.data);
+
+            console.log(data);
+          })
+      }
     });
   }
 }
