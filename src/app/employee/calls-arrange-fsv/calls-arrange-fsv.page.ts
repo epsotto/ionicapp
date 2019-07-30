@@ -79,6 +79,7 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
+                ActivityId: data.result[i].id,
                 ActivityType: data.result[i].activitytype,
                 EventName: data.result[i].cf_985,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
@@ -175,6 +176,7 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
+                ActivityId: data.result[i].id,
                 ActivityType: data.result[i].activitytype,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
                 EventName: data.result[i].cf_985
