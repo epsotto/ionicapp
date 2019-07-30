@@ -26,6 +26,7 @@ export class CallCommentsPage implements OnInit {
   activityActionsList = [];
   activityType:string = "";
   minimumDate:string = "";
+  maximumDate:string = "";
   selectedActivityAction:string = "";
   taskScheduleDate:string = "";
   taskScheduleTime:string = "";
@@ -77,6 +78,7 @@ export class CallCommentsPage implements OnInit {
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+    this.maximumDate = moment().add(10, "years").format("YYYY-MM-DD");
     this.taskDurationList = [{value: "5", text: "5 mins"},
     {value: "10", text: "10 mins"},
     {value: "15", text: "15 mins"},
@@ -142,7 +144,7 @@ export class CallCommentsPage implements OnInit {
                 this.comment, null).then((res) => {
                   const data = JSON.parse(res.data);
                   
-                  if(data.success && this.setNewActivity){
+                  if(data.success && this.setNewActivity && this.activityType.toLowerCase() !== 'task'){
                     const today = new Date();
                     this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
                     this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
@@ -158,7 +160,26 @@ export class CallCommentsPage implements OnInit {
                             this.modalController.dismiss({isSuccess: true});
                           }
                         });
-                  } else if (data.success) {
+                  }
+                  else if(data.success && this.setNewActivity && this.activityType.toLowerCase() === 'task') {
+                    const today = new Date();
+                    this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
+                    this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                      this.taskScheduleDuration === "" && (this.activityType.toLowerCase() === "meeting" || this.activityType.toLowerCase() == "task") ? "60" : 
+                      this.taskScheduleDuration;
+                    this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                      "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY-MM-DD"), 
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+                        .then((res) => {
+                          const data = JSON.parse(res.data);
+
+                          if(data.success){
+                            this.loader.dismiss();
+                            this.modalController.dismiss({isSuccess: true});
+                          }
+                        });
+                  }
+                  else if (data.success) {
                     this.loader.dismiss();
                     this.modalController.dismiss({isSuccess: true});
                   } else {

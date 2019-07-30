@@ -19,6 +19,7 @@ export class CheckoutPage implements OnInit {
   activityActionsList = [];
   activityType:string = "";
   minimumDate:string = "";
+  maximumDate:string = "";
   commonReasonList = [];
   selectedReason:string = "";
 
@@ -38,6 +39,7 @@ export class CheckoutPage implements OnInit {
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+    this.maximumDate = moment().add(10, "years").format("YYYY-MM-DD");
     this.dataStorage.retrieveCachedData().then((res) => {
       this.cachedData = res;
     });
