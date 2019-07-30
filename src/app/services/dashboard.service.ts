@@ -17,8 +17,7 @@ export class DashboardService {
     }
     
     var queryParams = {
-      "operation": "executeWF",
-      "wfId": "0000",
+      "operation": "getChartData",
       "sessionName": sessionName,
       "envVars": JSON.stringify(envVars)
     };

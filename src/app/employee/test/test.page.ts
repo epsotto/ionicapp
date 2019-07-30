@@ -43,8 +43,8 @@ export class TestPage implements OnInit {
 
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.dashboardService.getDataForChart(res.sessionName, moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'), 
-        moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'))
+        this.dashboardService.getDataForChart(res.sessionName, moment().subtract(1, 'months').startOf('year').format('YYYY-MM-DD'), 
+        moment().subtract(1, 'months').endOf('year').format('YYYY-MM-DD'))
           .then((res) => {
             const data = JSON.parse(res.data);
 
