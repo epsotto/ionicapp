@@ -19,6 +19,7 @@ export class CheckoutPage implements OnInit {
   activityActionsList = [];
   activityType:string = "";
   minimumDate:string = "";
+  maximumDate:string = "";
   commonReasonList = [];
   selectedReason:string = "";
 
@@ -38,6 +39,7 @@ export class CheckoutPage implements OnInit {
 
   ngOnInit() {
     this.minimumDate = moment().format("YYYY-MM-DD");
+    this.maximumDate = moment().add(10, "years").format("YYYY-MM-DD");
     this.dataStorage.retrieveCachedData().then((res) => {
       this.cachedData = res;
     });
@@ -85,32 +87,46 @@ export class CheckoutPage implements OnInit {
 
           if(data.success){
             this.dataStorage.getCheckedInLocation("location" + this.activityId).then((data) => {
-              const userLocation = data;
-              if(data != null){
-                this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
-                this.activityDetailService.submitComments(this.cachedData.sessionName, 
-                  this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-                  this.comment, userLocation.location).then((res) => {
-                    const data = JSON.parse(res.data);
-                    
-                    if(data.success){
-                      if(this.setNewActivity){
-                        this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
-                          this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
-                        this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"),
-                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+              const userLocation = data != null ? data : "";
+              this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
+              this.activityDetailService.submitComments(this.cachedData.sessionName, 
+                this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
+                this.comment, userLocation.location).then((res) => {
+                  const data = JSON.parse(res.data);
+                  
+                  if(data.success){
+                    if(this.setNewActivity && this.activityType.toLowerCase() !== 'task'){
+                      const today = new Date();
+                      this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
+                      this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                        this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
+                      this.activityDetailService.createNewActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
+                        "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
+                        moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
                           .then((res) => {
-                            this.loader.dismiss();
-                            this.modal.dismiss({isSuccess: true});
+                            const data = JSON.parse(res.data);
+
+                            if(data.success){
+                              this.loader.dismiss();
+                              this.modal.dismiss({isSuccess: true});
+                            }
                           });
-                      } else {
-                        this.loader.dismiss();
-                        this.modal.dismiss({isSuccess: true});
-                      }
+                    } else if(this.setNewActivity && this.activityType.toLowerCase() === 'task') {
+                      this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
+                        this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
+                      this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+                      "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY-MM-DD"),
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+                        .then((res) => {
+                          this.loader.dismiss();
+                          this.modal.dismiss({isSuccess: true});
+                        });
+                    } else {
+                      this.loader.dismiss();
+                      this.modal.dismiss({isSuccess: true});
                     }
-                  });
-              }
+                  }
+                });
             });
           }
         });

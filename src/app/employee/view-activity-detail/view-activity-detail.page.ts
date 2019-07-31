@@ -316,7 +316,9 @@ export class ViewActivityDetailPage implements OnInit {
         "activityId": this.activityId,
         "calledNumber": "",
         "dateCalled": "",
-        "isDirectlyMarkedComplete": true
+        "isDirectlyMarkedComplete": true,
+        "lastName": this.lastName,
+        "eventName": this.eventAction
       }
     });
 
