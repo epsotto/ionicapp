@@ -16,7 +16,8 @@ const routes: Routes = [
   { path: 'calls-without-followups', loadChildren: './calls-without-followups/calls-without-followups.module#CallsWithoutFollowupsPageModule' },
   { path: 'calls-arrange-fsv', loadChildren: './calls-arrange-fsv/calls-arrange-fsv.module#CallsArrangeFsvPageModule' },
   { path: 'calls-planned', loadChildren: './calls-planned/calls-planned.module#CallsPlannedPageModule' },
-  { path: 'meetings-planned', loadChildren: './meetings-planned/meetings-planned.module#MeetingsPlannedPageModule' },  { path: 'test', loadChildren: './test/test.module#TestPageModule' },
+  { path: 'meetings-planned', loadChildren: './meetings-planned/meetings-planned.module#MeetingsPlannedPageModule' },
+  { path: 'report', loadChildren: './report/report.module#ReportPageModule' },
 
 ];
 

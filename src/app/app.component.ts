@@ -35,10 +35,11 @@ export class AppComponent {
           title: "All Calls - Planned",
           url: "/employee/calls-planned",
         },
-        {
-          title: "Test Dashboard",
-          url: "/employee/test",
-        }]
+        ]
+    },
+    {
+      title: "Sales Reports",
+      url: "/employee/report",
     },
     {
       title: "All Meetings - Planned",

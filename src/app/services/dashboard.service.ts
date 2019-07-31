@@ -10,16 +10,13 @@ export class DashboardService {
 
   constructor(private http: HTTP) {}
 
-  getDataForChart(sessionName:string, startDate:string, endDate:string){
-    const envVars = {
-      "start_date": startDate,
-      "end_date": endDate
-    }
-    
+  getDataForChart(sessionName:string, startDate:string, endDate:string, chartType:string){    
     var queryParams = {
       "operation": "getChartData",
       "sessionName": sessionName,
-      "envVars": JSON.stringify(envVars)
+      "start_date": startDate,
+      "end_date": endDate,
+      "chart_type": chartType
     };
 
     return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
