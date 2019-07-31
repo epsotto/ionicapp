@@ -38,12 +38,12 @@ export class AppComponent {
         ]
     },
     {
-      title: "Sales Reports",
-      url: "/employee/report",
-    },
-    {
       title: "All Meetings - Planned",
       url: "/employee/meetings-planned",
+    },
+    {
+      title: "Sales Reports",
+      url: "/employee/report",
     },
   ];
 
