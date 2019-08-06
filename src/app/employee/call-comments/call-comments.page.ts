@@ -341,7 +341,7 @@ export class CallCommentsPage implements OnInit {
                     //const data = JSON.parse(res.data);
 
                     //if(!data.success) {
-                      this.presentAlert("Error sending call logs. Please try again or contact Support.");
+                      // this.presentAlert("Error sending call logs. Please try again or contact Support.");
                     //}
                   });
         }
