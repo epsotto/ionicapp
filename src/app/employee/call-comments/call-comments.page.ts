@@ -314,9 +314,10 @@ export class CallCommentsPage implements OnInit {
   }
 
   sendCallLogs() {
+    const dialedNumber = this.calledNumber.replace(/\D+/g, '')
     let filters:CallLogObject[] = [
       {"name": "number",
-        "value": this.calledNumber,
+        "value": dialedNumber,
         "operator": "=="
       },
       {"name": "type",
