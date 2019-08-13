@@ -3,16 +3,17 @@ import { MenuController, ToastController, NavController, ModalController, AlertC
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
-import { CallCommentsPage } from '../call-comments/call-comments.page';
-import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
+import { CallCommentsPage } from '../../call-comments/call-comments.page';
+import { MultipleNumbersPage } from '../../multiple-numbers/multiple-numbers.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as moment from "moment";
+
 @Component({
-  selector: 'app-calls-followups',
-  templateUrl: './calls-followups.page.html',
-  styleUrls: ['./calls-followups.page.scss'],
+  selector: 'app-calls-without-followups',
+  templateUrl: './calls-without-followups.page.html',
+  styleUrls: ['./calls-without-followups.page.scss'],
 })
-export class CallsFollowupsPage implements OnInit {
+export class CallsWithoutFollowupsPage implements OnInit {
 
   private msg:string;
   private calledNumber:string;
@@ -22,31 +23,31 @@ export class CallsFollowupsPage implements OnInit {
   private totalRecordCount:number = 0;
   private lastName:string = "";
   private eventNameSelected:string = "";
-  callFollowupList = [];
   isLoading:boolean;
+  callList = [];
   private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
-    private callNumber: CallNumber,
-    private toastController: ToastController,
-    private statusBar: StatusBar,
-    private nav: NavController,
-    private dataStorage: DataStorageService,
-    private modalController: ModalController,
-    private followupService: FollowupService,
-    private alertController: AlertController) { }
+              private callNumber: CallNumber,
+              private toastController: ToastController,
+              private statusBar: StatusBar,
+              private nav: NavController,
+              private dataStorage: DataStorageService,
+              private modalController: ModalController,
+              private followupService: FollowupService,
+              private alertController: AlertController) { }
 
   ngOnInit() {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
-    this.pullCallFollowupList();
-    this.getTotalCallFollowupCount();
+    this.pullCallList();
+    this.getTotalCallCount();
   }
 
-  getTotalCallFollowupCount() {
+  getTotalCallCount() {
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.followupService.getTotalCallFollowupRecords(res.userId, res.sessionName).then((res) => {
+        this.followupService.getTotalCallRecords(res.userId, res.sessionName).then((res) => {
           const data = JSON.parse(res.data);
           if(data.success){
             this.totalRecordCount = parseInt(data.result[0].count);
@@ -56,41 +57,41 @@ export class CallsFollowupsPage implements OnInit {
     });
   }
 
-  pullCallFollowupList() {
+  pullCallList() {
     this.isLoading = true;
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.followupService.getCallFollowupList(res.userId, res.sessionName).then((res) => {
+        this.followupService.getCallList(res.userId, res.sessionName).then((res) => {
           let data = JSON.parse(res.data);
-          if(!data.success){
-            if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
-              this.pullCallFollowupList();
-            }
-            else if(this.retry == 0){
-              this.retry = 3;
-              this.msg = "Error fetching data. Please refresh page.";
-              this.presentToast();
-            }
-          } else {
-            this.retry = 3;
-            
-            for(var i = 0; i < data.result.length; i++){
-              let singleRecord = {
-                OppId: data.result[i].parent_id,
-                OppName: data.result[i].subject,
-                ContactId: data.result[i].contact_id,
-                ActivityType: data.result[i].activitytype,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
-                ActivityId: data.result[i].id,
-                EventName: data.result[i].cf_985
-              }
-    
-              this.callFollowupList = this.callFollowupList.concat(singleRecord);
-            }
+        if(!data.success){
+          if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
+            this.pullCallList();
           }
+          else if(this.retry == 0){
+            this.retry = 3;
+            this.msg = "Error fetching data. Please refresh page.";
+            this.presentToast();
+          }
+        } else {
+          this.retry = 3;
+          
+          for(var i = 0; i < data.result.length; i++){
+            let singleRecord = {
+              OppId: data.result[i].parent_id,
+              OppName: data.result[i].subject,
+              ContactId: data.result[i].contact_id,
+              ActivityType: data.result[i].activitytype,
+              ActivityId: data.result[i].id,
+              EventName: data.result[i].cf_895,
+              StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
+            }
+  
+            this.callList = this.callList.concat(singleRecord);
+          }
+        }
 
-          this.isLoading = false;
-        })
+        this.isLoading = false;
+        });
       }
     });
   }
@@ -159,8 +160,8 @@ export class CallsFollowupsPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.callFollowupList = [];
-    this.pullCallFollowupList();
+    this.callList = [];
+    this.pullCallList();
     event.target.disabled = true;
     event.target.complete();
     setTimeout(() => {
@@ -169,10 +170,10 @@ export class CallsFollowupsPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callFollowupList.length < this.totalRecordCount){
+    if(this.callList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
-          this.followupService.getMoreCallFollowupRecords(res.userId, res.sessionName, this.callFollowupList.length + 1).then((res) => {
+          this.followupService.getMoreCallRecords(res.userId, res.sessionName, this.callList.length + 1).then((res) => {
             const data = JSON.parse(res.data);
             
             for(var i = 0; i < data.result.length; i++){
@@ -186,7 +187,7 @@ export class CallsFollowupsPage implements OnInit {
                 EventName: data.result[i].cf_985
               }
     
-              this.callFollowupList = this.callFollowupList.concat(singleRecord);
+              this.callList = this.callList.concat(singleRecord);
             }
             
             event.target.complete();
@@ -222,7 +223,7 @@ export class CallsFollowupsPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
-              this.lastName = data.result[0].lastName;
+              this.lastName = data.result[0].lastname;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }

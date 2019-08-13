@@ -4,8 +4,8 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
 import * as moment from "moment";
-import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
-import { CallCommentsPage } from '../call-comments/call-comments.page';
+import { MultipleNumbersPage } from '../../multiple-numbers/multiple-numbers.page';
+import { CallCommentsPage } from '../../call-comments/call-comments.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({

@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ToastController, NavController, ModalController } from '@ionic/angular';
+import { MenuController, ToastController, NavController, ModalController, AlertController } from '@ionic/angular';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { FollowupService } from 'src/app/services/followup.service';
-import * as moment from "moment";
-import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
-import { CallCommentsPage } from '../call-comments/call-comments.page';
+import { CallCommentsPage } from '../../call-comments/call-comments.page';
+import { MultipleNumbersPage } from '../../multiple-numbers/multiple-numbers.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
+import * as moment from "moment";
 @Component({
-  selector: 'app-calls-arrange-fsv',
-  templateUrl: './calls-arrange-fsv.page.html',
-  styleUrls: ['./calls-arrange-fsv.page.scss'],
+  selector: 'app-calls-followups',
+  templateUrl: './calls-followups.page.html',
+  styleUrls: ['./calls-followups.page.scss'],
 })
-export class CallsArrangeFsvPage implements OnInit {
+export class CallsFollowupsPage implements OnInit {
 
   private msg:string;
   private calledNumber:string;
@@ -23,30 +22,31 @@ export class CallsArrangeFsvPage implements OnInit {
   private totalRecordCount:number = 0;
   private lastName:string = "";
   private eventNameSelected:string = "";
-  callASFVList = [];
+  callFollowupList = [];
   isLoading:boolean;
   private selectedActivityId:string = "";
 
   constructor(private menuController: MenuController,
-              private callNumber: CallNumber,
-              private toastController: ToastController,
-              private statusBar: StatusBar,
-              private nav: NavController,
-              private dataStorage: DataStorageService,
-              private modalController: ModalController,
-              private followupService: FollowupService) { }
+    private callNumber: CallNumber,
+    private toastController: ToastController,
+    private statusBar: StatusBar,
+    private nav: NavController,
+    private dataStorage: DataStorageService,
+    private modalController: ModalController,
+    private followupService: FollowupService,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.menuController.enable(true);
     this.statusBar.overlaysWebView(false);
-    this.pullCallAFSVList();
-    this.getTotalCallAFSVCount();
+    this.pullCallFollowupList();
+    this.getTotalCallFollowupCount();
   }
 
-  getTotalCallAFSVCount() {
+  getTotalCallFollowupCount() {
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.followupService.getTotalCallAFSVRecords(res.userId, res.sessionName).then((res) => {
+        this.followupService.getTotalCallFollowupRecords(res.userId, res.sessionName).then((res) => {
           const data = JSON.parse(res.data);
           if(data.success){
             this.totalRecordCount = parseInt(data.result[0].count);
@@ -56,15 +56,15 @@ export class CallsArrangeFsvPage implements OnInit {
     });
   }
 
-  pullCallAFSVList() {
+  pullCallFollowupList() {
     this.isLoading = true;
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null){
-        this.followupService.getCallAFSVList(res.userId, res.sessionName).then((res) => {
+        this.followupService.getCallFollowupList(res.userId, res.sessionName).then((res) => {
           let data = JSON.parse(res.data);
           if(!data.success){
             if(data.error.code === "INVALID_SESSIONID" && this.retry > 0){
-              this.pullCallAFSVList();
+              this.pullCallFollowupList();
             }
             else if(this.retry == 0){
               this.retry = 3;
@@ -79,13 +79,13 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
-                ActivityId: data.result[i].id,
                 ActivityType: data.result[i].activitytype,
-                EventName: data.result[i].cf_985,
-                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5)
+                StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
+                ActivityId: data.result[i].id,
+                EventName: data.result[i].cf_985
               }
     
-              this.callASFVList = this.callASFVList.concat(singleRecord);
+              this.callFollowupList = this.callFollowupList.concat(singleRecord);
             }
           }
 
@@ -110,9 +110,13 @@ export class CallsArrangeFsvPage implements OnInit {
     });
 
     modal.onDidDismiss().then(res => {
-      this.calledNumber = "";
-      this.dateCalled = 0;
-      console.log(res);
+      if(res.data.isSuccess){
+        this.calledNumber = "";
+        this.dateCalled = 0;
+      }
+      else {
+        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
+      }
     });
     modal.present();
   }
@@ -155,8 +159,8 @@ export class CallsArrangeFsvPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.callASFVList = [];
-    this.pullCallAFSVList();
+    this.callFollowupList = [];
+    this.pullCallFollowupList();
     event.target.disabled = true;
     event.target.complete();
     setTimeout(() => {
@@ -165,10 +169,10 @@ export class CallsArrangeFsvPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callASFVList.length < this.totalRecordCount){
+    if(this.callFollowupList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
-          this.followupService.getMoreCallAFSVList(res.userId, res.sessionName, this.callASFVList.length + 1).then((res) => {
+          this.followupService.getMoreCallFollowupRecords(res.userId, res.sessionName, this.callFollowupList.length + 1).then((res) => {
             const data = JSON.parse(res.data);
             
             for(var i = 0; i < data.result.length; i++){
@@ -176,13 +180,13 @@ export class CallsArrangeFsvPage implements OnInit {
                 OppId: data.result[i].parent_id,
                 OppName: data.result[i].subject,
                 ContactId: data.result[i].contact_id,
-                ActivityId: data.result[i].id,
                 ActivityType: data.result[i].activitytype,
                 StartDate: moment(data.result[i].date_start).format("DD MMM, YYYY") + " " + data.result[i].time_start.substring(0, 5),
+                ActivityId: data.result[i].id,
                 EventName: data.result[i].cf_985
               }
     
-              this.callASFVList = this.callASFVList.concat(singleRecord);
+              this.callFollowupList = this.callFollowupList.concat(singleRecord);
             }
             
             event.target.complete();
@@ -218,7 +222,7 @@ export class CallsArrangeFsvPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
-              this.lastName = data.result[0].lastname;
+              this.lastName = data.result[0].lastName;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
@@ -256,5 +260,15 @@ export class CallsArrangeFsvPage implements OnInit {
         }
       });
     }
+  }
+
+  async presentAlert(header:string, msg:string){
+    const alert = await this.alertController.create({
+      header: header,
+      message: msg,
+      buttons: ["OK"]
+    });
+
+    alert.present();
   }
 }

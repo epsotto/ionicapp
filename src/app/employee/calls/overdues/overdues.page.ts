@@ -3,8 +3,8 @@ import { MenuController, ToastController, NavController, ModalController, IonRou
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DataStorageService } from 'src/app/services/data-storage.service';
-import { CallCommentsPage } from '../call-comments/call-comments.page';
-import { MultipleNumbersPage } from '../multiple-numbers/multiple-numbers.page';
+import { CallCommentsPage } from '../../call-comments/call-comments.page';
+import { MultipleNumbersPage } from '../../multiple-numbers/multiple-numbers.page';
 import { FollowupService } from 'src/app/services/followup.service';
 import * as moment from "moment";
 
