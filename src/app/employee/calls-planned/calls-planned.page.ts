@@ -163,7 +163,7 @@ export class CallsPlannedPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callPlannedList.length !== this.totalRecordCount){
+    if(this.callPlannedList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreCallPlannedList(res.userId, res.sessionName, this.callPlannedList.length + 1).then((res) => {

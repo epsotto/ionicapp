@@ -107,7 +107,7 @@ export class MeetingsPlannedPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.meetingPlannedList.length !== this.totalRecordCount){
+    if(this.meetingPlannedList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreMeetingPlannedList(res.userId, res.sessionName, this.meetingPlannedList.length + 1).then((res) => {

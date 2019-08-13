@@ -165,7 +165,7 @@ export class CallsArrangeFsvPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callASFVList.length !== this.totalRecordCount){
+    if(this.callASFVList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreCallAFSVList(res.userId, res.sessionName, this.callASFVList.length + 1).then((res) => {

@@ -170,7 +170,7 @@ export class CallsWithoutFollowupsPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callList.length !== this.totalRecordCount){
+    if(this.callList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreCallRecords(res.userId, res.sessionName, this.callList.length + 1).then((res) => {

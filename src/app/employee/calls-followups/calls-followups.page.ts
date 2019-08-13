@@ -169,7 +169,7 @@ export class CallsFollowupsPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.callFollowupList.length !== this.totalRecordCount){
+    if(this.callFollowupList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreCallFollowupRecords(res.userId, res.sessionName, this.callFollowupList.length + 1).then((res) => {

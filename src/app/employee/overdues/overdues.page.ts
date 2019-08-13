@@ -237,7 +237,7 @@ export class OverduesPage implements OnInit {
   }
 
   loadData(event) {
-    if(this.followupList.length !== this.totalRecordCount){
+    if(this.followupList.length < this.totalRecordCount){
       this.dataStorage.retrieveCachedData().then((res) => {
         if(res != null){
           this.followupService.getMoreFollowupRecords(res.userId, res.sessionName, this.followupList.length + 1).then((res) => {
