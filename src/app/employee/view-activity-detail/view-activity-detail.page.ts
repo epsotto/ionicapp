@@ -110,7 +110,8 @@ export class ViewActivityDetailPage implements OnInit {
             this.oppDescription = data.result[0].description;
             this.jobInclusion = data.result[0].cf_800;
             this.nextSteps = data.result[0].nextstep;
-            this.driveFolder = data.result[0].cf_751 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_751 : "";
+            this.driveFolder = data.result[0].cf_751 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_751 : 
+            (data.result[0].cf_1549 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_1549 : "");
           }
         })
       }
