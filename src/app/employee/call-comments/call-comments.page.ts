@@ -135,16 +135,16 @@ export class CallCommentsPage implements OnInit {
         this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
         this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
           .then((res) => {
-            const data = JSON.parse(res.data);
+            //const data = JSON.parse(res.data);
 
-            if(data.success){
+            // if(data.success){
               this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
               this.activityDetailService.submitComments(this.cachedData.sessionName, 
                 this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
                 this.comment, null).then((res) => {
-                  const data = JSON.parse(res.data);
+                  //const data = JSON.parse(res.data);
                   
-                  if(data.success && this.setNewActivity && this.activityType.toLowerCase() !== 'task'){
+                  if(this.setNewActivity && this.activityType.toLowerCase() !== 'task'){ //data.success && 
                     const today = new Date();
                     this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
                     this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
@@ -153,15 +153,15 @@ export class CallCommentsPage implements OnInit {
                       "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                       moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
                         .then((res) => {
-                          const data = JSON.parse(res.data);
+                          //const data = JSON.parse(res.data);
 
-                          if(data.success){
+                          //if(data.success){
                             this.loader.dismiss();
                             this.modalController.dismiss({isSuccess: true});
-                          }
+                          //}
                         });
                   }
-                  else if(data.success && this.setNewActivity && this.activityType.toLowerCase() === 'task') {
+                  else if(this.setNewActivity && this.activityType.toLowerCase() === 'task') { //data.success && 
                     const today = new Date();
                     this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
                     this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
@@ -171,23 +171,24 @@ export class CallCommentsPage implements OnInit {
                       "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY-MM-DD"), 
                       moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
                         .then((res) => {
-                          const data = JSON.parse(res.data);
+                          //const data = JSON.parse(res.data);
 
-                          if(data.success){
+                          //if(data.success){
                             this.loader.dismiss();
                             this.modalController.dismiss({isSuccess: true});
-                          }
+                          //}
                         });
                   }
-                  else if (data.success) {
+                  // else if (data.success) {
+                  //   this.loader.dismiss();
+                  //   this.modalController.dismiss({isSuccess: true});
+                  // } 
+                  else {
                     this.loader.dismiss();
-                    this.modalController.dismiss({isSuccess: true});
-                  } else {
-                    this.loader.dismiss();
-                    this.modalController.dismiss({isSuccess: false});
+                    this.modalController.dismiss({isSuccess: true}); //{isSuccess: false}
                   }
                 });
-            }
+            // }
           });
     });
   }
@@ -313,9 +314,10 @@ export class CallCommentsPage implements OnInit {
   }
 
   sendCallLogs() {
+    const dialedNumber = this.calledNumber.replace(/\D+/g, '')
     let filters:CallLogObject[] = [
       {"name": "number",
-        "value": this.calledNumber,
+        "value": dialedNumber,
         "operator": "=="
       },
       {"name": "type",
@@ -337,11 +339,11 @@ export class CallCommentsPage implements OnInit {
                 "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
                 this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
                   .then((res) => {
-                    const data = JSON.parse(res.data);
+                    //const data = JSON.parse(res.data);
 
-                    if(!data.success) {
-                      this.presentAlert("Error sending call logs. Please try again or contact Support.");
-                    }
+                    //if(!data.success) {
+                      // this.presentAlert("Error sending call logs. Please try again or contact Support.");
+                    //}
                   });
         }
       }

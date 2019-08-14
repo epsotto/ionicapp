@@ -83,18 +83,18 @@ export class CheckoutPage implements OnInit {
       this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "44", 
       this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length))
         .then((res) => {
-          const data = JSON.parse(res.data);
+          //const data = JSON.parse(res.data);
 
-          if(data.success){
+          // if(data.success){
             this.dataStorage.getCheckedInLocation("location" + this.activityId).then((data) => {
               const userLocation = data != null ? data : "";
               this.comment = this.selectedReason !== "Other" ? this.selectedReason : this.comment;
               this.activityDetailService.submitComments(this.cachedData.sessionName, 
                 this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
                 this.comment, userLocation.location).then((res) => {
-                  const data = JSON.parse(res.data);
+                  //const data = JSON.parse(res.data);
                   
-                  if(data.success){
+                  // if(data.success){
                     if(this.setNewActivity && this.activityType.toLowerCase() !== 'task'){
                       const today = new Date();
                       this.taskScheduleTime = this.taskScheduleTime === "" ? moment(today).set({hour: 6, minute: 0}).toString() : this.taskScheduleTime;
@@ -104,12 +104,12 @@ export class CheckoutPage implements OnInit {
                         "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY/MM/DD"), 
                         moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned")
                           .then((res) => {
-                            const data = JSON.parse(res.data);
+                            //const data = JSON.parse(res.data);
 
-                            if(data.success){
+                            //if(data.success){
                               this.loader.dismiss();
                               this.modal.dismiss({isSuccess: true});
-                            }
+                            //}
                           });
                     } else if(this.setNewActivity && this.activityType.toLowerCase() === 'task') {
                       this.taskScheduleDuration = this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "call" ? "5" : 
@@ -125,10 +125,10 @@ export class CheckoutPage implements OnInit {
                       this.loader.dismiss();
                       this.modal.dismiss({isSuccess: true});
                     }
-                  }
+                  // }
                 });
             });
-          }
+          // }
         });
   }
 
