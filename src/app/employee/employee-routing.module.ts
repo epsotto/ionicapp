@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'calls-planned', loadChildren: './calls/calls-planned/calls-planned.module#CallsPlannedPageModule' },
   { path: 'meetings-planned', loadChildren: './meetings-planned/meetings-planned.module#MeetingsPlannedPageModule' },
   { path: 'report', loadChildren: './report/report.module#ReportPageModule' },  { path: 'search-page', loadChildren: './search-page/search-page.module#SearchPagePageModule' },
+  { path: 'create-activity', loadChildren: './create-activity/create-activity.module#CreateActivityPageModule' },
 
 
 ];

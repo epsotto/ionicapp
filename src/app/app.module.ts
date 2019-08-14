@@ -20,6 +20,7 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder } from "@ionic-native/native-geocoder/ngx";
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPageModule } from './employee/checkout/checkout.module';
+import { CreateActivityPageModule } from './employee/create-activity/create-activity.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { CheckoutPageModule } from './employee/checkout/checkout.module';
     CallCommentsPageModule,
     MultipleNumbersPageModule,
     CheckoutPageModule,
+    CreateActivityPageModule,
     HttpModule,
     HttpClientModule
   ],

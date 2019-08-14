@@ -9,6 +9,7 @@ import { CheckoutPage } from '../checkout/checkout.page';
 import { ViewActivityDetailService } from 'src/app/services/view-activity-detail.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
+import { CreateActivityPage } from '../create-activity/create-activity.page'
 import * as moment from 'moment';
 
 @Component({
@@ -372,5 +373,17 @@ export class ViewActivityDetailPage implements OnInit {
     } else if(new Date(this.startDateTime).getTime() >= today){
       return "planned-activity";
     }
+  }
+
+  async createNewActivity(){
+    const modal = await this.modal.create({
+      component: CreateActivityPage,
+      componentProps: {
+        oppId: this.oppId,
+        lastName: this.lastName,
+      }
+    });
+
+    modal.present();
   }
 }
