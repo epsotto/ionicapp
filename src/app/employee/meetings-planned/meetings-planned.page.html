@@ -34,7 +34,7 @@
 </ion-list>
 
 <div *ngIf="!isLoading && meetingPlannedList.length == 0" class="emptyList">
-    No overdue activities found.
+    No planned meetings found.
 </div>
 
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
