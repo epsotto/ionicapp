@@ -45,6 +45,10 @@ export class AppComponent {
       title: "Sales Reports",
       url: "/employee/report",
     },
+    {
+      title: "Search for Opportunities",
+      url: "/employee/search-page"
+    }
   ];
 
   lastTimeBackPress = 0;

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Search for Opportunities</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Opportunity Number</ion-label>
+      <ion-input type="text" [(ngModel)]="opportunityNumber" (focus)="clearOppNumber = true" (blur)="clearOppNumber = false"></ion-input>
+      <ion-button clear item-right (click)="this.opportunityNumber = ''" fill="clear" slot="end" class="custom-button-margin" *ngIf="clearOppNumber">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Opportunity Name</ion-label>
+      <ion-input type="text" [(ngModel)]="opportunityName" (focus)="clearOppNumber = true" (blur)="clearOppName = false"></ion-input>
+      <ion-button clear item-right (click)="this.opportunityName = ''" fill="clear" slot="end" class="custom-button-margin" *ngIf="clearOppName">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item *ngIf="opportunityName !== '' || opportunityNumber !== ''">
+      <ion-label position="stacked">Assigned To</ion-label>
+      <ion-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select assigned person">
+        <ion-select-option *ngFor="let user of assignedToList" value={{user.value}}>{{user.text}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button expand="full" color="primary" (click)="onSearchClick()">
+      Search
+    </ion-button>
+  </ion-list>
+
+  <div class="loaderContainer">
+    <ion-spinner color="dark" name="circles" *ngIf="isLoading"></ion-spinner>
+  </div>
+  <ion-list>
+    <ion-item button *ngFor="let item of searchResultList">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-label (click)="opportunitySelected($event, item.OppId, item.ContactId, item.OppPotentialId)" text-wrap>
+        <ion-text color="primary"><h2>{{item.OppName}}</h2></ion-text>
+        <p>Potential ID: {{item.OppPotentialId}}</p>
+        <p>Sales Stage: {{item.OppStatus}}</p>
+        <p>Last Updated: {{item.lastUpdatedDate}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

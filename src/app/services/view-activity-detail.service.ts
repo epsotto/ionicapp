@@ -1,6 +1,5 @@
 import { Injectable, wtfEndTimeRange } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { ViewActivityDetailPageModule } from '../employee/view-activity-detail/view-activity-detail.module';
 
 @Injectable({
   providedIn: 'root'

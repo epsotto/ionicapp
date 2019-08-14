@@ -361,26 +361,7 @@ export class ViewActivityDetailPage implements OnInit {
 
   redirectToOriginPage() {
     if(this.router.url.indexOf("employee/view-activity-detail/") > -1){
-      switch(this.originURL){
-        case "calls-arrange-fsv":
-          this.nav.navigateRoot("/employee/calls-arrange-fsv");
-          break;
-        case "calls-followups":
-          this.nav.navigateRoot("/employee/calls-followups");
-          break;
-        case "calls-planned":
-          this.nav.navigateRoot("/employee/calls-planned");
-          break;
-        case "calls-without-followups":
-          this.nav.navigateRoot("/employee/calls-without-followups");
-          break;
-        case "meetings-planned":
-          this.nav.navigateRoot("/employee/meetings-planned");
-          break;
-        case "overdues":
-          this.nav.navigateRoot("/employee/overdues");
-          break;
-      }
+      this.nav.navigateRoot(this.backToOriginURL);
     }
   }
 
