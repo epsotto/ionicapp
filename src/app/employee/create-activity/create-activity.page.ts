@@ -14,7 +14,7 @@ export class CreateActivityPage implements OnInit {
   @Input() oppId:string;
   @Input() lastName:string;
   public activityType:string = "";
-  public selectedActivityAction:string;
+  public selectedActivityAction:string = "";
   public activityActionsList = [];
   public taskScheduleDate:string;
   public minimumDate:string;
