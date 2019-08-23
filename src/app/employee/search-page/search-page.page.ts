@@ -15,8 +15,13 @@ export class SearchPagePage implements OnInit {
   public assignedToList = [];
   public opportunityNumber:string = "";
   public opportunityName:string = "";
+  public clientName:string = "";
   public assignedTo:string = "";
   public isLoading = false;
+  public clearOppNumber = false;
+  public clearOppName = false;
+  public clearClientName = false;
+
   private searchResultRecordCount = 0;
 
   constructor(private dataStorage: DataStorageService,
@@ -46,7 +51,7 @@ export class SearchPagePage implements OnInit {
   }
 
   onSearchClick() {
-    if(this.opportunityName === "" && this.opportunityNumber === "" && this.assignedTo === ""){
+    if(this.opportunityName === "" && this.opportunityNumber === "" && this.assignedTo === "" && this.clientName === ""){
       this.presentAlert("All search fields are empty. Please enter an entry for at least one search field.");
       return false;
     }
@@ -54,7 +59,7 @@ export class SearchPagePage implements OnInit {
     this.dataStorage.retrieveCachedData().then((res) => {
       this.isLoading = true;
       if(res != null) {
-        this.searchService.getOpportunityList(res.sessionName, this.opportunityName, this.opportunityNumber, this.assignedTo)
+        this.searchService.getOpportunityList(res.sessionName, this.opportunityName, this.opportunityNumber, this.assignedTo, this.clientName)
           .then((res) => {
             let data = JSON.parse(res.data);
 
@@ -77,7 +82,7 @@ export class SearchPagePage implements OnInit {
             }
           });
 
-        this.searchService.getTotalSearchResultItems(res.sessionName, this.opportunityName, this.opportunityNumber, this.assignedTo)
+        this.searchService.getTotalSearchResultItems(res.sessionName, this.opportunityName, this.opportunityNumber, this.assignedTo, this.clientName)
           .then((res) => {
             let data = JSON.parse(res.data);
 

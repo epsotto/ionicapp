@@ -9,9 +9,12 @@ export class SearchService {
 
   constructor(private http:HTTP) { }
 
-  getOpportunityList(sessionName:string, opportunityName:string, opportunityNumber:string, assignedTo:string){
+  getOpportunityList(sessionName:string, opportunityName:string, opportunityNumber:string, assignedTo:string, clientName:string){
     let queryFilter = [];
 
+    if(clientName !== "") {
+      queryFilter = queryFilter.concat("potentialname LIKE '" + clientName + "%'");
+    }
     if(opportunityName !== "") {
       queryFilter = queryFilter.concat("potentialname LIKE '%" + opportunityName + "%'");
     }
@@ -47,9 +50,12 @@ export class SearchService {
     return this.http.get(this.serviceUrl, queryParams, {"Content-Type": "application/json"});
   }
 
-  getTotalSearchResultItems(sessionName:string, opportunityName:string, opportunityNumber:string, assignedTo:string) {
+  getTotalSearchResultItems(sessionName:string, opportunityName:string, opportunityNumber:string, assignedTo:string, clientName:string) {
     let queryFilter = [];
 
+    if(clientName !== "") {
+      queryFilter = queryFilter.concat("potentialname LIKE '" + clientName + "%'");
+    }
     if(opportunityName !== "") {
       queryFilter = queryFilter.concat("potentialname LIKE '%" + opportunityName + "%'");
     }

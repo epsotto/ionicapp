@@ -166,20 +166,37 @@
       <ion-item>
           <ion-label>
             <ion-text color="primary">
-              Next Steps
+              Sales Stage
             </ion-text>
-            <p class="formValue">{{nextSteps}}</p>
+            <p class="formValue">{{salesStage}}</p>
           </ion-label>
         </ion-item>
       <ion-item *ngIf="driveFolder != ''">
-          <ion-label text-wrap>
-            <ion-text color="primary">
-              Team Drive folder directory
-            </ion-text>
-            <p class="formValue"><a href="{{driveFolder}}" target="_blank">{{driveFolder}}</a></p>
-          </ion-label>
-        </ion-item>
-      </ion-list>  
+        <ion-label text-wrap>
+          <ion-text color="primary">
+            Team Drive folder directory
+          </ion-text>
+          <p class="formValue"><a href="{{driveFolder}}" target="_blank">{{driveFolder}}</a></p>
+        </ion-label>
+      </ion-item>
+      <ion-item button (click)="this.toggleCommentList = !this.toggleCommentList">
+        <ion-label text-wrap>
+          <ion-text color="primary">
+            Most Recent Comments <ion-badge color="light">{{this.commentList.length}}</ion-badge>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="this.toggleCommentList">
+        <ion-label text-wrap>
+          <div *ngFor="let comment of commentList">
+              <span class="dateCommentStyle">{{comment.createdtime}}</span>
+              <p class="formValue commentContentStyle">
+                {{comment.commentcontent}}
+              </p>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>  
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <!-- <ion-fab-button (click)="getLocation()" *ngIf="checkIn.location==''"><ion-icon name="arrow-dropup"></ion-icon></ion-fab-button> -->

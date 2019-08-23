@@ -32,28 +32,30 @@ export class ViewActivityDetailPage implements OnInit {
     maxResults: 5
   };
   
-  isCheckIn:boolean = false;
-  contactName:string = "";
-  clientAddress:string = "";
-  mobilePhone:string = "";
-  homePhone:string = "";
-  officePhone:string = "";
-  otherNumber:string = "";
-  primaryEmail:string = "";
-  mailToPrimaryEmail:string = "";
-  secondaryEmail:string = "";
-  mailToSecondaryEmail:string = "";
-  doNotCallFlag:string = "";
+  public isCheckIn:boolean = false;
+  public contactName:string = "";
+  public clientAddress:string = "";
+  public mobilePhone:string = "";
+  public homePhone:string = "";
+  public officePhone:string = "";
+  public otherNumber:string = "";
+  public primaryEmail:string = "";
+  public mailToPrimaryEmail:string = "";
+  public secondaryEmail:string = "";
+  public mailToSecondaryEmail:string = "";
+  public doNotCallFlag:string = "";
 
-  potentialNumber:string = "";
-  opportunityName:string = "";
-  oppDescription:string = "";
-  jobInclusion:string = "";
-  nextSteps:string = "";
-  driveFolder:string = "";
-  activityName:string = "";
-  startDateTime:string = "";
-  backToOriginURL:string = "";
+  public potentialNumber:string = "";
+  public opportunityName:string = "";
+  public oppDescription:string = "";
+  public jobInclusion:string = "";
+  public salesStage:string = "";
+  public driveFolder:string = "";
+  public activityName:string = "";
+  public startDateTime:string = "";
+  public backToOriginURL:string = "";
+  public commentList = [];
+  public toggleCommentList:boolean = false;
   
   private originURL:string = "";
   private activityType:string = "";
@@ -97,6 +99,29 @@ export class ViewActivityDetailPage implements OnInit {
     this.dataStorage.getCheckedInLocation("location"+this.activityId).then(res => {
       this.isCheckIn = res === null ? true : false;
     });
+
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null) {
+        this.viewActivityDetailService.getOpportunityLatestComments(this.oppId, res.sessionName).then((res) => {
+          const data = JSON.parse(res.data);
+
+          if(data.success) {
+            data.result.sort((a, b) => {
+              if(moment(a.createdtime).format("x") < moment(b.createdtime).format("x")){
+                return 1;
+              } else if (moment(a.createdtime).format("x") > moment(b.createdtime).format("x")){
+                return -1;
+              }
+            });
+            this.commentList = data.result;
+            this.commentList.forEach((el) => {
+              el.createdtime = moment(el.createdtime).format("DD MMM, YYYY HH:mm");
+              return el;
+            })
+          }
+        });
+      }
+    });
   }
 
   getOpportunityDetails(oppId:string){
@@ -110,9 +135,9 @@ export class ViewActivityDetailPage implements OnInit {
             this.opportunityName = data.result[0].potentialname;
             this.oppDescription = data.result[0].description;
             this.jobInclusion = data.result[0].cf_800;
-            this.nextSteps = data.result[0].nextstep;
             this.driveFolder = data.result[0].cf_751 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_751 : 
             (data.result[0].cf_1549 != "" ? "https://drive.google.com/drive/folders/" + data.result[0].cf_1549 : "");
+            this.salesStage = data.result[0].sales_stage;
           }
         })
       }
@@ -385,5 +410,9 @@ export class ViewActivityDetailPage implements OnInit {
     });
 
     modal.present();
+  }
+
+  showCommentList(){
+    this.toggleCommentList = !this.toggleCommentList;
   }
 }

@@ -31,7 +31,7 @@ export class CreateActivityPage implements OnInit {
               private loader: LoadingController) { }
 
   ngOnInit() {
-    this.taskScheduleDate = moment().format("YYYY-MM-DD");
+    this.taskScheduleDate = moment().add(1, "day").format("YYYY-MM-DD");
     this.taskScheduleTime = moment().format("HH:mm");
     this.minimumDate = moment().format("YYYY-MM-DD");
     this.maximumDate = moment().add(10, "years").format("YYYY-MM-DD");
@@ -52,6 +52,8 @@ export class CreateActivityPage implements OnInit {
 
   getActivityActions(){
     if(this.activityType.toLowerCase() === "call"){
+      this.taskScheduleTime = moment().set("hours", 6).set("minutes", 30).format("HH:mm");
+      this.taskScheduleDuration = "5";
       this.activityActionsList = [{
         value: "Call : Arrange First Site Visit",
         text: "Call : Arrange First Site Visit"
@@ -81,6 +83,8 @@ export class CreateActivityPage implements OnInit {
         text: "Call : Other"
       }];
     } else if(this.activityType.toLowerCase() === "meeting"){
+      this.taskScheduleTime = moment().format("HH:mm");
+      this.taskScheduleDuration = "60";
       this.activityActionsList = [{
         value: "Meeting : First Site Visit",
         text: "Meeting : First Site Visit"
@@ -110,6 +114,8 @@ export class CreateActivityPage implements OnInit {
         text: "Meeting : Other"
       },];
     } else if(this.activityType.toLowerCase() === 'task') {
+      this.taskScheduleTime = moment().set("hours", 6).set("minutes", 30).format("HH:mm");
+      this.taskScheduleDuration = "5";
       this.activityActionsList = [
         {
         value: "Get Tech Support",

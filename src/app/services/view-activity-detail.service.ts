@@ -109,4 +109,16 @@ export class ViewActivityDetailService {
 
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
+
+  getOpportunityLatestComments(id:string, sessionName:string) {
+    const queryParams = {
+      "operation": "retrieve_related",
+      "id": id,
+      "sessionName": sessionName,
+      "relatedLabel": "ModComments",
+      "relatedType": "ModComments"
+    }  
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
 }

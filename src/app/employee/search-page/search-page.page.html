@@ -11,15 +11,22 @@
   <ion-list>
     <ion-item>
       <ion-label position="stacked">Opportunity Number</ion-label>
-      <ion-input type="text" [(ngModel)]="opportunityNumber" (focus)="clearOppNumber = true" (blur)="clearOppNumber = false"></ion-input>
+      <ion-input type="text" [(ngModel)]="opportunityNumber" (focus)="this.clearOppNumber = true" (blur)="this.clearOppNumber = false"></ion-input>
       <ion-button clear item-right (click)="this.opportunityNumber = ''" fill="clear" slot="end" class="custom-button-margin" *ngIf="clearOppNumber">
         <ion-icon name="close-circle-outline"></ion-icon>
       </ion-button>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Opportunity Name</ion-label>
-      <ion-input type="text" [(ngModel)]="opportunityName" (focus)="clearOppNumber = true" (blur)="clearOppName = false"></ion-input>
+      <ion-input type="text" [(ngModel)]="opportunityName" (focus)="this.clearOppName = true" (blur)="this.clearOppName = false"></ion-input>
       <ion-button clear item-right (click)="this.opportunityName = ''" fill="clear" slot="end" class="custom-button-margin" *ngIf="clearOppName">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Client Name</ion-label>
+      <ion-input type="text" [(ngModel)]="clientName" (focus)="this.clearClientName = true" (blur)="this.clearClientName = false"></ion-input>
+      <ion-button clear item-right (click)="this.clientName = ''" fill="clear" slot="end" class="custom-button-margin" *ngIf="clearClientName">
         <ion-icon name="close-circle-outline"></ion-icon>
       </ion-button>
     </ion-item>
