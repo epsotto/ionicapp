@@ -110,7 +110,6 @@ export class CallsPlannedPage implements OnInit {
     modal.onDidDismiss().then(res => {
       this.calledNumber = "";
       this.dateCalled = 0;
-      console.log(res);
     });
     modal.present();
   }

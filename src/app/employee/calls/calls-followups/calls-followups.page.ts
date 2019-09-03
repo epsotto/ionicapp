@@ -110,13 +110,13 @@ export class CallsFollowupsPage implements OnInit {
     });
 
     modal.onDidDismiss().then(res => {
-      if(res.data.isSuccess){
+      // if(res.data.isSuccess){
         this.calledNumber = "";
         this.dateCalled = 0;
-      }
-      else {
-        this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
-      }
+      // }
+      // else {
+      //   this.presentAlert("Something went wrong.", "Please contact Support if this issue persists.");
+      // }
     });
     modal.present();
   }
