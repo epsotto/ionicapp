@@ -222,7 +222,7 @@ export class CallsFollowupsPage implements OnInit {
             let phone = [];
             let data = JSON.parse(res.data);
             if(data.success){
-              this.lastName = data.result[0].lastName;
+              this.lastName = data.result[0].lastname;
               if(data.result[0].homephone !== "") {
                 phone = phone.concat(data.result[0].homephone);
               }
