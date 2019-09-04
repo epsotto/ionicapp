@@ -147,30 +147,6 @@
           <p class="formValue">{{contactName}}</p>
         </ion-label>
       </ion-item>
-      <ion-item>
-          <ion-label>
-            <ion-text color="primary">
-              Job Includes
-            </ion-text>
-            <p class="formValue">{{jobInclusion}}</p>
-          </ion-label>
-        </ion-item>
-      <ion-item>
-        <ion-label text-wrap>
-          <ion-text color="primary">
-            Description
-          </ion-text>
-          <p class="formValue">{{oppDescription}}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-          <ion-label>
-            <ion-text color="primary">
-              Sales Stage
-            </ion-text>
-            <p class="formValue">{{salesStage}}</p>
-          </ion-label>
-        </ion-item>
       <ion-item *ngIf="driveFolder != ''">
         <ion-label text-wrap>
           <ion-text color="primary">
@@ -182,6 +158,8 @@
       <ion-item button (click)="this.toggleCommentList = !this.toggleCommentList">
         <ion-label text-wrap>
           <ion-text color="primary">
+              <ion-icon name="arrow-dropright" *ngIf="!this.toggleCommentList"></ion-icon>
+              <ion-icon name="arrow-dropdown" *ngIf="this.toggleCommentList"></ion-icon>
             Most Recent Comments <ion-badge color="light">{{this.commentList.length}}</ion-badge>
           </ion-text>
         </ion-label>
@@ -194,6 +172,30 @@
                 {{comment.commentcontent}}
               </p>
           </div>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label text-wrap>
+          <ion-text color="primary">
+            Description
+          </ion-text>
+          <p class="formValue">{{oppDescription}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <ion-text color="primary">
+            Sales Stage
+          </ion-text>
+          <p class="formValue">{{salesStage}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <ion-text color="primary">
+            Job Includes
+          </ion-text>
+          <p class="formValue">{{jobInclusion}}</p>
         </ion-label>
       </ion-item>
     </ion-list>  
