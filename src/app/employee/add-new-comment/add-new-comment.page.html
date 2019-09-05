@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comments and Reminders</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">CLOSE</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Please enter comments for this activity</ion-label>
+      <ion-textarea [(ngModel)]="comment" rows="4" placeholder="Enter coment here.">
+      </ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button color="primary" expand="full" type="button" (click)="onSubmit()">SUBMIT</ion-button>
+</ion-content>

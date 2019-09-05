@@ -11,6 +11,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { CreateActivityPage } from '../create-activity/create-activity.page'
 import * as moment from 'moment';
+import { AddNewCommentPage } from '../add-new-comment/add-new-comment.page';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -414,5 +415,20 @@ export class ViewActivityDetailPage implements OnInit {
 
   showCommentList(){
     this.toggleCommentList = !this.toggleCommentList;
+  }
+
+  addNewComment(){
+    this.addNewCommentModal();
+  }
+
+  async addNewCommentModal(){
+    const modal = await this.modal.create({
+      component: AddNewCommentPage,
+      componentProps: {
+        activityId: this.activityId
+      }
+    });
+
+    modal.present();
   }
 }
