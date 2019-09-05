@@ -30,24 +30,49 @@ export class SearchPagePage implements OnInit {
               private nav: NavController) { }
 
   ngOnInit() {
-    this.dataStorage.retrieveCachedData().then((res) => {
-      if(res != null){
-        this.searchService.getAllUsers(res.sessionName).then((res) => {
-          let data = JSON.parse(res.data);
+    // Replacing the getting of users from vTiger for now due to an issue where several users were not able to access the data
+    // this.dataStorage.retrieveCachedData().then((res) => {
+    //   if(res != null){
+    //     this.searchService.getAllUsers(res.sessionName).then((res) => {
+    //       let data = JSON.parse(res.data);
 
-          if(data.success){
-            for(var i = 0; i < data.result.length; i++){
-              let user = {
-                text: data.result[i].user_name,
-                value: data.result[i].id
-              }
+    //       if(data.success){
+    //         for(var i = 0; i < data.result.length; i++){
+    //           let user = {
+    //             text: data.result[i].user_name,
+    //             value: data.result[i].id
+    //           }
 
-              this.assignedToList = this.assignedToList.concat(user);
-            }
-          }
-        });
+    //           this.assignedToList = this.assignedToList.concat(user);
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
+
+    this.assignedToList = [
+      {
+        text: "richard.cummins",
+        value: "19x17"
+      },
+      {
+        text: "oliver.cummins",
+        value: "19x37"
+      },
+      {
+        text: "jackie.king",
+        value: "19x55"
+      },
+      {
+        text: "scott.minhinnick",
+        value: "19x58"
+      },
+      {
+        text: "catherine.fletcher",
+        value: "19x60"
       }
-    });
+    ];
+      
   }
 
   onSearchClick() {
