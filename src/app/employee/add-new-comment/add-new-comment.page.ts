@@ -10,7 +10,7 @@ import { ViewActivityDetailService } from 'src/app/services/view-activity-detail
 })
 export class AddNewCommentPage implements OnInit {
 
-  @Input() activityId:string;
+  @Input() oppId:string;
   private cachedData:any = [];
   public comment:string = "";
 
@@ -37,9 +37,9 @@ export class AddNewCommentPage implements OnInit {
     }
 
     this.presentLoader();
-    this.activityDetailService.submitComments(this.cachedData.sessionName, 
-      this.activityId.substring(this.activityId.indexOf("x")+1, this.activityId.length), "125",
-      this.comment, null).then((res) => {
+    this.activityDetailService.submitOppComments(this.cachedData.sessionName, 
+      this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), "138",
+      this.comment).then((res) => {
         //const data = JSON.parse(res.data);
         this.loader.dismiss();
         this.modalController.dismiss();

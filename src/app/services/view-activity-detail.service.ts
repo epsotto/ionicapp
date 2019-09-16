@@ -66,6 +66,22 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
+   submitOppComments (sessionName:string, oppId:string, wfId:string, comments:string) {
+    const envVars = {
+      "comment": comments
+    }
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": wfId,
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    }
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
+
   createNewActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string) {
     const envVars = {
       "event_subject": "Auto Generated",

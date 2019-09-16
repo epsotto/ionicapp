@@ -425,7 +425,7 @@ export class ViewActivityDetailPage implements OnInit {
     const modal = await this.modal.create({
       component: AddNewCommentPage,
       componentProps: {
-        activityId: this.activityId
+        oppId: this.oppId
       }
     });
 
