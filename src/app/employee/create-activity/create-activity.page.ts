@@ -161,7 +161,7 @@ export class CreateActivityPage implements OnInit {
                       this.taskScheduleDuration;
         this.viewActivityDetailService.createCustomActivity(res.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
         "124", this.activityType, this.selectedActivityAction, this.taskScheduleDate, this.taskScheduleTime, this.taskScheduleDuration, 
-        "Planned", this.lastName + " - " + this.selectedActivityAction)
+        "Planned", this.lastName + " - " + this.selectedActivityAction, 1)
           .then((res) => {
             this.loader.dismiss();
             this.modal.dismiss({isSuccess: true});

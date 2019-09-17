@@ -90,7 +90,8 @@ export class ViewActivityDetailService {
       "start_date": startDate,
       "start_time": startTime,
       "duration": duration,
-      "activity_status": activityStatus
+      "activity_status": activityStatus,
+      "create_new_quote": 0
     }
 
     const queryParams = {
@@ -104,7 +105,7 @@ export class ViewActivityDetailService {
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
 
-  createCustomActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string, subjectHeader:string) {
+  createCustomActivity (sessionName: string, oppId:string, wfId:string, activityType:string, activityAction:string, startDate:string, startTime:string, duration:string, activityStatus: string, subjectHeader:string, isNewTask:number) {
     const envVars = {
       "event_subject": subjectHeader,
       "activity_type": activityType, // "Mobile Call"
@@ -112,7 +113,8 @@ export class ViewActivityDetailService {
       "start_date": startDate,
       "start_time": startTime,
       "duration": duration,
-      "activity_status": activityStatus
+      "activity_status": activityStatus,
+      "create_new_quote": isNewTask
     }
 
     const queryParams = {

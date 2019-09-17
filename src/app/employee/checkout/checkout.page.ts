@@ -116,7 +116,7 @@ export class CheckoutPage implements OnInit {
                         this.taskScheduleDuration === "" && this.activityType.toLowerCase() === "meeting" ? "60" : this.taskScheduleDuration;
                       this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
                       "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY-MM-DD"),
-                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction, 1)
                         .then((res) => {
                           this.loader.dismiss();
                           this.modal.dismiss({isSuccess: true});

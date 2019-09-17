@@ -169,7 +169,7 @@ export class CallCommentsPage implements OnInit {
                       this.taskScheduleDuration;
                     this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                       "124", this.activityType, this.selectedActivityAction, moment(this.taskScheduleDate).format("YYYY-MM-DD"), 
-                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction)
+                      moment(this.taskScheduleTime).format("HH:mm"), this.taskScheduleDuration, "Planned", this.lastName + " - " + this.selectedActivityAction, 1)
                         .then((res) => {
                           //const data = JSON.parse(res.data);
 
@@ -337,7 +337,7 @@ export class CallCommentsPage implements OnInit {
         if(!this.isDirectlyMarkedComplete){
           this.activityDetailService.createCustomActivity(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length),
                 "124", "Mobile Call", "Mobile Call : Call Logging", this.actualDateCalled, 
-                this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName)
+                this.actualTimeCalled, this.callDuration, "Held", this.lastName + " - " + this.eventName, 0)
                   .then((res) => {
                     //const data = JSON.parse(res.data);
 
