@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'report', loadChildren: './report/report.module#ReportPageModule' },  { path: 'search-page', loadChildren: './search-page/search-page.module#SearchPagePageModule' },
   { path: 'create-activity', loadChildren: './create-activity/create-activity.module#CreateActivityPageModule' },
   { path: 'add-new-comment', loadChildren: './add-new-comment/add-new-comment.module#AddNewCommentPageModule' },
+  { path: 'get-support', loadChildren: './get-support/get-support.module#GetSupportPageModule' },
 
 
 ];

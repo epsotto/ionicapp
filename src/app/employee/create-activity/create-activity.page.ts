@@ -117,10 +117,10 @@ export class CreateActivityPage implements OnInit {
       this.taskScheduleTime = moment().set("hours", 6).set("minutes", 30).format("HH:mm");
       this.taskScheduleDuration = "5";
       this.activityActionsList = [
-        {
-        value: "Get Tech Support",
-        text: "Get Tech Support"
-        },
+        // {
+        // value: "Get Tech Support",
+        // text: "Get Tech Support"
+        // },
         {
           value: "Prepare a Quote",
           text: "Prepare a Quote"

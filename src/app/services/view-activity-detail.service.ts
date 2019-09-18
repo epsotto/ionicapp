@@ -139,4 +139,24 @@ export class ViewActivityDetailService {
 
     return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
   }
+
+  createNewSupportRecord(sessionName:string, userId:string, oppId:string, supportPerson:string, supportType:string, comment:string) {
+    const envVars = {value: {
+        "support_person": supportPerson,
+        "support_type": supportType,
+        "support_comment": comment,
+        "requested_by_id": userId
+      }
+    };
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId" : "139",
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
 }

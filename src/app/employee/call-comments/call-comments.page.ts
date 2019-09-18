@@ -283,10 +283,10 @@ export class CallCommentsPage implements OnInit {
       },];
     } else if(this.activityType.toLowerCase() === 'task') {
       this.activityActionsList = [
-        {
-        value: "Get Tech Support",
-        text: "Get Tech Support"
-        },
+        // {
+        // value: "Get Tech Support",
+        // text: "Get Tech Support"
+        // },
         {
           value: "Prepare a Quote",
           text: "Prepare a Quote"

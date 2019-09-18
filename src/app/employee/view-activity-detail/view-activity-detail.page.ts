@@ -12,6 +12,7 @@ import { CallCommentsPage } from '../call-comments/call-comments.page';
 import { CreateActivityPage } from '../create-activity/create-activity.page'
 import * as moment from 'moment';
 import { AddNewCommentPage } from '../add-new-comment/add-new-comment.page';
+import { GetSupportPage } from '../get-support/get-support.page';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -63,6 +64,7 @@ export class ViewActivityDetailPage implements OnInit {
   private activityId:string = "";
   private lastName:string = "";
   private eventAction:string = "";
+  private userId:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -103,6 +105,7 @@ export class ViewActivityDetailPage implements OnInit {
 
     this.dataStorage.retrieveCachedData().then((res) => {
       if(res != null) {
+        this.userId = res.userId;
         this.viewActivityDetailService.getOpportunityLatestComments(this.oppId, res.sessionName).then((res) => {
           const data = JSON.parse(res.data);
 
@@ -428,6 +431,32 @@ export class ViewActivityDetailPage implements OnInit {
         oppId: this.oppId
       }
     });
+
+    modal.present();
+  }
+
+  getSupport() {
+    this.getSupportModal();
+  }
+
+  async getSupportModal(){
+    const modal = await this.modal.create({
+      component: GetSupportPage,
+      componentProps: {
+        oppId: this.oppId,
+        userId: this.userId,
+        salesStage: this.salesStage
+      }
+    });
+
+    modal.onDidDismiss().then((res) => {
+      if(res != null) {
+        if(res.data.action === "success"){
+          this.msg = "Support Ticket successfully created.";
+          this.presentToast();
+        }
+      }
+    })
 
     modal.present();
   }

@@ -22,6 +22,7 @@ import { Diagnostic } from "@ionic-native/diagnostic/ngx";
 import { CheckoutPageModule } from './employee/checkout/checkout.module';
 import { CreateActivityPageModule } from './employee/create-activity/create-activity.module';
 import { AddNewCommentPageModule } from './employee/add-new-comment/add-new-comment.module';
+import { GetSupportPageModule } from './employee/get-support/get-support.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,7 @@ import { AddNewCommentPageModule } from './employee/add-new-comment/add-new-comm
     CheckoutPageModule,
     CreateActivityPageModule,
     AddNewCommentPageModule,
+    GetSupportPageModule,
     HttpModule,
     HttpClientModule
   ],

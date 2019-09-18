@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Request Support</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="dismissModal()">CLOSE</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Choose Support Person<span class="required-field">*</span></ion-label>
+        <ion-select [(ngModel)]="selectedSupportPerson" name="SupportPerson" 
+        placeholder="Support Person">
+          <ion-select-option *ngFor="let person of supportPersonsList" value="{{person.value}}">{{person.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Choose a Support Type<span class="required-field">*</span></ion-label>
+        <ion-select [(ngModel)]="selectedSupportType" name="SupportType" 
+        placeholder="Support Type">
+          <ion-select-option *ngFor="let type of supportTypeList" value="{{type.value}}">{{type.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Please enter comments for this activity<span class="required-field">*</span>
+        </ion-label>
+        <ion-textarea [(ngModel)]="comment" rows="4" placeholder="Enter coment here.">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label class="ion-text-wrap label-custom-wrap">I have added all the required pictures and documents related to this opportunity in the team drive folder
+          <span class="required-field">*</span>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="hasTeamDrive" slot="end">
+        </ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <ion-button color="primary" expand="full" type="button" (click)="onSubmit()">SUBMIT</ion-button>
+  </ion-content>
