@@ -23,6 +23,7 @@ import { CheckoutPageModule } from './employee/checkout/checkout.module';
 import { CreateActivityPageModule } from './employee/create-activity/create-activity.module';
 import { AddNewCommentPageModule } from './employee/add-new-comment/add-new-comment.module';
 import { GetSupportPageModule } from './employee/get-support/get-support.module';
+import { FsvSurveyPageModule } from './employee/fsv-survey/fsv-survey.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,7 +40,8 @@ import { GetSupportPageModule } from './employee/get-support/get-support.module'
     AddNewCommentPageModule,
     GetSupportPageModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    FsvSurveyPageModule
   ],
   providers: [
     StatusBar,

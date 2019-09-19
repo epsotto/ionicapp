@@ -1,5 +1,6 @@
 import { Injectable, wtfEndTimeRange } from '@angular/core';
 import { HTTP } from '@ionic-native/http/ngx';
+import { query } from '@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +154,34 @@ export class ViewActivityDetailService {
       "operation": "executeWF",
       "sessionName": sessionName,
       "wfId" : "139",
+      "crmId": oppId,
+      "envVars": JSON.stringify(envVars)
+    };
+
+    return this.http.get(this.serviceUrl, queryParams, { "Content-Type": "application/json" });
+  }
+
+  createNewFsvSurvey(sessionName:string, oppId:string, contactName:string,
+    descriptionJob:string, selectedExperience:string, selectedOtherSolution:string, selectedOtherQuotes:string, 
+    preferredRoofMaterial:string, budgetCostExpectations:string, costEstimate:string,
+    selectedNeedFinanceValue:string, comment:string) {
+    const envVars = {
+      "name":  contactName, 
+      "description": descriptionJob,
+      "cf_1834": selectedExperience,
+      "cf_1836": selectedOtherSolution,
+      "cf_1838": selectedOtherQuotes,
+      "cf_1840": preferredRoofMaterial,
+      "cf_1842": budgetCostExpectations,
+      "cf_1844": costEstimate,
+      "cf_1856": selectedNeedFinanceValue,
+      "cf_1846": comment
+    };
+
+    const queryParams = {
+      "operation": "executeWF",
+      "sessionName": sessionName,
+      "wfId": "140",
       "crmId": oppId,
       "envVars": JSON.stringify(envVars)
     };

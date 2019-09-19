@@ -13,6 +13,7 @@ import { CreateActivityPage } from '../create-activity/create-activity.page'
 import * as moment from 'moment';
 import { AddNewCommentPage } from '../add-new-comment/add-new-comment.page';
 import { GetSupportPage } from '../get-support/get-support.page';
+import { FsvSurveyPage } from '../fsv-survey/fsv-survey.page';
 
 @Component({
   selector: 'app-view-activity-detail',
@@ -65,6 +66,7 @@ export class ViewActivityDetailPage implements OnInit {
   private lastName:string = "";
   private eventAction:string = "";
   private userId:string = "";
+  private firstName:string = "";
 
   constructor(private dataStorage: DataStorageService,
               private route: ActivatedRoute,
@@ -155,6 +157,7 @@ export class ViewActivityDetailPage implements OnInit {
           const data = JSON.parse(res.data);
           if(data.success){
             this.lastName = data.result[0].lastname;
+            this.firstName = data.result[0].firstname;
             this.contactName = data.result[0].lastname + ", " + data.result[0].firstname;
             this.clientAddress = data.result[0].mailingstreet  + ", " + 
                                 data.result[0].mailingcity + ", " + 
@@ -453,6 +456,32 @@ export class ViewActivityDetailPage implements OnInit {
       if(res != null) {
         if(res.data.action === "success"){
           this.msg = "Support Ticket successfully created.";
+          this.presentToast();
+        }
+      }
+    })
+
+    modal.present();
+  }
+
+  createFsvSurvey(){
+    this.FsvSurveyModal();
+  }
+
+  async FsvSurveyModal() {
+    const modal = await this.modal.create({
+      component: FsvSurveyPage,
+      componentProps: {
+        oppId: this.oppId,
+        clientName: this.firstName !== "" && this.lastName !== "" ? this.firstName + " " + this.lastName : 
+                      (this.firstName === "" ? this.lastName : this.firstName)
+      }
+    });
+
+    modal.onDidDismiss().then((res) => {
+      if(res != null) {
+        if (res.data.action === "success"){
+          this.msg = "Fresco Survey Created.";
           this.presentToast();
         }
       }

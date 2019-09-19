@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Comments and Reminders</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">CLOSE</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Contact Name</ion-label>
+      <ion-input [(ngModel)]="contactName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Description of Job</ion-label>
+      <ion-input [(ngModel)]="descriptionJob"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Experienced a Canopy?</ion-label>
+      <ion-select [(ngModel)]="selectedExperience" name="experiencedACanopy" placeholder="Select option">
+          <ion-select-option *ngFor="let experience of selectedExperienceList" value="{{experience.value}}">{{experience.text}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Other Solutions being considered</ion-label>
+      <ion-select [(ngModel)]="selectedOtherSolution" name="otherSolutionsConsidered" placeholder="Select Other Solutions Considered">
+        <ion-select-option *ngFor="let otherSol of otherSolutionList" value="{{otherSol.value}}">{{otherSol.text}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Other Quotes Obtained</ion-label>
+      <ion-select [(ngModel)]="selectedOtherQuotes" name="otherQuotesObtained" placeholder="Select Other Quotes Obtained">
+        <ion-select-option *ngFor="let other of otherQuotesObtainedList" value="{{other.value}}">{{other.text}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Preferred Roof Material</ion-label>
+      <ion-input [(ngModel)]="preferredRoofMaterial"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Budget - Cost Expectations</ion-label>
+      <ion-textarea [(ngModel)]="budgetCostExpectations" rows="4" placeholder="Enter client expectations here.">
+      </ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Details of Cost Estimate given</ion-label>
+      <ion-input [(ngModel)]="costEstimate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Need Finance?</ion-label>
+      <ion-select [(ngModel)]="selectedNeedFinanceValue" name="needFinance" placeholder="Select Option">
+        <ion-select-option *ngFor="let needFinance of needFinanceList" value="{{needFinance.value}}">{{needFinance.text}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked" class="ion-text-wrap label-custom-wrap">Comments</ion-label>
+      <ion-textarea [(ngModel)]="comment" rows="4" placeholder="Enter coment here.">
+      </ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button color="primary" expand="full" type="button" (click)="onSubmit()">SUBMIT</ion-button>
+</ion-content>
