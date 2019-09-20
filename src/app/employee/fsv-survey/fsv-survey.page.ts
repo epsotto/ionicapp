@@ -27,6 +27,8 @@ export class FsvSurveyPage implements OnInit {
   public needFinanceList:any = [];
   public comment:string = "";
 
+  private cachedData:any = [];
+
   constructor(private modal:ModalController,
               private alertController:AlertController,
               private loader:LoadingController,
@@ -70,6 +72,12 @@ export class FsvSurveyPage implements OnInit {
     ];
 
     this.contactName = this.clientName;
+
+    this.dataStorage.retrieveCachedData().then((res) => {
+      if(res != null) {
+        this.cachedData = res;
+      }
+    })
   }
 
   onSubmit(){
@@ -83,17 +91,23 @@ export class FsvSurveyPage implements OnInit {
         return;
       }
 
-    this.dataStorage.retrieveCachedData().then((res) => {
-      if(res != null) {
-        this.viewDetailService.createNewFsvSurvey(res.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
-        this.contactName, this.descriptionJob, this.selectedExperience, this.selectedOtherSolution, this.selectedOtherQuotes, 
-        this.preferredRoofMaterial, this.budgetCostExpectations, this.costEstimate, this.selectedNeedFinanceValue, this.comment)
-        .then((res) => {
+    if(this.cachedData != null) {
+      this.viewDetailService.createNewFsvSurvey(this.cachedData.sessionName, this.oppId.substring(this.oppId.indexOf("x")+1, this.oppId.length), 
+      this.contactName, this.descriptionJob, this.selectedExperience, this.selectedOtherSolution, this.selectedOtherQuotes, 
+      this.preferredRoofMaterial, this.budgetCostExpectations, this.costEstimate, this.selectedNeedFinanceValue, this.comment)
+      .then((res) => {
+        const surveyAsComment = "Contact Name: " + this.contactName + " | " + "Description of Job: " + this.descriptionJob + " | " +
+                                "Experienced a Canopy? " + this.selectedExperience + " | " + "Other Solutions being considered: " + this.selectedOtherSolution +
+                                " | " + "Other Quotes Obtained: " + this.selectedOtherQuotes + " | " + "Preferred Roof Material: " + this.preferredRoofMaterial +
+                                " | " + "Budget - Cost Expectations: " + this.budgetCostExpectations + " | " + "Details of Cost Estimate given: " + 
+                                this.costEstimate + " | " + "Need Finance? " + this.selectedNeedFinanceValue + " | " + "Comments: " + this.comment;
+        
+                                this.viewDetailService.submitOppComments(this.cachedData.sessionName, this.oppId, "138", surveyAsComment).then((res) => {
           this.loader.dismiss();
           this.modal.dismiss({action: "success"});
         });
-      }
-    })
+      });
+    }
   }
 
   async presentLoader() {
