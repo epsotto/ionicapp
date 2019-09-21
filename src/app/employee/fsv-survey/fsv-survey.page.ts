@@ -87,7 +87,7 @@ export class FsvSurveyPage implements OnInit {
       || this.budgetCostExpectations === "" || this.costEstimate === ""
       || this.selectedNeedFinanceValue === "" || this.comment === "") {
         this.presentAlert("Please fill out all fields in this form before submitting.");
-        this.loader.dismiss();
+        window.setTimeout(() => {this.loader.dismiss()} ,100);
         return;
       }
 
