@@ -60,17 +60,21 @@ export class SearchPagePage implements OnInit {
         value: "19x37"
       },
       {
-        text: "jackie.king",
-        value: "19x55"
-      },
-      {
         text: "scott.minhinnick",
         value: "19x58"
       },
       {
-        text: "catherine.fletcher",
-        value: "19x60"
-      }
+        text: "richie.staunton",
+        value: "19x104"
+      },
+      {
+        text: "richard.lyne",
+        value: "19x105"
+      },
+      {
+        text: "mathew.barker",
+        value: "19x107"
+      },
     ];
       
   }
