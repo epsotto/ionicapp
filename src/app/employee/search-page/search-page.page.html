@@ -32,7 +32,7 @@
     </ion-item>
     <ion-item *ngIf="opportunityName !== '' || opportunityNumber !== '' || clientName !==  ''">
       <ion-label position="stacked">Assigned To</ion-label>
-      <ion-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select assigned person">
+      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select assigned person">
         <ion-select-option *ngFor="let user of assignedToList" value={{user.value}}>{{user.text}}</ion-select-option>
       </ion-select>
     </ion-item>
