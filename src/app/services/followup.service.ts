@@ -8,7 +8,7 @@ import * as moment from 'moment';
 })
 
 export class FollowupService {
-  serviceUrl:string = "http://crm.frescoshades.co.nz/webservice.php";
+  serviceUrl:string = "https://crm.frescoshades.co.nz/webservice.php";
 
   constructor(private http: HTTP,
       private dataStorage: DataStorageService) { }

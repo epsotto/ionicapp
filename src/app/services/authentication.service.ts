@@ -13,7 +13,7 @@ const TOKEN_KEY = 'auth-token';
 })
 export class AuthenticationService {
   authenticationState = new BehaviorSubject(false);
-  serviceUrl:string = "http://crm.frescoshades.co.nz/webservice.php";
+  serviceUrl:string = "https://crm.frescoshades.co.nz/webservice.php";
 
   constructor(private storage: Storage, private plt: Platform, 
     private http : HTTP, private globalStorage: DataStorageService) { 

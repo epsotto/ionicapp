@@ -6,7 +6,7 @@ import { query } from '@angular/core/src/render3';
   providedIn: 'root'
 })
 export class ViewActivityDetailService {
-  serviceUrl:string = "http://crm.frescoshades.co.nz/webservice.php";
+  serviceUrl:string = "https://crm.frescoshades.co.nz/webservice.php";
 
   constructor(private http: HTTP) { }
 

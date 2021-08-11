@@ -6,7 +6,7 @@ import { HTTP } from '@ionic-native/http/ngx';
   providedIn: 'root'
 })
 export class DashboardService {
-  serviceUrl:string = "http://crm.frescoshades.co.nz/webservice.php";
+  serviceUrl:string = "https://crm.frescoshades.co.nz/webservice.php";
 
   constructor(private http: HTTP) {}
 
